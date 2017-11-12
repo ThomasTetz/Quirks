@@ -20,7 +20,8 @@
         <activity android:name=".Activities.QuirksActivity" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.EditQuirkClickedActivity" />
-        <activity android:name=".Activities.AddQuirkActivity"></activity>
+        <activity android:name=".Activities.AddQuirkActivity" />
+        <activity android:name=".Activities.NewEventActivity"></activity>
     </application>
 
 </manifest>
