@@ -50,6 +50,10 @@ public class QuirksActivity extends BaseActivity {
 
     }
 
+    public void filterTest(){
+//        User user = new User("Test1", );
+    }
+
     @Override
     int getContentViewId() { return R.layout.activity_quirks; }
 

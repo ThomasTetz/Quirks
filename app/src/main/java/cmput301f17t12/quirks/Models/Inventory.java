@@ -16,6 +16,13 @@ public class Inventory implements Serializable{
 
     public void addDrop(Drop drop){
         inventory.add(drop);
+//        if (!hasDrop(drop)){
+//            inventory.add(drop);
+//        }
+//        else{
+//            System.out.println("already in inventory");
+//        }
+
     }
 
     public boolean hasDrop(Drop drop){
