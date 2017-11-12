@@ -53,7 +53,7 @@ public class NewEventActivity extends BaseActivity {
     }
 
     public void cancelCommand(View view) {
-        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
