@@ -14,13 +14,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import cmput301f17t12.quirks.Controllers.ElasticSearchQuirkController;
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.R;
@@ -93,10 +91,10 @@ public class AddQuirkActivity extends AppCompatActivity {
     // Save button clicked -> create and save new quirk and return to the previous activity
 
     public void saveButtonClicked(View v){
-        type = ((EditText)findViewById(R.id.editTextType)).getText().toString();
+        type = ((EditText)findViewById(R.id.QuirkeditTextType)).getText().toString();
         title = ((EditText)findViewById(R.id.editTitle)).getText().toString();
-        reason = ((EditText)findViewById(R.id.editTextReason)).getText().toString();
-        goal = ((EditText)findViewById(R.id.editTextGoal)).getText().toString();
+        reason = ((EditText)findViewById(R.id.QuirkeditTextReason)).getText().toString();
+        goal = ((EditText)findViewById(R.id.QuirkeditTextGoal)).getText().toString();
         ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
 
         if(type.equals("")||(title.equals(""))||(goal.equals(""))){
@@ -115,8 +113,12 @@ public class AddQuirkActivity extends AppCompatActivity {
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getStartDate() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Occurence Date is  " + QuirkCreated.getOccDate());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Goal is  " + QuirkCreated.getGoalValue());
-          //  intent.putExtra("Quirk_Created", Quirk_created);
+
+            ElasticSearchQuirkController.AddQuirksTask addQuirksTask = new ElasticSearchQuirkController.AddQuirksTask();
+            addQuirksTask.execute(QuirkCreated);
+            //  intent.putExtra("Quirk_Created", Quirk_created);
             //setResult(1, intent);
+
             finish();
         }
 
