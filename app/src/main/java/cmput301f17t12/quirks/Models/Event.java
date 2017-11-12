@@ -16,7 +16,7 @@ import io.searchbox.annotations.JestId;
 
 public class Event implements Mappable, Newsable, Serializable {
 
-    private Quirk quirk;
+    private String user;
     private String comment;
     private String photoPath;
     private Date date;
@@ -26,15 +26,15 @@ public class Event implements Mappable, Newsable, Serializable {
     private String eid;
 
     // Event without Path and geolocation
-    public Event(Quirk quirk, String comment, Date date){
-        this.quirk = quirk;
+    public Event(String user, String comment, Date date){
+        this.user = user;
         this.comment = comment;
         this.date = date;
     }
 
     // Event without geolocation
-    public Event(Quirk quirk, String comment, String photoUri, Date date){
-        this.quirk = quirk;
+    public Event(String user, String comment, String photoUri, Date date) {
+        this.user = user;
         this.comment = comment;
         if (comment == null) {
             this.comment = "";
@@ -46,8 +46,8 @@ public class Event implements Mappable, Newsable, Serializable {
         this.date = date;
     }
 
-    public Event(Quirk quirk, String comment, String photoUri, Date date, Geolocation geolocation){
-        this.quirk = quirk;
+    public Event(String user, String comment, String photoUri, Date date, Geolocation geolocation) {
+        this.user = user;
         this.comment = comment;
         this.photoPath = photoUri;
         this.date = date;
@@ -62,12 +62,13 @@ public class Event implements Mappable, Newsable, Serializable {
     public void setId(String eid){
         this.eid = eid;
     }
-    public Quirk getQuirk(){
-        return quirk;
+
+    public String getUser(){
+        return user;
     }
 
-    public void setQuirk(Quirk quirk){
-        this.quirk = quirk;
+    public void setUser(String user){
+        this.user = user;
     }
 
     public String getComment(){
@@ -107,7 +108,7 @@ public class Event implements Mappable, Newsable, Serializable {
     }
 
     public boolean isEquals(Event event){
-        if (this.quirk==event.quirk && this.comment==event.comment && this.photoPath==event.photoPath
+        if (this.user == event.user && this.comment==event.comment && this.photoPath==event.photoPath
                 && this.date==event.date && this.geolocation==event.geolocation) {
             return true;
         }
@@ -116,7 +117,7 @@ public class Event implements Mappable, Newsable, Serializable {
 
     @Override
     public String buildNewsHeader() {
-        return getQuirk().getUser() + " logged an event!";
+        return getUser() + " logged an event!";
     }
 
     @Override

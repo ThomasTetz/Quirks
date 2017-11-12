@@ -48,13 +48,9 @@ public class NewEventActivity extends BaseActivity {
         getSingleUserTask.execute(jestID);
 
         try {
-
             currentlylogged = getSingleUserTask.get();
-
-            Log.d("testing", currentlylogged.toString());
             QuirkList quirks = currentlylogged.getQuirks();
             ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, quirks.getList());
-
             dropdown.setAdapter(adapter);
         }
         catch (Exception e) {
@@ -89,25 +85,13 @@ public class NewEventActivity extends BaseActivity {
         Log.d("testing", photoPath);
 
         EventList events = selectedQuirk.getEventList();
-        Event newEvent = new Event(selectedQuirk, comment, photoPath, new Date());
+        Event newEvent = new Event(currentlylogged.getUsername(), comment, photoPath, new Date());
         events.addEvent(newEvent);
 
-        // Testing
-//        QuirkList quirks = currentlylogged.getQuirks();
-//        for (int i = 0; i < quirks.size(); i++) {
-//            Log.d("testing", quirks.getQuirk(i).getEventList().toString());
-//        }
-//        ArrayList<Day> test = new ArrayList<>();
-//        test.add(Day.FRIDAY);
-//        quirks.addQuirk(new Quirk("THIS IS A NEW QUIRK TEST", "test", new Date(), test, 10));
-//        Log.d("testing", quirks.toString());
+        ElasticSearchUserController.UpdateUserTask updateUserTask
+                = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(currentlylogged);
 
-        // TODO: This is causing app to crash. Fix later
-//        ElasticSearchUserController.UpdateUserTask updateUserTask
-//                = new ElasticSearchUserController.UpdateUserTask();
-//        updateUserTask.execute(currentlylogged);
-
-        // TODO: replace this with finish? currently finish returns to login screen...
         startActivity(new Intent(this, MainActivity.class));
     }
 

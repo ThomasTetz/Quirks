@@ -13,7 +13,7 @@ import java.util.List;
 
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Models.Event;
-import cmput301f17t12.quirks.Models.Quirk;
+
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
@@ -166,7 +166,7 @@ public class ElasticSearchEventController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 Log.i("Error", e.toString());
             }
-            return new Event(new Quirk("errTitle", "errType", new Date(), new ArrayList<Day>(), 10), "comment", new Date());
+            return new Event("fakeuser", "comment", new Date());
         }
     }
 
