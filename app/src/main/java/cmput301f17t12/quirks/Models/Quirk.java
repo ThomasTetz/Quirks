@@ -160,6 +160,11 @@ public class Quirk implements Newsable, Serializable {
         this.user = user;
     }
 
+    public boolean isEquals(Quirk quirk){
+        return this.user.equals(quirk.user) && this.title.equals(quirk.title) && this.type.equals(quirk.type) && this.reason.equals(quirk.reason)
+                && this.startDate.equals(quirk.startDate) && this.occDate.equals(quirk.occDate) && this.currValue == quirk.currValue
+                && this.goalValue == quirk.goalValue && this.events.equals(quirk.events);
+    }
 
     @Override
     public String buildNewsHeader() {

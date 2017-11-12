@@ -104,11 +104,8 @@ public class Event implements Mappable, Newsable, Serializable {
     }
 
     public boolean isEquals(Event event){
-        if (this.user == event.user && this.comment==event.comment && this.photoPath==event.photoPath
-                && this.date==event.date && this.geolocation==event.geolocation) {
-            return true;
-        }
-        return false;
+        return this.user.equals(event.user) && this.comment.equals(event.comment) && this.photoPath.equals(event.photoPath)
+                && this.date.equals(event.date) && this.geolocation.equals(event.geolocation);
     }
 
     @Override

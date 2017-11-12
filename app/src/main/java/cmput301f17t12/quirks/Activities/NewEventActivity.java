@@ -20,6 +20,7 @@ import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Enumerations.Day;
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Inventory;
@@ -43,19 +44,11 @@ public class NewEventActivity extends BaseActivity {
         // Testing - replace this with a userID search later on.
         String jestID = "AV-xx8ahi8-My2t7XP4j";
 
-        ElasticSearchUserController.GetSingleUserTask getSingleUserTask
-                = new ElasticSearchUserController.GetSingleUserTask();
-        getSingleUserTask.execute(jestID);
-
-        try {
-            currentlylogged = getSingleUserTask.get();
+        currentlylogged = HelperFunctions.getUserObject(jestID);
+        if (currentlylogged != null) {
             QuirkList quirks = currentlylogged.getQuirks();
             ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, quirks.getList());
             dropdown.setAdapter(adapter);
-        }
-        catch (Exception e) {
-            Log.i("Error", "Failed to get the users from the async object");
-            Log.i("Error", e.toString());
         }
     }
 
@@ -104,20 +97,23 @@ public class NewEventActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SELECTED_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
             Uri uri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                ImageView imageView = (ImageView) findViewById(R.id.imageView);
-                imageView.setImageBitmap(bitmap);
-
-                photoPath = getRealPathFromURI(uri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            setImage(uri);
         }
     }
+
+    private void setImage(Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(bitmap);
+
+            photoPath = getRealPathFromURI(uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
