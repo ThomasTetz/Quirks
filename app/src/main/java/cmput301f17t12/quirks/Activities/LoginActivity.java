@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     System.out.println("size: " + users.size());
                     if (users.size() == 1){
                         System.out.println("\n\nvvv\nalready registered\n^^^\n\n");
+//                        testDelete(users.get(0));
 //                        testUpdate1(users.get(0));
                         loginUser(users.get(0));
                     }
@@ -118,7 +119,56 @@ public class LoginActivity extends AppCompatActivity {
         System.out.println("Successfully added new user");
         loginUser(user);
     }
-
+//
+//    private void testDelete(User user){
+//        // delete
+//
+//
+//        ElasticSearchUserController.DeleteUserTask deleteUserTask
+//                = new ElasticSearchUserController.DeleteUserTask();
+//        deleteUserTask.execute(user);
+//
+//
+//        String query = "{" +
+//                "  \"query\": {" +
+//                "    \"match\": {" +
+//                "      \"username\": \"" + user.getUsername() + "\"" +
+//                "    }" +
+//                "  }" +
+//                "}";
+//
+//
+//        ElasticSearchUserController.GetUsersTask getUsersTask
+//                = new ElasticSearchUserController.GetUsersTask();
+//        getUsersTask.execute(query);
+//
+//
+//        try {
+//
+//            ArrayList<User> users = getUsersTask.get();
+//
+//            System.out.println("size: " + users.size());
+//            if (users.size() == 1){
+//                System.out.println("\n\nvvv\nstill exists\n^^^\n\n");
+//            }
+//            else if (users.size() > 1){
+//                Log.i("Error", "Username appears more than once in the database");
+//            }
+//            else{
+//                System.out.println("Delete worked");
+//            }
+//        }
+//        catch (Exception e) {
+//            Log.i("Error", "user successfully deleted");
+//            Log.i("Error", e.toString());
+////                    String text = "Failed to get the tweets from the async object";
+////                    Toast toast = Toast.makeText(context, text, duration);
+////                    toast.show();
+//        }
+//
+//
+//
+//    }
 //    private void testUpdate1(User user1){
 //        System.out.println("Testing update user");
 //
@@ -163,13 +213,13 @@ public class LoginActivity extends AppCompatActivity {
 //                = new ElasticSearchUserController.GetSingleUserTask();
 //        getSingleUserTask.execute(query2);
 //
-//
+////
 //        try{
 //            user = getSingleUserTask.get();
 //
 //            System.out.println("got single after update: " + user.getUsername() + "\ninventory:");
 //            user.getInventory().printItems();
-////            testUpdate2(user);
+//////            testUpdate2(user);
 //        }
 //        catch(Exception e){
 //            Log.i("Error", "Failed to get the user by id");
