@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cmput301f17t12.quirks.R;
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView textUsername;
     private AlertDialog.Builder builder;
+    private ImageView loginBG;
 
     private Boolean pressed = false;
 
@@ -30,6 +32,12 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = (Button) findViewById(R.id.loginBtn);
         textUsername = (TextView) findViewById(R.id.loginUser);
+        loginBG = (ImageView) findViewById((R.id.loginBG));
+
+        btnLogin.setBackgroundColor(0xFFDCDCDC);
+        loginBG.setBackgroundColor(0xFFDCDCDC);
+        btnLogin.setTextColor(0xFF7B8C94);
+        textUsername.setTextColor(0xFF7B8C94);
 
         btnLogin.setOnTouchListener(new View.OnTouchListener() {
 
