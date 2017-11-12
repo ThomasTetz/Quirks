@@ -8,11 +8,8 @@
 
     <ImageView
         android:id="@+id/el_topborder"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,5 +26,34 @@
         app:layout_constraintBottom_toBottomOf="@+id/el_topborder"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/el_topborder"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
+        app:srcCompat="@android:drawable/ic_menu_revert"
+        android:layout_marginStart="8dp" />
+
+    <TextView
+        android:id="@+id/el_quirkname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/el_btnBack"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/el_btnBack"
+        android:layout_marginEnd="80dp" />
+
+    <ListView
+        android:id="@+id/el_eventslistview"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/el_topborder" />
+
 </android.support.constraint.ConstraintLayout>
