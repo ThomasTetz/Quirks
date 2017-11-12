@@ -110,7 +110,7 @@ public class AddQuirkActivity extends AppCompatActivity {
             Quirk QuirkCreated = new Quirk(title,type,DatetoTest,QuirkOccurence,Quirk_goal);
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the type is  " + QuirkCreated.getType() );
-            Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getStartDate() );
+            Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getDate() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Occurence Date is  " + QuirkCreated.getOccDate());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Goal is  " + QuirkCreated.getGoalValue());
 

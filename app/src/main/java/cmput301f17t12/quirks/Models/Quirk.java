@@ -99,11 +99,11 @@ public class Quirk implements Newsable, Serializable {
         this.reason = reason;
     }
 
-    public Date getStartDate(){
+    public Date getDate(){
         return startDate;
     }
 
-    public void setStartDate(Date startdate){
+    public void setDate(Date startdate){
         this.startDate = startDate;
     }
 
@@ -152,7 +152,7 @@ public class Quirk implements Newsable, Serializable {
     @Override
     public String buildDate() {
         CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(
-                getStartDate().getTime(),
+                getDate().getTime(),
                 System.currentTimeMillis(),
                 DateUtils.SECOND_IN_MILLIS,
                 DateUtils.FORMAT_ABBREV_RELATIVE);

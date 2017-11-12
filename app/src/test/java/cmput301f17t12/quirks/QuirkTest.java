@@ -171,7 +171,7 @@ public class QuirkTest {
         events.addEvent(event);
 
         Quirk myQuirk = new Quirk(events, "title", "type", "reason", now, new ArrayList<Day>(), 0, 123);
-        assertEquals(now, myQuirk.getStartDate());
+        assertEquals(now, myQuirk.getDate());
     }
 
     @Test
@@ -186,8 +186,8 @@ public class QuirkTest {
         Quirk myQuirk = new Quirk(events, "title", "type", "reason", now, new ArrayList<Day>(), 0, 123);
         // Some date here
         Date newDate = new Date();
-        myQuirk.setStartDate(newDate);
-        assertEquals(newDate, myQuirk.getStartDate());
+        myQuirk.setDate(newDate);
+        assertEquals(newDate, myQuirk.getDate());
     }
 
     // Testing quirk occurences
