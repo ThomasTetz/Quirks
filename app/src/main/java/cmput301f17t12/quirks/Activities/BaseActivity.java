@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,7 +18,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("testing", "BaseActivity");
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
 
@@ -43,7 +41,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.d("testing", "am here");
         switch (item.getItemId()) {
             case R.id.action_geomap:
                 // TODO: Part 5
@@ -54,14 +51,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 //                startActivity(new Intent(this, SocialActivity.class));
 //                break;
             case R.id.action_newevent:
-                // TODO: Part 4
-//                startActivity(new Intent(this, NewEventActivity.class));
-//                break;
+                startActivity(new Intent(this, NewEventActivity.class));
+                break;
             case R.id.action_quirklist:
                 startActivity(new Intent(this, QuirksActivity.class));
                 break;
             case R.id.action_home:
-                Log.d("testing", "LOLOOLLO");
                 startActivity(new Intent(this, MainActivity.class));
                 break;
         }

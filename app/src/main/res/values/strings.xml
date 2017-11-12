@@ -6,4 +6,11 @@
     <string name="quirklist_image_desc">Quirks</string>
     <string name="home_image_desc">Home</string>
     <string name="news_feed">News Feed</string>
+    <string name="newEvent_selectQuirk">Select Quirk to Log to</string>
+    <string name="comment_text">Comment</string>
+    <string name="import_photo_text">Import Photo</string>
+    <string name="new_event_topbutton">Browse</string>
+    <string name="new_event_bottombutton">Remove</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
