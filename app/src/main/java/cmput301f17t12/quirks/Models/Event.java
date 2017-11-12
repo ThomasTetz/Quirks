@@ -3,16 +3,13 @@ package cmput301f17t12.quirks.Models;
 import android.net.Uri;
 import android.text.format.DateUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Interfaces.Mappable;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
-public class Event implements Mappable, Newsable {
+public class Event implements Mappable, Newsable, Serializable{
 
     private Quirk quirk;
     private String comment;
