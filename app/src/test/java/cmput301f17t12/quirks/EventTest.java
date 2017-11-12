@@ -14,10 +14,10 @@ import cmput301f17t12.quirks.Models.Geolocation;
 import cmput301f17t12.quirks.Models.Quirk;
 
 public class EventTest {
-    private float currFloat = 5.6f;
-    private float goalFloat = 13.1f;
+    private int curr = 5;
+    private int goal = 13;
     private Quirk quirk = new Quirk (new EventList(), "title", "type", "reason",
-                                                  new Date(), new ArrayList<Day>(), currFloat, goalFloat);
+                                                  new Date(), new ArrayList<Day>(), curr, goal);
     private Geolocation geolocation = new Geolocation(1,1);
     // Test comment
     @Test
@@ -78,22 +78,12 @@ public class EventTest {
         assertEquals(null, returnedGeolocation);
     }
 
-    // Some tests for removing and adding photos
-    @Test
-    public void testgetPhotoURI() {
-//        Uri someUri = Uri.parse("android.resource://cmput301f17t12.quirks/" + R.drawable.);
-        Uri someUri = Uri.parse("android.R.drawable.btn_plus");
-        Event event = new Event(quirk, "ate lettuce", someUri, new Date(), geolocation);
-        assertEquals(event.getPhotoUri(), someUri);
-    }
-
     @Test
     public void testsetPhotoURI() {
         Event event = new Event(quirk, "ate lettuce", null, new Date(), geolocation);
-//        Uri someuri = new Uri("SOME PHOTO URI HERE");
-        Uri someUri = Uri.parse("android.R.drawable.btn_plus");
-        event.setPhotoUri(someUri);
-        assertEquals(event.getPhotoUri(), someUri);
+        String somePath = "/storage/sdcard/DCIM/Camera/IMG_20171111_193451.jpg";
+        event.setPhotoPath(somePath);
+        assertEquals(event.getPhotoPath(), somePath);
     }
 
     @Test

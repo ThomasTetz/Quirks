@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Models;
 
 import android.text.format.DateUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,11 +10,7 @@ import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import io.searchbox.annotations.JestId;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
-public class Quirk implements Newsable {
+public class Quirk implements Newsable, Serializable {
     private EventList events;
     private String user;
     private String title;
@@ -102,11 +99,11 @@ public class Quirk implements Newsable {
         this.reason = reason;
     }
 
-    public Date getStartDate(){
+    public Date getDate(){
         return startDate;
     }
 
-    public void setStartDate(Date startdate){
+    public void setDate(Date startdate){
         this.startDate = startDate;
     }
 
@@ -155,7 +152,7 @@ public class Quirk implements Newsable {
     @Override
     public String buildDate() {
         CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(
-                getStartDate().getTime(),
+                getDate().getTime(),
                 System.currentTimeMillis(),
                 DateUtils.SECOND_IN_MILLIS,
                 DateUtils.FORMAT_ABBREV_RELATIVE);
@@ -164,6 +161,11 @@ public class Quirk implements Newsable {
 
     @Override
     public String buildNewsDescription() {
+        return getTitle();
+    }
+
+    @Override
+    public String toString() {
         return getTitle();
     }
 }

@@ -1,23 +1,38 @@
 package cmput301f17t12.quirks.Activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+import cmput301f17t12.quirks.Enumerations.Day;
+import cmput301f17t12.quirks.Models.Event;
+import cmput301f17t12.quirks.Models.EventList;
+import cmput301f17t12.quirks.Models.Inventory;
+import cmput301f17t12.quirks.Models.Quirk;
+import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class NewEventActivity extends BaseActivity {
 
     private static final int SELECTED_PICTURE = 0;
+    private String photoPath = "";
+    private User currentlylogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +40,27 @@ public class NewEventActivity extends BaseActivity {
 
         Spinner dropdown = (Spinner)findViewById(R.id.quirk_dropdown);
 
-        // TODO: Fill dropdown with list of quirks
-        ArrayList<String> years = new ArrayList<String>();
-        for (int i = 0; i <= 1500; i++) {
-            years.add(Integer.toString(i));
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
+        // Testing - replace this with a userID search later on.
+        String jestID = "AV-xx8ahi8-My2t7XP4j";
 
-        dropdown.setAdapter(adapter);
+        ElasticSearchUserController.GetSingleUserTask getSingleUserTask
+                = new ElasticSearchUserController.GetSingleUserTask();
+        getSingleUserTask.execute(jestID);
+
+        try {
+
+            currentlylogged = getSingleUserTask.get();
+
+            Log.d("testing", currentlylogged.toString());
+            QuirkList quirks = currentlylogged.getQuirks();
+            ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, quirks.getList());
+
+            dropdown.setAdapter(adapter);
+        }
+        catch (Exception e) {
+            Log.i("Error", "Failed to get the users from the async object");
+            Log.i("Error", e.toString());
+        }
     }
 
     public void pickPhoto(View view) {
@@ -46,14 +74,45 @@ public class NewEventActivity extends BaseActivity {
     public void removePhoto(View view) {
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageResource(0);
+        photoPath = "";
     }
 
     public void saveCommand(View view) {
-        // Upload to database pass intent
+        Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
+        EditText commentText = (EditText) findViewById(R.id.comment_edittext);
+
+        Quirk selectedQuirk = (Quirk) dropdown.getSelectedItem();
+        String comment = commentText.getText().toString();
+
+        Log.d("testing", selectedQuirk.toString());
+        Log.d("testing", comment);
+        Log.d("testing", photoPath);
+
+        EventList events = selectedQuirk.getEventList();
+        Event newEvent = new Event(selectedQuirk, comment, photoPath, new Date());
+        events.addEvent(newEvent);
+
+        // Testing
+//        QuirkList quirks = currentlylogged.getQuirks();
+//        for (int i = 0; i < quirks.size(); i++) {
+//            Log.d("testing", quirks.getQuirk(i).getEventList().toString());
+//        }
+//        ArrayList<Day> test = new ArrayList<>();
+//        test.add(Day.FRIDAY);
+//        quirks.addQuirk(new Quirk("THIS IS A NEW QUIRK TEST", "test", new Date(), test, 10));
+//        Log.d("testing", quirks.toString());
+
+        // TODO: This is causing app to crash. Fix later
+//        ElasticSearchUserController.UpdateUserTask updateUserTask
+//                = new ElasticSearchUserController.UpdateUserTask();
+//        updateUserTask.execute(currentlylogged);
+
+        // TODO: replace this with finish? currently finish returns to login screen...
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     public void cancelCommand(View view) {
-        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
@@ -68,26 +127,19 @@ public class NewEventActivity extends BaseActivity {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 ImageView imageView = (ImageView) findViewById(R.id.imageView);
                 imageView.setImageBitmap(bitmap);
+
+                photoPath = getRealPathFromURI(uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-// TODO: get path and upload to database on save press
-//    private Bitmap getPath(Uri uri) {
-//
-//        String[] projection = { MediaStore.Images.Media.DATA };
-//        Cursor cursor = managedQuery(uri, projection, null, null, null);
-//        int column_index = cursor
-//                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//        cursor.moveToFirst();
-//        String filePath = cursor.getString(column_index);
-//        cursor.close();
-//        // Convert file path into bitmap image using below line.
-//        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-//
-//        return bitmap;
-//    }
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
 
     @Override
     int getContentViewId() {

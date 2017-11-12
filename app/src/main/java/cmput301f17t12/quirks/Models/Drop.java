@@ -9,7 +9,7 @@ import cmput301f17t12.quirks.Enumerations.Rarity;
  */
 
 //public class Drop implements Tradable {
-public class Drop implements Serializable{
+public class Drop implements Serializable {
 
     public Rarity rarity;
     public String name;
