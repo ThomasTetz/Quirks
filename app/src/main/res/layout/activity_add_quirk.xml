@@ -15,6 +15,59 @@
         android:layout_marginTop="4dp">
 
 
+        <RadioButton
+            android:id="@+id/radioButSunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radioButMonday"
+            android:layout_toEndOf="@+id/radioButSaturday"
+            android:text="Sun" />
+
+        <RadioButton
+            android:id="@+id/radioButSaturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/radioButMonday"
+            android:layout_below="@+id/radioButMonday"
+            android:text="Sat" />
+
+        <RadioButton
+            android:id="@+id/radioButFriday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/radioButThursday"
+            android:layout_alignBottom="@+id/radioButThursday"
+            android:layout_toEndOf="@+id/radioButThursday"
+            android:text="Friday" />
+
+        <RadioButton
+            android:id="@+id/radioButThursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/radioButWednesday"
+            android:layout_alignBottom="@+id/radioButWednesday"
+            android:layout_toEndOf="@+id/radioButWednesday"
+            android:text="Thurs" />
+
+        <RadioButton
+            android:id="@+id/radioButWednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/radioButTuesday"
+            android:layout_alignBottom="@+id/radioButTuesday"
+            android:layout_toEndOf="@+id/radioButTuesday"
+            android:text="Weds" />
+
+        <RadioButton
+            android:id="@+id/radioButMonday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textViewOccurence"
+            android:layout_alignTop="@+id/radioButTuesday"
+            android:text="Mon"
+            android:layout_alignBottom="@+id/radioButTuesday"
+            android:layout_alignEnd="@+id/textViewOccurence" />
+
         <TextView
             android:id="@+id/textViewGoal"
             android:layout_width="wrap_content"
@@ -138,15 +191,6 @@
             android:hint="Type"
             android:inputType="textPersonName" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            android:layout_marginTop="12dp"
-            android:layout_below="@+id/textViewOccurence"
-            android:layout_alignStart="@+id/textViewOccurence" />
-
         <EditText
             android:id="@+id/editTextGoal"
             android:layout_width="wrap_content"
@@ -156,6 +200,15 @@
             android:ems="10"
             android:hint="Input a goal value"
             android:inputType="number" />
+
+        <RadioButton
+            android:id="@+id/radioButTuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewOccurence"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/radioButMonday"
+            android:text="Tues" />
 
 
     </RelativeLayout>
