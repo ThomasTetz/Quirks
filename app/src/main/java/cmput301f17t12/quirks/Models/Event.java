@@ -12,6 +12,8 @@ import cmput301f17t12.quirks.Interfaces.Newsable;
  * Created by thomas on 2017-10-21.
  */
 
+//curl -XPUT "http://cmput301.softwareprocess.es:8080/cmput301f17t12_quirks/events/1" -d " { \"type\": \"study\", \"comment\": \"chem 1 hour\"}"
+
 public class Event implements Mappable, Newsable {
 
     private Quirk quirk;

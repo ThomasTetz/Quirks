@@ -7,6 +7,7 @@ import java.util.Date;
 
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Interfaces.Newsable;
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by thomas on 2017-10-21.
@@ -22,6 +23,17 @@ public class Quirk implements Newsable {
     private ArrayList<Day> occDate;
     private int currValue;
     private int goalValue;
+    @JestId
+    private String id;
+
+    // getter and setter for elasticsearch JestID
+    public String getId() {
+        return  id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     // Parameter with only required values
     public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue) {

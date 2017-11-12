@@ -2,6 +2,8 @@ package cmput301f17t12.quirks.Models;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by thomas on 2017-10-21.
  */
@@ -12,6 +14,9 @@ public class User {
     private ArrayList<User> friends;
     private QuirkList quirks;
 
+    @JestId
+    private String uid;
+
     public User(String username, Inventory inventory, ArrayList<User> friends, QuirkList quirks){
         this.username = username;
         this.inventory = inventory;
@@ -19,6 +24,14 @@ public class User {
         this.quirks = quirks;
     }
 
+
+    public void setId(String uid){
+        this.uid = uid;
+    }
+
+    public String getId(){
+        return uid;
+    }
     public void setUsername(String username){
         this.username = username;
     }
