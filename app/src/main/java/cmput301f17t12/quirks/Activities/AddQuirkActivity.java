@@ -119,7 +119,10 @@ public class AddQuirkActivity extends AppCompatActivity {
             //Intent intent = new Intent();
             Date DatetoTest = new Date();
             int Quirk_goal = Integer.parseInt(goal);
-            Quirk QuirkCreated = new Quirk(title,type,DatetoTest,QuirkOccurence,Quirk_goal);
+
+            //The user in here should be the one query from db
+            Quirk QuirkCreated = new Quirk(title,type,DatetoTest,QuirkOccurence,Quirk_goal,"user");
+
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the type is  " + QuirkCreated.getType() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getDate() );
