@@ -1,12 +1,13 @@
 package cmput301f17t12.quirks.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by thomas on 2017-10-22.
  */
 
-public class Inventory {
+public class Inventory implements Serializable{
     private ArrayList<Drop> inventory = new ArrayList<Drop>();
 
     public Inventory(){
@@ -18,7 +19,16 @@ public class Inventory {
     }
 
     public boolean hasDrop(Drop drop){
-        return inventory.contains(drop);
+
+        for (int i = 0; i<inventory.size(); i++){
+            Drop d = inventory.get(i);
+            if (d.getName().equals(drop.getName()) && d.getRarity()==drop.getRarity()){
+                return true;
+            }
+        }
+        return false;
+
+//        return inventory.contains(drop);
     }
 
     public Drop getDrop(int i){
@@ -31,6 +41,12 @@ public class Inventory {
 
     public ArrayList<Drop> getList(){
         return inventory;
+    }
+
+    public void printItems(){
+        for (int i = 0; i<inventory.size(); i++){
+            System.out.println(" >"+inventory.get(i).getName());
+        }
     }
 
 

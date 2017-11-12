@@ -7,6 +7,7 @@ import java.util.Date;
 
 import cmput301f17t12.quirks.Interfaces.Mappable;
 import cmput301f17t12.quirks.Interfaces.Newsable;
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by thomas on 2017-10-21.
@@ -19,6 +20,9 @@ public class Event implements Mappable, Newsable {
     private Uri photoUri;
     private Date date;
     private Geolocation geolocation;
+
+    @JestId
+    private String eid;
 
     // Event without URI and geolocation
     public Event(Quirk quirk, String comment, Date date){
@@ -35,6 +39,14 @@ public class Event implements Mappable, Newsable {
         this.geolocation = geolocation;
     }
 
+
+    public String getId(){
+        return eid;
+    }
+
+    public void setId(String eid){
+        this.eid = eid;
+    }
     public Quirk getQuirk(){
         return quirk;
     }

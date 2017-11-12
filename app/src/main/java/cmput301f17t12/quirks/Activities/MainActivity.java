@@ -20,6 +20,7 @@ import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.Quirk;
+import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class MainActivity extends BaseActivity {
@@ -33,6 +34,23 @@ public class MainActivity extends BaseActivity {
 
         // TODO: Get current user's newsable items.
         // Should be current user's + friends', but that is for part 5.
+
+        // get the user
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null){
+            if (extras.containsKey("user")){
+                User user = (User) getIntent().getSerializableExtra("user");
+                System.out.println("Main Activity as:\n\tUser object: " + user + "\n\tusername: " + user.getUsername());
+            }
+            else{
+                System.out.println("Intent had extras but not user");
+            }
+        }
+        else{
+            System.out.println("Intent had no extras");
+        }
+
 
         // Test
         ArrayList<Day> occurence = new ArrayList<Day>() {};
@@ -64,3 +82,5 @@ public class MainActivity extends BaseActivity {
         return R.id.action_home;
     }
 }
+
+

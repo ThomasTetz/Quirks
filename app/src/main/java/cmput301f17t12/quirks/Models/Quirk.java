@@ -7,6 +7,7 @@ import java.util.Date;
 
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Interfaces.Newsable;
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by thomas on 2017-10-21.
@@ -23,6 +24,9 @@ public class Quirk implements Newsable {
     private int currValue;
     private int goalValue;
 
+    @JestId
+    private String qid;
+
     // Parameter with only required values
     public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue) {
         this.events = new EventList();
@@ -36,7 +40,6 @@ public class Quirk implements Newsable {
         this.occDate = occDate;
         this.goalValue = goalValue;
         this.currValue = 0;
-
     }
 
     public Quirk(EventList events, String title, String type, String reason,
@@ -49,6 +52,14 @@ public class Quirk implements Newsable {
         this.occDate = occDate;
         this.currValue = currValue;
         this.goalValue = goalValue;
+    }
+
+    public String getId(){
+        return qid;
+    }
+
+    public void setId(String qid){
+        this.qid = qid;
     }
 
     public void addEvent(Event event){
@@ -120,7 +131,9 @@ public class Quirk implements Newsable {
     }
 
     public void incCurrValue(){
-        this.currValue += 1; // @TODO may need to adjust the increment value
+        if(currValue < goalValue) {
+            this.currValue += 1; // @TODO may need to adjust the increment value
+        }
     }
 
     public void resetCurrValue(){
