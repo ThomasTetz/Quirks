@@ -10,15 +10,7 @@ import cmput301f17t12.quirks.Interfaces.Mappable;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import io.searchbox.annotations.JestId;
 
-<<<<<<< HEAD
-public class Event implements Mappable, Newsable, Serializable{
-=======
-/**
- * Created by thomas on 2017-10-21.
- */
-
 public class Event implements Mappable, Newsable, Serializable {
->>>>>>> master
 
     private String user;
     private String comment;
