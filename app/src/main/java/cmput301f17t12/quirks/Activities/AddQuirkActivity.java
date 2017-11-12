@@ -16,13 +16,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import cmput301f17t12.quirks.Controllers.ElasticSearchQuirkController;
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.R;
@@ -48,6 +46,7 @@ public class AddQuirkActivity extends AppCompatActivity {
     public RadioButton radButSun;
     private AlertDialog.Builder builder;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +61,7 @@ public class AddQuirkActivity extends AppCompatActivity {
         radButSat = (RadioButton)findViewById(R.id.radioButSaturday);
         radButSun = (RadioButton)findViewById(R.id.radioButSunday);
         SelectDate = (TextView)findViewById(R.id.textViewSelDate);
-        builder = new AlertDialog.Builder(this);
+
         //Need the date
 
         SelectDate.setOnClickListener(new View.OnClickListener() {
@@ -97,18 +96,23 @@ public class AddQuirkActivity extends AppCompatActivity {
     // Save button clicked -> create and save new quirk and return to the previous activity
 
     public void saveButtonClicked(View v){
+
         type = ((EditText)findViewById(R.id.editTextType)).getText().toString();
         title = ((EditText)findViewById(R.id.editTitle)).getText().toString();
         reason = ((EditText)findViewById(R.id.editTextReason)).getText().toString();
         goal = ((EditText)findViewById(R.id.editTextGoal)).getText().toString();
         ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
 
+
         if(type.equals("")||(title.equals(""))||(goal.equals(""))||reason.equals("")){
-            emptyFieldsDialog();
+          // emptyFieldsDialog();
         }
+        /*
         else if (title.length() > 20 || reason.length() > 30){
             titleReasonLengthDialog();
         }
+        */
+
         else {
 
             QuirkOccurence = occurenceItemSelected();
@@ -118,11 +122,22 @@ public class AddQuirkActivity extends AppCompatActivity {
             Quirk QuirkCreated = new Quirk(title,type,DatetoTest,QuirkOccurence,Quirk_goal);
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the type is  " + QuirkCreated.getType() );
-            Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getStartDate() );
+            Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getDate() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Occurence Date is  " + QuirkCreated.getOccDate());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Goal is  " + QuirkCreated.getGoalValue());
-          //  intent.putExtra("Quirk_Created", Quirk_created);
-            //setResult(1, intent);
+
+             /*
+            String query = user.getId();
+            ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
+            getSingleUserTask.execute(query);
+            user.addQuirk(QuirkCreated);
+            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+            updateUserTask.execute(user);
+
+            //intent.putExtra("Quirk_Created", QuirkCreated);
+            setResult(1, intent);
+            */
+
             finish();
         }
 
@@ -178,6 +193,7 @@ public class AddQuirkActivity extends AppCompatActivity {
 
         builder.show();
     }
+
     public void titleReasonLengthDialog() {
 
         builder.setMessage("Title can be no longer than 20 characters. Reason can be no longer than 30 characters.")
@@ -191,5 +207,4 @@ public class AddQuirkActivity extends AppCompatActivity {
 
         builder.show();
     }
-
 }
