@@ -25,10 +25,18 @@ public class Event implements Mappable, Newsable, Serializable {
     @JestId
     private String eid;
 
-    // Event without URI and geolocation
+    // Event without Path and geolocation
     public Event(Quirk quirk, String comment, Date date){
         this.quirk = quirk;
         this.comment = comment;
+        this.date = date;
+    }
+
+    // Event without geolocation
+    public Event(Quirk quirk, String comment, String photoUri, Date date){
+        this.quirk = quirk;
+        this.comment = comment;
+        this.photoPath = photoUri;
         this.date = date;
     }
 

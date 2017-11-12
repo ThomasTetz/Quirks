@@ -15,8 +15,11 @@ import android.widget.Spinner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+import cmput301f17t12.quirks.Models.Event;
+import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
@@ -27,6 +30,7 @@ public class NewEventActivity extends BaseActivity {
 
     private static final int SELECTED_PICTURE = 0;
     private String photoPath;
+    private User currentlylogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,7 @@ public class NewEventActivity extends BaseActivity {
         try {
 
             ArrayList<User> users = getUsersTask.get();
-            User currentlylogged = users.get(0);
-
+            currentlylogged = users.get(0);
 
             Log.d("testing", users.toString());
             QuirkList events = currentlylogged.getQuirks();
@@ -92,6 +95,14 @@ public class NewEventActivity extends BaseActivity {
         Log.d("testing", selectedQuirk.toString());
         Log.d("testing", comment);
         Log.d("testing", photoPath);
+
+        EventList events = selectedQuirk.getEventList();
+        Event newEvent = new Event(selectedQuirk, comment, photoPath, new Date());
+        events.addEvent(newEvent);
+
+        ElasticSearchUserController.UpdateUserTask updateUserTask
+                = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(currentlylogged);
 
     }
 
