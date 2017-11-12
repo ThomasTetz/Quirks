@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Models;
 
 import android.text.format.DateUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import io.searchbox.annotations.JestId;
  * Created by thomas on 2017-10-21.
  */
 
-public class Quirk implements Newsable {
+public class Quirk implements Newsable, Serializable{
     private EventList events;
     private String user;
     private String title;
