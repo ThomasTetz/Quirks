@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
 
         Collections.sort(newsitems, new Comparator<Newsable>() {
             public int compare(Newsable m1, Newsable m2) {
-                return m1.getDate().compareTo(m2.getDate());
+                return m2.getDate().compareTo(m1.getDate());
             }
         });
 
