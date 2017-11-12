@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by thomas on 2017-10-22.
  */
 
-public class Inventory implements Serializable{
+public class Inventory implements Serializable {
     private ArrayList<Drop> inventory = new ArrayList<Drop>();
 
     public Inventory(){

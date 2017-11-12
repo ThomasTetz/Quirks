@@ -1,12 +1,13 @@
 package cmput301f17t12.quirks.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by thomas on 2017-10-21.
  */
 
-public class EventList {
+public class EventList implements Serializable {
     private ArrayList<Event> events = new ArrayList<Event>();
 
     public EventList(){

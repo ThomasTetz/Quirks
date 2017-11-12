@@ -20,7 +20,7 @@ public class EventListTest {
     @Test
     public void testGetList() {
         Quirk quirk = new Quirk (new EventList(), "title", "type", "reason",
-                new Date(), new ArrayList<Day>(), 1f, 2f);
+                new Date(), new ArrayList<Day>(), 1, 2);
         Event event = new Event(quirk, "comment", null, new Date(), new Geolocation(1,1));
 
         EventList events1 = new EventList();
@@ -30,14 +30,14 @@ public class EventListTest {
         ArrayList<Event> events2 = new ArrayList<Event>();
         events2.add(event);
 
-        assertEquals(events1, events2);
+        assertEquals(events1.getList(), events2);
     }
 
     // Test adding Event to EventList
     @Test
     public void testAddEvent() {
         Quirk quirk = new Quirk (new EventList(), "title", "type", "reason",
-                new Date(), new ArrayList<Day>(), 1f, 2f);
+                new Date(), new ArrayList<Day>(), 1, 2);
         Event event = new Event(quirk, "comment", null, new Date(), new Geolocation(1,1));
 
         EventList events = new EventList();
@@ -52,7 +52,7 @@ public class EventListTest {
     @Test
     public void testHasEvent() {
         Quirk quirk = new Quirk (new EventList(), "title", "type", "reason",
-                new Date(), new ArrayList<Day>(), 1f, 2f);
+                new Date(), new ArrayList<Day>(), 1, 2);
         Event event = new Event(quirk, "comment", null, new Date(), new Geolocation(1,1));
 
         EventList events = new EventList();
@@ -66,7 +66,7 @@ public class EventListTest {
     @Test
     public void testGetEvent() {
         Quirk quirk = new Quirk (new EventList(), "title", "type", "reason",
-                new Date(), new ArrayList<Day>(), 1f, 2f);
+                new Date(), new ArrayList<Day>(), 1, 2);
         Event event = new Event(quirk, "comment", null, new Date(), new Geolocation(1,1));
 
         EventList events = new EventList();
@@ -80,7 +80,7 @@ public class EventListTest {
     @Test
     public void testDeleteEvent() {
         Quirk quirk = new Quirk (new EventList(), "title", "type", "reason",
-                new Date(), new ArrayList<Day>(), 1f, 2f);
+                new Date(), new ArrayList<Day>(), 1, 2);
         Event event = new Event(quirk, "comment", null, new Date(), new Geolocation(1,1));
 
         EventList events = new EventList();

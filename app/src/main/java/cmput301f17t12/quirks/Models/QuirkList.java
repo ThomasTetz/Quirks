@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by thomas on 2017-10-21.
  */
 
-public class QuirkList implements Serializable{
+public class QuirkList implements Serializable {
     private ArrayList<Quirk> quirks = new ArrayList<Quirk>();
 
     public QuirkList(){
