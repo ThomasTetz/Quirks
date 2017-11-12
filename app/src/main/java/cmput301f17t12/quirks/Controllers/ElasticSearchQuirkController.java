@@ -8,10 +8,14 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Models.Quirk;
+import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -63,6 +67,37 @@ public class ElasticSearchQuirkController {
         }
     }
 
+
+    public static class UpdateQuirkTask extends AsyncTask<Quirk, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Quirk ... quirks) {
+            verifySettings();
+            System.out.println("Trying to update: " + quirks[0].getType());
+            Index index = new Index.Builder(quirks[0]).index(indexString).type(typeString).id(quirks[0].getId()).build();
+
+            try {
+                // where is the client?
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded())
+                {
+//                        users[0].setId(result.getId());
+                    System.out.println("updated quirk: " + quirks[0].getType());
+//                        System.out.println("id: " + user.getId());
+                }
+                else
+                {
+                    Log.i("Error", "Elasticsearch was not able to update the quirk");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and send the quirks");
+            }
+
+            return null;
+        }
+    }
+
     // TODO we need a function which gets quirks from elastic search
     public static class GetQuirksTask extends AsyncTask<String, Void, ArrayList<Quirk>> {
         @Override
@@ -98,6 +133,43 @@ public class ElasticSearchQuirkController {
     }
 
 
+    // TODO we need a function which gets users from elastic search
+    public static class GetSingleQuirkTask extends AsyncTask<String, Void, Quirk> {
+        @Override
+        protected Quirk doInBackground(String... quirkname) {
+            verifySettings();
+
+//            User user = new User
+
+            // TODO Build the query
+
+            System.out.print("search_parameters[0]: ");
+            System.out.println(quirkname[0]);
+
+            Get get = new Get.Builder(indexString, quirkname[0]).type(typeString).build();
+
+
+
+            try {
+                JestResult result = client.execute(get);
+
+                if(result.isSucceeded()) {
+                    Quirk quirk = result.getSourceAsObject(Quirk.class);
+                    System.out.println("found single quirk: " + quirk.getType());
+                    return quirk;
+
+                }
+                else{
+                    System.out.println("fail no error");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i("Error", e.toString());
+            }
+            return new Quirk("errTitle", "errType", new Date(), new ArrayList<Day>(), 10);
+        }
+    }
 
 
     public static void verifySettings() {
