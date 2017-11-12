@@ -36,7 +36,13 @@ public class Event implements Mappable, Newsable, Serializable {
     public Event(Quirk quirk, String comment, String photoUri, Date date){
         this.quirk = quirk;
         this.comment = comment;
+        if (comment == null) {
+            this.comment = "";
+        }
         this.photoPath = photoUri;
+        if (photoUri == null) {
+            this.photoPath = "";
+        }
         this.date = date;
     }
 

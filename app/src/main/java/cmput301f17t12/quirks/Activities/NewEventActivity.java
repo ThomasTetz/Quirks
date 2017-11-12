@@ -14,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Inventory;
@@ -29,7 +31,7 @@ import cmput301f17t12.quirks.R;
 public class NewEventActivity extends BaseActivity {
 
     private static final int SELECTED_PICTURE = 0;
-    private String photoPath;
+    private String photoPath = "";
     private User currentlylogged;
 
     @Override
@@ -39,28 +41,19 @@ public class NewEventActivity extends BaseActivity {
         Spinner dropdown = (Spinner)findViewById(R.id.quirk_dropdown);
 
         // Testing - replace this with a userID search later on.
-        String username = "testing123";
+        String jestID = "AV-xx8ahi8-My2t7XP4j";
 
-        String query = "{" +
-                "  \"query\": {" +
-                "    \"match\": {" +
-                "      \"username\": \"" + username + "\"" +
-                "    }" +
-                "  }" +
-                "}";
-
-        ElasticSearchUserController.GetUsersTask getUsersTask
-                = new ElasticSearchUserController.GetUsersTask();
-        getUsersTask.execute(query);
+        ElasticSearchUserController.GetSingleUserTask getSingleUserTask
+                = new ElasticSearchUserController.GetSingleUserTask();
+        getSingleUserTask.execute(jestID);
 
         try {
 
-            ArrayList<User> users = getUsersTask.get();
-            currentlylogged = users.get(0);
+            currentlylogged = getSingleUserTask.get();
 
-            Log.d("testing", users.toString());
-            QuirkList events = currentlylogged.getQuirks();
-            ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, events.getList());
+            Log.d("testing", currentlylogged.toString());
+            QuirkList quirks = currentlylogged.getQuirks();
+            ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, quirks.getList());
 
             dropdown.setAdapter(adapter);
         }
@@ -85,7 +78,6 @@ public class NewEventActivity extends BaseActivity {
     }
 
     public void saveCommand(View view) {
-        // TODO: Upload to database pass intent
         Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
         EditText commentText = (EditText) findViewById(R.id.comment_edittext);
 
@@ -100,10 +92,23 @@ public class NewEventActivity extends BaseActivity {
         Event newEvent = new Event(selectedQuirk, comment, photoPath, new Date());
         events.addEvent(newEvent);
 
-        ElasticSearchUserController.UpdateUserTask updateUserTask
-                = new ElasticSearchUserController.UpdateUserTask();
-        updateUserTask.execute(currentlylogged);
+        // Testing
+//        QuirkList quirks = currentlylogged.getQuirks();
+//        for (int i = 0; i < quirks.size(); i++) {
+//            Log.d("testing", quirks.getQuirk(i).getEventList().toString());
+//        }
+//        ArrayList<Day> test = new ArrayList<>();
+//        test.add(Day.FRIDAY);
+//        quirks.addQuirk(new Quirk("THIS IS A NEW QUIRK TEST", "test", new Date(), test, 10));
+//        Log.d("testing", quirks.toString());
 
+        // TODO: This is causing app to crash. Fix later
+//        ElasticSearchUserController.UpdateUserTask updateUserTask
+//                = new ElasticSearchUserController.UpdateUserTask();
+//        updateUserTask.execute(currentlylogged);
+
+        // TODO: replace this with finish? currently finish returns to login screen...
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     public void cancelCommand(View view) {

@@ -33,4 +33,14 @@ public class EventList implements Serializable {
     public ArrayList<Event> getList(){
         return events;
     }
+
+    // Testing
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < events.size(); i++) {
+            output.append(i).append(": ").append(events.get(i).getComment()).append(" ");
+        }
+        return output.toString();
+    }
 }

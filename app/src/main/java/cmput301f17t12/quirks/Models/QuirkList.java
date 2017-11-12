@@ -42,4 +42,14 @@ public class QuirkList implements Serializable {
 
     public int size(){ return quirks.size(); }
 
+    // Testing
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < quirks.size(); i++) {
+            output.append(i).append(": ").append(quirks.get(i).getTitle()).append(" ");
+        }
+        return output.toString();
+    }
+
 }
