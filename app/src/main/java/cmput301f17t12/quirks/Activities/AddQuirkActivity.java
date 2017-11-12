@@ -91,11 +91,13 @@ public class AddQuirkActivity extends AppCompatActivity {
     // Save button clicked -> create and save new quirk and return to the previous activity
 
     public void saveButtonClicked(View v){
-        type = ((EditText)findViewById(R.id.QuirkeditTextType)).getText().toString();
+
+        type = ((EditText)findViewById(R.id.editTextType)).getText().toString();
         title = ((EditText)findViewById(R.id.editTitle)).getText().toString();
-        reason = ((EditText)findViewById(R.id.QuirkeditTextReason)).getText().toString();
-        goal = ((EditText)findViewById(R.id.QuirkeditTextGoal)).getText().toString();
+        reason = ((EditText)findViewById(R.id.editTextReason)).getText().toString();
+        goal = ((EditText)findViewById(R.id.editTextGoal)).getText().toString();
         ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
+
 
         if(type.equals("")||(title.equals(""))||(goal.equals(""))){
 
@@ -114,10 +116,17 @@ public class AddQuirkActivity extends AppCompatActivity {
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Occurence Date is  " + QuirkCreated.getOccDate());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Goal is  " + QuirkCreated.getGoalValue());
 
-            ElasticSearchQuirkController.AddQuirksTask addQuirksTask = new ElasticSearchQuirkController.AddQuirksTask();
-            addQuirksTask.execute(QuirkCreated);
-            //  intent.putExtra("Quirk_Created", Quirk_created);
-            //setResult(1, intent);
+             /*
+            String query = user.getId();
+            ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
+            getSingleUserTask.execute(query);
+            user.addQuirk(QuirkCreated);
+            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+            updateUserTask.execute(user);
+
+            //intent.putExtra("Quirk_Created", QuirkCreated);
+            setResult(1, intent);
+            */
 
             finish();
         }
