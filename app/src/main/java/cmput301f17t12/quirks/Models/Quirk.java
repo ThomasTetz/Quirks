@@ -36,7 +36,6 @@ public class Quirk implements Newsable {
         this.occDate = occDate;
         this.goalValue = goalValue;
         this.currValue = 0;
-
     }
 
     public Quirk(EventList events, String title, String type, String reason,
@@ -120,7 +119,9 @@ public class Quirk implements Newsable {
     }
 
     public void incCurrValue(){
-        this.currValue += 1; // @TODO may need to adjust the increment value
+        if(currValue < goalValue) {
+            this.currValue += 1; // @TODO may need to adjust the increment value
+        }
     }
 
     public void resetCurrValue(){
