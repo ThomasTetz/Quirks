@@ -18,6 +18,7 @@ public class QuirksActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_quirks);
 
         //TODO: Get user's quirklist
 
@@ -29,6 +30,14 @@ public class QuirksActivity extends BaseActivity {
         testQuirk.setUser("jlane");
         testQuirk.incCurrValue();
         quirkList.addQuirk(testQuirk);
+
+        ArrayList testOccurence2 = new ArrayList();
+        testOccurence2.add(Day.MONDAY);
+        Date testTime2 = new Date(System.currentTimeMillis());
+        Quirk testQuirk2 = new Quirk("Big ol test", "TEST", testTime2, testOccurence2, 2);
+        testQuirk2.setUser("jlane");
+        testQuirk2.incCurrValue();
+        quirkList.addQuirk(testQuirk2);
 
 
         //TODO: Create listView object and assign the custom adapter
@@ -52,6 +61,7 @@ public class QuirksActivity extends BaseActivity {
     // TODO:
     // Add a new quirk -> Call new add quirk activity
     public void addQuirkClicked(){
+
     }
 
     // TODO:
