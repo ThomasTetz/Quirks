@@ -34,6 +34,12 @@ public class QuirkList implements Serializable {
         return quirks;
     }
 
+    public void printQuirks(){
+        for (int i=0; i<quirks.size(); i++){
+            System.out.println(quirks.get(i).getType());
+        }
+    }
+
     public int size(){ return quirks.size(); }
 
 }
