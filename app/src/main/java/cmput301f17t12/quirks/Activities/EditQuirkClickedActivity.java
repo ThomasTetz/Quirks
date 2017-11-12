@@ -30,6 +30,7 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
     public RadioButton radButFri;
     public RadioButton radButSat;
     public RadioButton radButSun;
+    public Quirk incomingQuirk;
 
 
 
@@ -51,13 +52,18 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         EditText ReasonEdit = (EditText)findViewById(R.id.QuirkeditTextReason);
         EditText GoalEdit = (EditText)findViewById(R.id.QuirkeditTextGoal);
 
-        /*
-        Quirk QuirkLoad = (Quirk)getIntent().getSerializableExtra("Edit Quirk");
+        Date testDate = new Date();
+        ArrayList testOccurence = new ArrayList();
+        testOccurence.add(Day.MONDAY);
+        incomingQuirk = new Quirk("Big ol test", "TEST",testDate ,testOccurence, 3);
 
-        TitleEdit.setText(QuirkLoad.getTitle());
-        TypeEdit.setText(QuirkLoad.getType());
-        ReasonEdit.setText(QuirkLoad.getReason());
-        GoalEdit.setText(QuirkLoad.getGoalValue());
+        /*
+        Quirk incomingQuirk = (Quirk)getIntent().getSerializableExtra("Edit Quirk");
+
+        TitleEdit.setText(incomingQuirk.getTitle());
+        TypeEdit.setText(incomingQuirk.getType());
+        ReasonEdit.setText(incomingQuirk.getReason());
+        GoalEdit.setText(incomingQuirk.getGoalValue());
         */
 
 
@@ -81,12 +87,25 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
            QuirkOccurence = occurenceItemSelected();
             Intent intent = new Intent();
             int QuirkGoal = Integer.parseInt(goal);
-            Date DatetoTest = new Date();
 
-            //this should not be new Quirk it should just be changing the old quirk and replaceing it
-            //So we need to use the DB and replace it with this one
+            incomingQuirk.setTitle(title);
+            incomingQuirk.setType(type);
+            incomingQuirk.setReason(reason);
+            incomingQuirk.setOccDate(QuirkOccurence);
+            incomingQuirk.setGoalValue(QuirkGoal);
 
-            Quirk QuirkCreated = new Quirk(title,type,DatetoTest,QuirkOccurence,QuirkGoal);
+            intent.putExtra("editQuirk",incomingQuirk);
+
+            /*
+            using DB
+            String query = user.getId();
+            ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
+            getSingleUserTask.execute(query);
+            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+            updateUserTask.execute(user);
+            */
+
+
             finish();
 
         }
@@ -106,6 +125,22 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
     // Delete button clicked -> delete quirk, return to previous screen
     public void DeleteButtonClicked(View v){
     //Delete from DB
+        //
+        /*
+        String query = user.getId();
+        Date someDate = new Date();
+        Quirk quirkTest = new Quirk("Eat a fruit every sunday", "Eating",someDate, occurence, 10);
+        String query = "something";
+
+        ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
+        getSingleUserTask.execute(query);
+
+        //Quirk userQuirk = user.getQuirk();
+        //user.DeleteQuirk(userQuirk);
+        ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+
+        //updateUserTask.execute(user);
+        */
         finish();
     }
 
