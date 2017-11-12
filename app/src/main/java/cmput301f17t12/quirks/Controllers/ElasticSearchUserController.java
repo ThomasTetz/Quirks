@@ -14,6 +14,7 @@ import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
@@ -170,6 +171,37 @@ public class ElasticSearchUserController {
         }
     }
 
+    public static class DeleteUserTask extends AsyncTask<User, Void, Void> {
+
+        @Override
+        protected Void doInBackground(User... users) {
+            verifySettings();
+            System.out.println("Trying to delete: " + users[0].getUsername());
+//            Index index = new Index.Builder(users[0]).index(indexString).type(typeString).id(users[0].getId()).build();
+            Delete delete = new Delete.Builder(users[0].getId()).index(indexString).type(typeString).build();
+
+            try {
+                // where is the client?
+//                DocumentResult result = client.execute(index);
+                DocumentResult result = client.execute(delete);
+                if (result.isSucceeded())
+                {
+//                        users[0].setId(result.getId());
+                    System.out.println("deleted user: " + users[0].getUsername());
+//                        System.out.println("id: " + user.getId());
+                }
+                else
+                {
+                    Log.i("Error", "Elasticsearch was not able to delete the user");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and send the users");
+            }
+
+            return null;
+        }
+    }
 
 
     public static void verifySettings() {
