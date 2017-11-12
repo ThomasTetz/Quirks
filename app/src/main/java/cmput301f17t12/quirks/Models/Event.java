@@ -10,10 +10,6 @@ import cmput301f17t12.quirks.Interfaces.Mappable;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import io.searchbox.annotations.JestId;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
 public class Event implements Mappable, Newsable, Serializable {
 
     private String user;
@@ -108,11 +104,8 @@ public class Event implements Mappable, Newsable, Serializable {
     }
 
     public boolean isEquals(Event event){
-        if (this.user == event.user && this.comment==event.comment && this.photoPath==event.photoPath
-                && this.date==event.date && this.geolocation==event.geolocation) {
-            return true;
-        }
-        return false;
+        return this.user.equals(event.user) && this.comment.equals(event.comment) && this.photoPath.equals(event.photoPath)
+                && this.date.equals(event.date) && this.geolocation.equals(event.geolocation);
     }
 
     @Override

@@ -22,7 +22,8 @@
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.EditQuirkClickedActivity" />
         <activity android:name=".Activities.AddQuirkActivity" />
-        <activity android:name=".Activities.NewEventActivity"></activity>
+        <activity android:name=".Activities.NewEventActivity" />
+        <activity android:name=".Activities.EditEventActivity"></activity>
     </application>
 
 </manifest>
