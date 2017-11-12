@@ -32,7 +32,7 @@ public class AddQuirkActivity extends AppCompatActivity {
     private String title;
     private String goal;
     public static String date2;
-    private Date startingDate;
+    private Date startDate;
     private String reason;
     private ArrayList<Day> occurence;
     private TextView SelectDate;
@@ -86,6 +86,7 @@ public class AddQuirkActivity extends AppCompatActivity {
                 date2 = month + "/" + day + "/" + year;
                 SelectDate.setText(date2);
                 Log.d(TAG, "onDateSet: the date is now   " + date2);
+                 startDate = new Date(year,month,day);
 
             }
         };
@@ -121,7 +122,8 @@ public class AddQuirkActivity extends AppCompatActivity {
             int Quirk_goal = Integer.parseInt(goal);
 
             //The user in here should be the one query from db
-            Quirk QuirkCreated = new Quirk(title,type,DatetoTest,QuirkOccurence,Quirk_goal,"user");
+            Log.d(TAG, "saveButtonClicked: The dateinput is now  " + startDate);
+            Quirk QuirkCreated = new Quirk(title,type,startDate,QuirkOccurence,Quirk_goal,"user");
 
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the type is  " + QuirkCreated.getType() );
