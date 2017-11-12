@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 catch (Exception e) {
                     Log.i("Error", "Failed to get the users from the async object");
+                    Log.i("Error", e.toString());
 //                    String text = "Failed to get the tweets from the async object";
 //                    Toast toast = Toast.makeText(context, text, duration);
 //                    toast.show();
@@ -89,7 +90,10 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(User user){
         // after elasticsearch, go to main as that user
         System.out.println("Logging in as: " + user.getUsername());
-        startActivity(new Intent(this, MainActivity.class));
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+//        startActivity(new Intent(this, MainActivity.class));
     }
 
     //Need to check, is signing up new users in the spec??
