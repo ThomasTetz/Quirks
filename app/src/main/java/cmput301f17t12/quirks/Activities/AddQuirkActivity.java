@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -44,6 +46,7 @@ public class AddQuirkActivity extends AppCompatActivity {
     public RadioButton radButFri;
     public RadioButton radButSat;
     public RadioButton radButSun;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class AddQuirkActivity extends AppCompatActivity {
         radButSat = (RadioButton)findViewById(R.id.radioButSaturday);
         radButSun = (RadioButton)findViewById(R.id.radioButSunday);
         SelectDate = (TextView)findViewById(R.id.textViewSelDate);
+        builder = new AlertDialog.Builder(this);
         //Need the date
 
         SelectDate.setOnClickListener(new View.OnClickListener() {
@@ -99,10 +103,12 @@ public class AddQuirkActivity extends AppCompatActivity {
         goal = ((EditText)findViewById(R.id.editTextGoal)).getText().toString();
         ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
 
-        if(type.equals("")||(title.equals(""))||(goal.equals(""))){
-
+        if(type.equals("")||(title.equals(""))||(goal.equals(""))||reason.equals("")){
+            emptyFieldsDialog();
         }
-
+        else if (title.length() > 20 || reason.length() > 30){
+            titleReasonLengthDialog();
+        }
         else {
 
             QuirkOccurence = occurenceItemSelected();
@@ -157,6 +163,33 @@ public class AddQuirkActivity extends AppCompatActivity {
             Day.add(cmput301f17t12.quirks.Enumerations.Day.SUNDAY);
         }
      return Day;
+    }
+
+    public void emptyFieldsDialog() {
+
+        builder.setMessage("All blanks must be filled out.")
+                .setNegativeButton("Return", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        ;
+                    }
+                })
+                .setTitle("Missing Fields");
+
+        builder.show();
+    }
+    public void titleReasonLengthDialog() {
+
+        builder.setMessage("Title can be no longer than 20 characters. Reason can be no longer than 30 characters.")
+                .setNegativeButton("Return", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        ;
+                    }
+                })
+                .setTitle("Title/Reason too long");
+
+        builder.show();
     }
 
 }
