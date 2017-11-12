@@ -26,6 +26,10 @@ public class EventList implements Serializable {
         return events.get(i);
     }
 
+    public Integer size() {
+        return events.size();
+    }
+
     public void removeEvent(Event event){
         events.remove(event);
     }

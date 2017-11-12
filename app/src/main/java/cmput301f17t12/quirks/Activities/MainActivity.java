@@ -68,9 +68,8 @@ public class MainActivity extends BaseActivity {
         }
 
         ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
-        ArrayList<Event> events = new ArrayList<Event>();
         for (int i = 0; i < quirks.size(); i++) {
-            events.addAll(quirks.get(i).getEventList().getList());
+            newsitems.addAll(quirks.get(i).getEventList().getList());
         }
         newsitems.addAll(quirks);
 
