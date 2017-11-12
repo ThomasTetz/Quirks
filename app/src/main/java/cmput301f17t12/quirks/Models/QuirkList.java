@@ -33,4 +33,6 @@ public class QuirkList {
         return quirks;
     }
 
+    public int size(){ return quirks.size(); }
+
 }
