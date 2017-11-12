@@ -20,6 +20,7 @@ import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.Quirk;
+import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class MainActivity extends BaseActivity {
@@ -33,6 +34,10 @@ public class MainActivity extends BaseActivity {
 
         // TODO: Get current user's newsable items.
         // Should be current user's + friends', but that is for part 5.
+
+        // get the user
+        User user = (User) getIntent().getSerializableExtra("user");
+        System.out.println("Main Activity as:\nUser object: " + user + "\nusername: " + user.getUsername());
 
         // Test
         ArrayList<Day> occurence = new ArrayList<Day>() {};
