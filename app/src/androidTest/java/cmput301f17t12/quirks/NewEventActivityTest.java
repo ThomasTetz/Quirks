@@ -102,7 +102,7 @@ public class NewEventActivityTest {
         intended(hasComponent(MainActivity.class.getName()), times(2));
         Intents.release();
     }
-œ
+
     @Test
     public void cancelButton(){
         //Will need to go createa quirk then save
