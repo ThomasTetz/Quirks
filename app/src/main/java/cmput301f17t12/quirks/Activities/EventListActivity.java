@@ -85,6 +85,7 @@ public class EventListActivity extends AppCompatActivity {
         quirk = currentlylogged.getQuirks().getQuirk(pos);
         EventList tempEventList = currentlylogged.getQuirks().getQuirk(pos).getEventList();
         eventList.clearAndAddEvents(tempEventList);
+
     }
 
 
