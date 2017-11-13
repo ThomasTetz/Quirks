@@ -31,15 +31,11 @@ public class QuirksActivity extends BaseActivity {
     private String jestID; //TODO: Change this with shared preferences
     private Spinner spinner;
     private Button applyButton;
-    private EditText filterValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_quirks);
 
-        // Get the UserID
-        //jestID = "AV-xx8ahi8-My2t7XP4j";
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         jestID = settings.getString("jestID", "defaultvalue");
         if (jestID.equals("defaultvalue")) {
@@ -47,8 +43,6 @@ public class QuirksActivity extends BaseActivity {
         }
 
         applyButton = (Button) findViewById(R.id.applyFilterButton);
-        filterValue = (EditText) findViewById(R.id.filterVal);
-
         //updateQuirkList(jestID);
         final User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirkList = currentlylogged.getQuirks();
@@ -81,8 +75,6 @@ public class QuirksActivity extends BaseActivity {
         ArrayList<String> categories = new ArrayList<>();
         categories.add("All Habits");
         categories.add("Today\'s Habits");
-        categories.add("By Type");
-        categories.add("By Comment");
 
         // Creating adapter for spinner, and attach adapter
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -94,31 +86,25 @@ public class QuirksActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String query = "";
-                String extraString = "";
+//                String extraString = "";
                 if (String.valueOf(spinner.getSelectedItem()).equals("All Habits")){
                     query = getQueryFilterAll();
                 }
                 else if(String.valueOf(spinner.getSelectedItem()).equals("Today\'s Habits")){
                     query = getQueryFilterToday();
                 }
-                else if(String.valueOf(spinner.getSelectedItem()).equals("By Type")){
-                    query = getQueryFilterType();
-                    extraString = filterValue.getText().toString();
-                }
-                else if(String.valueOf(spinner.getSelectedItem()).equals("By Comment")){
-                    query = getQueryFilterComment();
-                    extraString = filterValue.getText().toString();
-                }
-                Toast.makeText(QuirksActivity.this,
-                        "OnClickListener : " +
-                                "\nSpinner  : "+ String.valueOf(spinner.getSelectedItem()) + " " +extraString,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(QuirksActivity.this,
+//                        "OnClickListener : " +
+//                                "\nSpinner  : "+ String.valueOf(spinner.getSelectedItem()) + " " +extraString,
+//                        Toast.LENGTH_SHORT).show();
                 if (query.equals("")){
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
                 else{
 //                    applyFilter(query);
-                    offlineFilter(query, extraString, currentlylogged);
+
+                    offlineFilter(query, currentlylogged);
+
                 }
             }
 
@@ -166,29 +152,13 @@ public class QuirksActivity extends BaseActivity {
         return query;
     }
 
-    public String getQueryFilterType(){
-        String query = "type";
-        // for the user
-        // look in quirklist
-        // match where type is type
-        return query;
-    }
-
-    public String getQueryFilterComment(){
-        String query = "comment";
-        // for the user
-        // look in quirklist
-        // match where comment contains the word
-        return query;
-    }
-
-    public void offlineFilter(String query, String arg, User user){
+    public void offlineFilter(String query, User user){
         QuirkList userQuirks = user.getQuirks();
         QuirkList filteredQuirks = new QuirkList();
         int size = user.getQuirks().size();
 
 
-        if (query.equals("all") || (query.equals("type") && arg.equals("")) || (query.equals("comment") && arg.equals(""))){
+        if (query.equals("all")){
             // show all
             // maybe remove the conditions that default blank argument to showing all values
             filteredQuirks = userQuirks;
@@ -206,30 +176,6 @@ public class QuirksActivity extends BaseActivity {
                 }
             }
             applyOfflineFilter(filteredQuirks);
-        }
-        else if (query.equals("type") && !arg.equals("")){
-            // show all with that type
-            for (int i = 0; i < size; i++){
-                Quirk curQuirk = userQuirks.getQuirk(i);
-                if (curQuirk.getType().equals(arg)){
-                    filteredQuirks.addQuirk(curQuirk);
-                }
-            }
-            applyOfflineFilter(filteredQuirks);
-        }
-        else if (query.equals("comment") && !arg.equals("")){
-            // show all with comment matching
-            // @TODO
-            for (int i = 0; i < size; i++){
-                Quirk curQuirk = userQuirks.getQuirk(i);
-                EventList events = curQuirk.getEventList();
-                int size2 = events.size();
-                for (int j = 0; j < size2; j++){
-                    // @TODO, should this activity be showing events and not habits?
-                }
-            }
-            applyOfflineFilter(filteredQuirks);
-
         }
         else{
             System.out.println("offline filter failed if/else statements");
