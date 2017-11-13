@@ -43,7 +43,6 @@ public class MainActivity extends BaseActivity {
     private Spinner spinner;
     private Button applyButton;
     private EditText filterValue;
-    private ArrayList<Quirk> quirks_filtered = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
