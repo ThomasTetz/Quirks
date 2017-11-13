@@ -107,16 +107,11 @@ public class QuirksActivity extends BaseActivity {
                 else if(String.valueOf(spinner.getSelectedItem()).equals("Today\'s Habits")){
                     query = getQueryFilterToday();
                 }
-//                Toast.makeText(QuirksActivity.this,
-//                        "OnClickListener : " +
-//                                "\nSpinner  : "+ String.valueOf(spinner.getSelectedItem()) + " " +extraString,
-//                        Toast.LENGTH_SHORT).show();
                 if (query.equals("")){
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
                 else{
-//                    applyFilter(query);
-
+//                    applyFilter(query); // part 5
                     offlineFilter(query, currentlylogged);
 
                 }
@@ -199,8 +194,6 @@ public class QuirksActivity extends BaseActivity {
 
         if (query.equals("all")){
             // show all
-            // maybe remove the conditions that default blank argument to showing all values
-            // filteredQuirks = userQuirks;
             filterHashMap.clear();
             for(int i = 0; i < quirkList.size(); i++){
                 filterHashMap.put(i, i);
@@ -208,7 +201,6 @@ public class QuirksActivity extends BaseActivity {
 
             updateQuirkList(jestID);
             adapter.notifyDataSetChanged();
-            //applyOfflineFilter(quirkList);
         }
         else if (query.equals("today")){
             // show all today
@@ -217,7 +209,6 @@ public class QuirksActivity extends BaseActivity {
             for (int i = 0; i < size; i++){
                 Quirk curQuirk = userQuirks.getQuirk(i);
                 ArrayList<Day> occurences = curQuirk.getOccDate();
-                // @TODO somehow get today
                 Day today = getToday();
 
                 if (occurences.contains(today)){
@@ -238,31 +229,12 @@ public class QuirksActivity extends BaseActivity {
      * @param filteredQuirks
      */
     public void applyOfflineFilter(QuirkList filteredQuirks){
-        System.out.println("the filtered quirks:");
-        for (int i = 0; i < filteredQuirks.size(); i++){
-            System.out.println("\t" + filteredQuirks.getQuirk(i).getType());
-        }
-
-        System.out.println("previously displayed quirks:");
-        for (int i = 0; i < quirkList.size(); i++){
-            System.out.println("\t" + quirkList.getQuirk(i).getType());
-        }
-
-        System.out.println("before clearAndAdd, passing size: " + filteredQuirks.size());
         quirkList.clearAndAddQuirks(filteredQuirks);
-        System.out.println("after clearAndAdd, the passed now has size: " + filteredQuirks.size());
-
-        System.out.println("currently displayed quirks:");
-        for (int i = 0; i < quirkList.size(); i++){
-            System.out.println("\t" + quirkList.getQuirk(i).getType());
-        }
-        System.out.println("before adapter");
         adapter.notifyDataSetChanged();
-        System.out.println("after adapter");
     }
 
 
-    // No usages in the code -> Do we need this method?
+    // @TODO will be implemented in part 5
     public void applyFilter(String query){
 
         ElasticSearchUserController.GetQuirksTask getQuirksTask
