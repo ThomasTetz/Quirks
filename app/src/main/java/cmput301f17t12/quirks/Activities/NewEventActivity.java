@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -41,7 +43,7 @@ public class NewEventActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Spinner dropdown = (Spinner)findViewById(R.id.quirk_dropdown);
+        Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
 
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         String jestID = settings.getString("jestID", "defaultvalue");
@@ -50,10 +52,24 @@ public class NewEventActivity extends BaseActivity {
             Log.i("Error", "Did not find correct jestID");
         }
 
+        currentlylogged = HelperFunctions.getUserObject(jestID);
+
         if (currentlylogged != null) {
             QuirkList quirks = currentlylogged.getQuirks();
-            ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, quirks.getList());
+            ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk>(this, android.R.layout.simple_spinner_item, quirks.getList());
             dropdown.setAdapter(adapter);
+
+            Button savebutton = (Button) findViewById(R.id.save_button);
+            TextView errormsg = (TextView) findViewById(R.id.errormsg);
+
+            if (quirks.getList().isEmpty()) {
+                savebutton.setEnabled(false);
+                errormsg.setVisibility(View.VISIBLE);
+            }
+            else {
+                savebutton.setEnabled(true);
+                errormsg.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
