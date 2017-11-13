@@ -1,11 +1,8 @@
 package cmput301f17t12.quirks;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.intent.Intents;
-import android.support.test.espresso.intent.VerificationMode;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -16,23 +13,22 @@ import org.junit.runner.RunWith;
 
 import cmput301f17t12.quirks.Activities.LoginActivity;
 import cmput301f17t12.quirks.Activities.MainActivity;
-import cmput301f17t12.quirks.Activities.NewEventActivity;
-import cmput301f17t12.quirks.Activities.QuirksActivity;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.Intents.times;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasType;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
@@ -49,10 +45,66 @@ public class NewEventActivityTest {
     private LoginActivity loginActivity;
 
     @Before
-    public void initUsername() {
+    public void initialize() {
         // Specify a valid comment
         comment = "testing comment";
         loginActivity = mActivityRule.getActivity();
+    }
+
+//
+
+
+    @Test
+    public void cancelButton(){
+        //Will need to go createa quirk then save
+        Intents.init();
+
+
+        //Login with user testing 123 and go to NewEvent ACtivity to have
+        //quirks to log
+        onView(withId(R.id.loginUser))
+                .perform(typeText("intenttesting"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn))
+                .perform(click());
+        onView(withId(R.id.action_newevent))
+                .perform(click());
+
+        //Cancel button in add Events
+        onView(withId(R.id.cancel_button))
+                .perform(click());
+        intended(hasComponent(MainActivity.class.getName()), times(2));
+        Intents.release();
+    }
+
+
+    @Test
+    public void saveButton(){
+        //Will need to go createa quirk then save
+//        Intents.init();
+
+
+        //Login with user testing 123 and go to NewEvent ACtivity to have
+        //quirks to log
+        onView(withId(R.id.loginUser))
+                .perform(typeText("intenttesting"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn))
+                .perform(click());
+        onView(withId(R.id.action_newevent))
+                .perform(click());
+
+        //insert comment and save event
+        onView(withId(R.id.comment_edittext))
+                .perform(typeText(comment), closeSoftKeyboard());
+        onView(withId(R.id.save_button))
+                .perform(click());
+//        intended(hasComponent(MainActivity.class.getName()), times(2));
+
+//        onView(withId(R.id.action_quirklist))
+//                .perform(click());
+//        onData(hasToString(startsWith("testing comment")))
+//                .inAdapterView(withId(R.id.quirk_button))
+//                .perform(click());
+//        Intents.release();
     }
 
     @Test
@@ -63,7 +115,7 @@ public class NewEventActivityTest {
         //Login with user testing 123 and go to NewEvent ACtivity to have
         //quirks to log
         onView(withId(R.id.loginUser))
-                .perform(typeText("testing123"), closeSoftKeyboard());
+                .perform(typeText("intenttesting"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn))
                 .perform(click());
         onView(withId(R.id.action_newevent))
@@ -77,52 +129,6 @@ public class NewEventActivityTest {
                 hasType(is("image/*"))));
         Intents.release();
 
-    }
-
-    @Test
-    public void saveButton(){
-        //Will need to go createa quirk then save
-        Intents.init();
-
-
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
-        onView(withId(R.id.loginUser))
-                .perform(typeText("testing123"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn))
-                .perform(click());
-        onView(withId(R.id.action_newevent))
-                .perform(click());
-
-        //insert comment and save event
-        onView(withId(R.id.comment_edittext))
-                .perform(typeText(comment), closeSoftKeyboard());
-        onView(withId(R.id.save_button))
-                .perform(click());
-        intended(hasComponent(MainActivity.class.getName()), times(2));
-        Intents.release();
-    }
-
-    @Test
-    public void cancelButton(){
-        //Will need to go createa quirk then save
-        Intents.init();
-
-
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
-        onView(withId(R.id.loginUser))
-                .perform(typeText("testing123"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn))
-                .perform(click());
-        onView(withId(R.id.action_newevent))
-                .perform(click());
-
-        //Cancel button in add Events
-        onView(withId(R.id.cancel_button))
-                .perform(click());
-        intended(hasComponent(MainActivity.class.getName()), times(2));
-        Intents.release();
     }
 
 
