@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by thomas on 2017-10-21.
@@ -16,6 +17,13 @@ public class QuirkList implements Serializable {
 
     public void addQuirk(Quirk quirk){
         quirks.add(quirk);
+    }
+
+    public void clearAndAddQuirks(QuirkList quirkList){
+        quirks.clear();
+        for(int i = 0; i<quirkList.size(); i++){
+            quirks.add(quirkList.getQuirk(i));
+        }
     }
 
     public boolean hasQuirk(Quirk quirk){

@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,7 +35,10 @@ public class QuirksActivity extends BaseActivity {
         // Testing - replace this with a userID search later on.
         jestID = "AV-xx8ahi8-My2t7XP4j";
 
-        updateListView(jestID);
+        //updateQuirkList(jestID);
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        quirkList = currentlylogged.getQuirks();
+
         // Test the ListView format
       /*  ArrayList testOccurence = new ArrayList();
         testOccurence.add(Day.MONDAY);
@@ -105,33 +109,25 @@ public class QuirksActivity extends BaseActivity {
         });
     }
 
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        //When BACK BUTTON is pressed, the activity on the stack is restarted
-        //Do what you want on the refresh procedure here
-        updateListView(jestID);
-        adapter.notifyDataSetChanged();
-    }
-
-    /*
     @Override
     protected void onResume(){
         super.onResume();
-        updateListView(jestID);
+        updateQuirkList(jestID);
+        adapter.notifyDataSetChanged();
     }
-    */
+
 
     public void filterTest(){
 //        User user = new User("Test1", );
     }
 
-    public void updateListView(String jestID){
+    public void updateQuirkList(String jestID){
         User currentlylogged = HelperFunctions.getUserObject(jestID);
-        quirkList = currentlylogged.getQuirks();
-        adapter.notifyDataSetChanged();
+        QuirkList tempList = currentlylogged.getQuirks();
+        Log.d("DEBUG", "Got into here");
+        quirkList.clearAndAddQuirks(tempList);
     }
+
 
     @Override
     int getContentViewId() { return R.layout.activity_quirks; }
