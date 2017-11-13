@@ -6,18 +6,34 @@ import java.util.ArrayList;
 public class EventList implements Serializable {
     private ArrayList<Event> events = new ArrayList<Event>();
 
+    /**
+     * EventList Constructor
+     */
     public EventList(){
-
+        // Might be better to initialize eventList in here
     }
 
+    /**
+     * Add event to EventList
+     * @param event Event to add
+     */
     public void addEvent(Event event){
         events.add(event);
     }
 
+    /**
+     * Check if an event is within the EventList
+     * @param event Event we want to find
+     * @return Boolean value based on if the event is found or not
+     */
     public boolean hasEvent(Event event){
         return events.contains(event);
     }
 
+    /**
+     * Clear and fill list with Events. This is used to copy the contents of an existing eventlist
+     * @param eventList Eventlist we want to insert the values from
+     */
     public void clearAndAddEvents(EventList eventList){
         events.clear();
         for(int i = 0; i<eventList.size(); i++){
@@ -25,23 +41,43 @@ public class EventList implements Serializable {
         }
     }
 
+    /**
+     * Get the event at a specific position
+     * @param i Index of event in eventList
+     * @return Return Event at specified index
+     */
     public Event getEvent(int i){
         return events.get(i);
     }
 
+    /**
+     * Return the size of the EventList
+     * @return EventList size
+     */
     public Integer size() {
         return events.size();
     }
 
+    /**
+     * Remove event from Eventlist
+     * @param event
+     */
     public void removeEvent(Event event){
         events.remove(event);
     }
 
+    /**
+     * Get the EventList
+     * @return The EventList
+     */
     public ArrayList<Event> getList(){
         return events;
     }
 
-    // Testing
+    /**
+     * Return the EventList in string format. Used for testing.
+     * @return String of EventList contents
+     */
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
