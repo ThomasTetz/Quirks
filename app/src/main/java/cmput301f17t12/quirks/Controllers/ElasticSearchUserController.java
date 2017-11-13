@@ -1,6 +1,7 @@
 package cmput301f17t12.quirks.Controllers;
 
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.searchly.jestdroid.DroidClientConfig;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmput301f17t12.quirks.Models.Inventory;
+import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
 import io.searchbox.client.JestResult;
@@ -130,6 +132,51 @@ public class ElasticSearchUserController {
             }
 
             return users;
+        }
+    }
+
+    // TODO we need a function which gets users from elastic search
+    public static class GetQuirksTask extends AsyncTask<String, Void, ArrayList<Quirk>> {
+        @Override
+        protected ArrayList<Quirk> doInBackground(String... search_parameters) {
+            verifySettings();
+
+            ArrayList<Quirk> quirks = new ArrayList<Quirk>();
+
+
+            // TODO Build the query
+
+            System.out.print("search_parameters[0]: ");
+            System.out.println(search_parameters[0]);
+            System.out.println("Searching with param: " + search_parameters[0]);
+            System.out.println("For user with JestID: " + search_parameters[1]);
+
+            if (!search_parameters[1].equals("causeFailure")){
+                return new ArrayList<Quirk>();
+
+            }
+            else{
+                System.out.println("avoided failure");
+            }
+
+            Search search = new Search.Builder(search_parameters[0])
+                    .addIndex(indexString)
+                    .addType(typeString)
+                    .build();
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()) {
+                    List<Quirk> foundQuirks = result.getSourceAsObjectList(Quirk.class);
+                    quirks.addAll(foundQuirks);
+                    System.out.println("found size: " + foundQuirks.size());
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i("Error", e.toString());
+            }
+
+            return quirks;
         }
     }
 

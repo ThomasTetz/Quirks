@@ -88,9 +88,13 @@ public class NewEventActivity extends BaseActivity {
         EditText commentText = (EditText) findViewById(R.id.comment_edittext);
 
         Quirk selectedQuirk = (Quirk) dropdown.getSelectedItem();
+        selectedQuirk.incCurrValue();
         String comment = commentText.getText().toString();
 
-        byte[] photoByte = bitmapToByte(bitmap);
+        byte[] photoByte = new byte[] {};
+        if (photoByte.length != 0) {
+            photoByte = bitmapToByte(bitmap);
+        }
 
         EventList events = selectedQuirk.getEventList();
         Event newEvent = new Event(currentlylogged.getUsername(), comment, photoByte, new Date());

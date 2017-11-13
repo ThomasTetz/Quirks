@@ -26,7 +26,7 @@ public class Quirk implements Newsable, Serializable {
 
 
     // Parameter with only required values
-    public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue, String user) {
+    public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue, String user, String reason) {
         this.events = new EventList();
         this.title = title;
         this.type = type;
@@ -39,6 +39,7 @@ public class Quirk implements Newsable, Serializable {
         this.goalValue = goalValue;
         this.currValue = 0;
         this.user = user;
+        this.reason = reason;
     }
 
     public Quirk(EventList events, String title, String type, String reason,
@@ -132,12 +133,14 @@ public class Quirk implements Newsable, Serializable {
 
     public void incCurrValue(){
         if(currValue < goalValue) {
-            this.currValue += 1; // @TODO may need to adjust the increment value
+            this.currValue += 1;
         }
     }
 
-    public void resetCurrValue(){
-        this.currValue = 0; // @TODO potentially change what this does
+    public void decCurrValue(){
+        if(currValue > 0) {
+            this.currValue -= 1;
+        }
     }
 
     public String getUser(){ return user; }

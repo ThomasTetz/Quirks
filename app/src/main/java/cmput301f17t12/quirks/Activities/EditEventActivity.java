@@ -96,11 +96,10 @@ public class EditEventActivity extends AppCompatActivity {
         String comment = commentText.getText().toString();
 
         referenced_event.setComment(comment);
-        byte[] photoByte;
-        if (bitmap != null) {
+
+        byte[] photoByte = new byte[] {};
+        if (photoByte.length != 0) {
             photoByte = bitmapToByte(bitmap);
-        } else {
-            photoByte = null;
         }
 
         referenced_event.setPhotoByte(photoByte);
@@ -119,6 +118,8 @@ public class EditEventActivity extends AppCompatActivity {
 
     public void deleteCommand(View view) {
         referenced_quirk.removeEvent(referenced_event);
+        referenced_quirk.decCurrValue();
+
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(currentlylogged);
