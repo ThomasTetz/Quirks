@@ -43,11 +43,9 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
 
         Event eventItem = eventList.getEvent(pos);
 
-
         // Set item title to event comment
         TextView eventHeader = (TextView) view.findViewById(R.id.el_eventcomment);
         eventHeader.setText(eventItem.getComment());
-
 
         // Delete event button
         ImageButton btnEventDelete = (ImageButton) view.findViewById(R.id.el_eventdelbtn);
@@ -61,6 +59,8 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
                 notifyDataSetChanged();
             }
         });
+
+
 
 
         return view;
