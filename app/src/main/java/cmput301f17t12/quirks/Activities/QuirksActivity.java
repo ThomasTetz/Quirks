@@ -3,8 +3,11 @@ package cmput301f17t12.quirks.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +73,36 @@ public class QuirksActivity extends BaseActivity {
                 startActivityForResult(intent,1);
             }
         });
+
+        // Spinner element
+        Spinner spinner = (Spinner) findViewById(R.id.filter_type);
+
+        // TODO: Handle spinner click
+        //spinner.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("All Habits");
+        categories.add("Today\'s Habits");
+        categories.add("By Type");
+        categories.add("By Comment");
+
+        // Creating adapter for spinner, and attach adapter
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
+        // Create listView handler (important all elements with a custom listview item must have focusable = false)
+        lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent intent = new Intent(QuirksActivity.this, EditQuirkClickedActivity.class);
+                Quirk quirk = (Quirk) parent.getItemAtPosition(position);
+                intent.putExtra("Quirk", quirk);
+                startActivity(intent);
+            }
+        });
     }
 
     public void filterTest(){
@@ -82,22 +115,6 @@ public class QuirksActivity extends BaseActivity {
     @Override
     int getNavigationMenuItemId() {
         return R.id.action_quirklist;
-    }
-
-    // TODO:
-    // Add a new quirk -> Call new add quirk activity
-    public void addQuirkClicked(){
-
-    }
-
-    // TODO:
-    // Edit an existing quirk -> Call new edit quirk activity
-    public void editQuirkClicked(int position){
-    }
-
-    // TODO:
-    // Get the events -> ? (Go to event activity??)
-    public void getQuirkEventsClicked(){
     }
 
     // TODO:
