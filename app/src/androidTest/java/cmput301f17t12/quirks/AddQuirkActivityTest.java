@@ -30,12 +30,15 @@ import cmput301f17t12.quirks.Models.Quirk;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
@@ -83,7 +86,8 @@ public class AddQuirkActivityTest {
         onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_quirklist)).perform(click());
-        onView(withId(R.id.add_quirk_button)).perform(click());        String type = "Type";
+        onView(withId(R.id.add_quirk_button)).perform(click());
+        String type = "Type";
         onView(withId(R.id.QuirkeditTextType)).perform(typeText("Type"),closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextType)).check(matches(withText(type)));
         Intents.release();
@@ -95,7 +99,8 @@ public class AddQuirkActivityTest {
         onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_quirklist)).perform(click());
-        onView(withId(R.id.add_quirk_button)).perform(click());        String reason = "Reason";
+        onView(withId(R.id.add_quirk_button)).perform(click());
+        String reason = "Reason";
         onView(withId(R.id.QuirkeditTextReason)).perform(typeText("Reason"),closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextReason)).check(matches(withText(reason)));
         Intents.release();
@@ -108,7 +113,8 @@ public class AddQuirkActivityTest {
         onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_quirklist)).perform(click());
-        onView(withId(R.id.add_quirk_button)).perform(click());        String goal = "15";
+        onView(withId(R.id.add_quirk_button)).perform(click());
+        String goal = "15";
         onView(withId(R.id.QuirkeditTextGoal)).perform(typeText(String.valueOf("15")));
         onView(withId(R.id.QuirkeditTextGoal)).check(matches(withText(goal)));
         Intents.release();
@@ -128,18 +134,36 @@ public class AddQuirkActivityTest {
     }
    @Test
     public void addQuirkDateTest(){
-        Intents.init();
-        String date = "11/3/2017";
-       //   onView(AddQuirkActivity(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, monthOfYear, dayOfMonth));
+       Intents.init();
+       onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
+       onView(withId(R.id.loginBtn)).perform(click());
+       onView(withId(R.id.action_quirklist)).perform(click());
+       onView(withId(R.id.add_quirk_button)).perform(click());
+       int year  = 2017;
+       int monthOfYear  = 11;
+       int dayOfMonth =  25;
 
-       //     DatePickerDialog.OnDateSetListener SelectDateListener;
-    //    SelectDateListener = new DatePickerDialog.OnDateSetListener().;
-        onView(withId(R.id.textViewSelDate)).perform(click());
-//        onView(withId(R.id.textViewSelDate)).check(matches(withText(date)));
+       //onView(AddQuirkActivity(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, monthOfYear, dayOfMonth));
+        onView(withId(R.id.textViewSelDate)).perform(click(),scrollTo(),click());
         Intents.release();
     }
 
+    @Test
+    public void addQuirkSaveButton(){
+        Intents.init();
+        onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn)).perform(click());
+        onView(withId(R.id.action_quirklist)).perform(click());
+        onView(withId(R.id.add_quirk_button)).perform(click());
+        onView(withId(R.id.QuirkeditTextTitle)).perform(typeText("Title"), closeSoftKeyboard());
+        onView(withId(R.id.QuirkeditTextType)).perform(typeText("Type"),closeSoftKeyboard());
+        onView(withId(R.id.QuirkeditTextGoal)).perform(typeText(String.valueOf("15")));
+        onView(withId(R.id.QuirkeditTextReason)).perform(typeText("Reason"),closeSoftKeyboard());
+        onView(withId(R.id.QuirkEditradioButtonMon)).perform(click());
+        onView(withId(R.id.SaveBut)).perform(click());
+        Intents.release();
 
+    }
     @Test
     public void addQuirkCancelButton(){
         Intents.init();
