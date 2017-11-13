@@ -6,16 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -28,14 +25,9 @@ import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class LoginActivity extends AppCompatActivity {
-    private String userName;
-    private Button btnLogin;
-    private TextView textUsername;
+    private String username;
     private AlertDialog.Builder builder;
     private ImageView loginBG;
-
-    private Boolean pressed = false;
-
 
     private EditText loginText;
     private Button loginButton;
@@ -46,24 +38,23 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         builder = new AlertDialog.Builder(this);
 
-        btnLogin = (Button) findViewById(R.id.loginBtn);
-        textUsername = (TextView) findViewById(R.id.loginUser);
-        loginBG = (ImageView) findViewById((R.id.loginBG));
-
-        btnLogin.setBackgroundColor(0xFFDCDCDC);
-        loginBG.setBackgroundColor(0xFFDCDCDC);
-        btnLogin.setTextColor(0xFF7B8C94);
-        textUsername.setTextColor(0xFF7B8C94);
-
         loginText = findViewById(R.id.loginUser);
         loginButton = findViewById(R.id.loginBtn);
+        loginBG = (ImageView) findViewById((R.id.loginBG));
+
+        loginButton.setBackgroundColor(0xFFDCDCDC);
+        loginBG.setBackgroundColor(0xFFDCDCDC);
+        loginButton.setTextColor(0xFF7B8C94);
+        loginText.setTextColor(0xFF7B8C94);
+
+
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                String username = loginText.getText().toString();
+                username = loginText.getText().toString();
 
                 String query = "{" +
                         "  \"query\": {" +
