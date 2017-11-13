@@ -2,8 +2,10 @@ package cmput301f17t12.quirks.Activities;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,28 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                         "  }" +
                         "}";
 
-
-
-
-
-
                 ElasticSearchUserController.GetUsersTask getUsersTask
                         = new ElasticSearchUserController.GetUsersTask();
                 getUsersTask.execute(query);
 
-
-//                Context context = getApplicationContext();
-//                int duration = Toast.LENGTH_SHORT;
-
-
-
                 try {
-//                    CharSequence text = "Hello toast!";
-//                    CharSequence text = getUsersTask.get();
-
-//                    Toast toast = Toast.makeText(context, "hi", duration);
-//                    toast.show();
-
                     ArrayList<User> users = getUsersTask.get();
 
                     System.out.println("size: " + users.size());
@@ -101,8 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else if (users.size() == 1){
                         System.out.println("\n\nvvv\nalready registered\n^^^\n\n");
-//                        testDelete(users.get(0));
-//                        testUpdate1(users.get(0));
                         loginUser(users.get(0));
                     }
                     else if (users.size() > 1){
@@ -115,12 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 catch (Exception e) {
                     Log.i("Error", "Failed to get the users from the async object");
                     Log.i("Error", e.toString());
-//                    String text = "Failed to get the tweets from the async object";
-//                    Toast toast = Toast.makeText(context, text, duration);
-//                    toast.show();
                 }
-
-//                adapter.notifyDataSetChanged();
             }
         });
 
@@ -130,10 +108,14 @@ public class LoginActivity extends AppCompatActivity {
         // after elasticsearch, go to main as that user
         System.out.println("Logging in as: " + user.getUsername());
         System.out.println("JestId: " + user.getId());
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("jestID", user.getId());
+        editor.commit();
+
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
-//        startActivity(new Intent(this, MainActivity.class));
     }
 
 

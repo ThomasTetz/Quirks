@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,8 +44,12 @@ public class EditEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
 
-        // Testing - replace this with a userID search later on.
-        String jestID = "AV-xx8ahi8-My2t7XP4j";
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        String jestID = settings.getString("jestID", "defaultvalue");
+
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
 

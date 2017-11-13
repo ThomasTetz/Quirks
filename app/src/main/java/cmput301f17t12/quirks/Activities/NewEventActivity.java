@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -41,10 +43,13 @@ public class NewEventActivity extends BaseActivity {
 
         Spinner dropdown = (Spinner)findViewById(R.id.quirk_dropdown);
 
-        // Testing - replace this with a userID search later on.
-        String jestID = "AV-xx8ahi8-My2t7XP4j";
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        String jestID = settings.getString("jestID", "defaultvalue");
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
+
         if (currentlylogged != null) {
             QuirkList quirks = currentlylogged.getQuirks();
             ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk> (this, android.R.layout.simple_spinner_item, quirks.getList());
