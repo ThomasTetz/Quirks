@@ -50,7 +50,7 @@
             android:id="@+id/quirk_button"
             android:layout_width="87dp"
             android:layout_height="33dp"
-            android:text="Button"
+            android:text="Events"
             android:textSize="12sp"
             android:focusable="false"
             tools:layout_constraintTop_creator="1"
