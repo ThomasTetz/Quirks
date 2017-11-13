@@ -20,7 +20,7 @@
         <activity android:name=".Activities.EventsActivity" />
         <activity android:name=".Activities.QuirksActivity" />
         <activity android:name=".Activities.MainActivity" />
-        <activity android:name=".Activities.EditQuirkClickedActivity" />
+        <activity android:name=".Activities.EditQuirkActivity" />
         <activity android:name=".Activities.AddQuirkActivity" />
         <activity android:name=".Activities.NewEventActivity" />
         <activity android:name=".Activities.EditEventActivity" />

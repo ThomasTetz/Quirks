@@ -15,10 +15,6 @@ import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.R;
 
-/**
- * Created by charleshoang on 2017-11-12.
- */
-
 public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
     private EventList eventList = new EventList();
     private Context context;
@@ -63,6 +59,9 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
                 notifyDataSetChanged();
             }
         });
+
+
+
 
         return view;
     }
