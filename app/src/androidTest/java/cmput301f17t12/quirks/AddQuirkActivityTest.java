@@ -132,8 +132,8 @@ public class AddQuirkActivityTest {
         Intents.release();
 
     }
-   @Test
-    public void addQuirkDateTest(){
+
+/*    public void addQuirkDateTest(){
        Intents.init();
        onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
        onView(withId(R.id.loginBtn)).perform(click());
@@ -147,7 +147,7 @@ public class AddQuirkActivityTest {
         onView(withId(R.id.textViewSelDate)).perform(click(),scrollTo(),click());
         Intents.release();
     }
-
+*/
     @Test
     public void addQuirkSaveButton(){
         Intents.init();
