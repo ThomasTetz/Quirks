@@ -44,7 +44,7 @@ public class EventList implements Serializable {
     /**
      * Get the event at a specific index
      * @param i Index
-     * @return Return Event at specified index
+     * @return Event at specified index
      */
     public Event getEvent(int i){
         return events.get(i);
