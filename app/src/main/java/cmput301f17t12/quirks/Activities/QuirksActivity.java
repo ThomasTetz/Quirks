@@ -180,9 +180,30 @@ public class QuirksActivity extends BaseActivity {
         }
     }
 
-    public void applyOfflineFilter(QuirkList quirks){
-        // @TODO update the listview with the given QuirkList
+    public void applyOfflineFilter(QuirkList filteredQuirks){
+        System.out.println("the filtered quirks:");
+        for (int i = 0; i < filteredQuirks.size(); i++){
+            System.out.println("\t" + filteredQuirks.getQuirk(i).getType());
+        }
+
+        System.out.println("previously displayed quirks:");
+        for (int i = 0; i < quirkList.size(); i++){
+            System.out.println("\t" + quirkList.getQuirk(i).getType());
+        }
+
+        System.out.println("before clearAndAdd, passing size: " + filteredQuirks.size());
+        quirkList.clearAndAddQuirks(filteredQuirks);
+        System.out.println("after clearAndAdd, the passed now has size: " + filteredQuirks.size());
+
+        System.out.println("currently displayed quirks:");
+        for (int i = 0; i < quirkList.size(); i++){
+            System.out.println("\t" + quirkList.getQuirk(i).getType());
+        }
+        System.out.println("before adapter");
+        adapter.notifyDataSetChanged();
+        System.out.println("after adapter");
     }
+
     public void applyFilter(String query){
 
         ElasticSearchUserController.GetQuirksTask getQuirksTask
