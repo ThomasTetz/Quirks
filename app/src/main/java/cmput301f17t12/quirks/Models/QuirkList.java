@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
 public class QuirkList implements Serializable {
     private ArrayList<Quirk> quirks = new ArrayList<Quirk>();
 

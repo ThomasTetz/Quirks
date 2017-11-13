@@ -4,10 +4,6 @@ import java.io.Serializable;
 
 import cmput301f17t12.quirks.Enumerations.Rarity;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
 //public class Drop implements Tradable {
 public class Drop implements Serializable {
 

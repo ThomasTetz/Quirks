@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-// Code from https://stackoverflow.com/questions/40972293/remove-animation-shifting-mode-from-bottomnavigationview-android
 public class BottomNavigationViewHelper {
 
     public static void removeShiftMode(BottomNavigationView view) {

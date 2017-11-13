@@ -2,10 +2,6 @@ package cmput301f17t12.quirks.Models;
 
 import java.io.Serializable;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
 public class Geolocation implements Serializable {
     private double longitude;
     private double latitude;

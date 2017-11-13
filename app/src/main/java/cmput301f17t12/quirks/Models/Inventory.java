@@ -3,10 +3,6 @@ package cmput301f17t12.quirks.Models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by thomas on 2017-10-22.
- */
-
 public class Inventory implements Serializable {
     private ArrayList<Drop> inventory = new ArrayList<Drop>();
 

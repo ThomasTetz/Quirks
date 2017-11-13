@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import cmput301f17t12.quirks.Helpers.BottomNavigationViewHelper;
 import cmput301f17t12.quirks.R;
 
-// Source: https://blog.fossasia.org/using-activities-with-bottom-navigation-view-in-phimpme-android/
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     protected BottomNavigationView navigationView;

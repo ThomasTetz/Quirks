@@ -22,10 +22,6 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
-/**
- * Created by thomas on 2017-11-11.
- */
-
 public class ElasticSearchEventController {
 
     private static JestDroidClient client;

@@ -5,10 +5,6 @@ import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
 public class User implements Serializable {
     private String username;
     private Inventory inventory;

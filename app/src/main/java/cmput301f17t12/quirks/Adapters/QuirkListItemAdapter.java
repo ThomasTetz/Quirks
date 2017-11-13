@@ -18,10 +18,6 @@ import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.R;
 
-/**
- * Created by jlane on 2017-11-11.
- */
-
 public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
     private QuirkList quirkList = new QuirkList();
     private Context context;
