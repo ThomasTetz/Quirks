@@ -27,14 +27,6 @@
                 android:text="Save" />
 
             <Button
-                android:id="@+id/DeleteBut"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="DeleteButtonClicked"
-                android:text="Delete" />
-
-            <Button
                 android:id="@+id/CancelBut"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
