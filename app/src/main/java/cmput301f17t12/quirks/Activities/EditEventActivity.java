@@ -14,12 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -37,7 +34,6 @@ public class EditEventActivity extends AppCompatActivity {
     private User currentlylogged;
     Bitmap bitmap;
     private Event referenced_event;
-    private Event referenced_event_copy;
     private Quirk referenced_quirk;
 
     @Override
@@ -56,27 +52,28 @@ public class EditEventActivity extends AppCompatActivity {
 
         final EditText commentEdit = (EditText) findViewById(R.id.comment_edittext);
 
-        Event selectedEvent = (Event) getIntent().getSerializableExtra("EDIT_EVENT");
-        Quirk selectedQuirk = (Quirk) getIntent().getSerializableExtra("SELECTED_QUIRK");
-        String filepath = getIntent().getStringExtra("FILE_PATH");
+        Integer eventIndex = getIntent().getIntExtra("SELECTED_EVENT_INDEX", -1);
+        Integer quirkIndex = getIntent().getIntExtra("SELECTED_QUIRK_INDEX", -1);
+
+        if (eventIndex == -1 || quirkIndex == -1) {
+            Log.i("Error", "Failed to read eventIndex or quirkIndex");
+            finish();
+        }
 
         ArrayList<Quirk> quirklist = currentlylogged.getQuirks().getList();
 
-//        referenced_quirk = quirklist.get(quirklist.indexOf(selectedQuirk));
-//        ArrayList<Event> temp = referenced_quirk.getEventList().getList();
-//        referenced_event = temp.get(temp.indexOf(selectedEvent));
-//        referenced_event_copy = referenced_event;
+        referenced_quirk = quirklist.get(quirkIndex);
+        referenced_event = referenced_quirk.getEvent(eventIndex);
+        byte[] photoByte = referenced_event.getPhotoByte();
 
-        Log.d("testing", filepath);
-        //loads the file
-        if (!filepath.isEmpty()) {
-            File file = new File(filepath);
-            bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        Log.d("testing", Arrays.toString(referenced_event.getPhotoByte()));
+
+        if (photoByte != null) {
+            bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
             setImage(bitmap);
-            file.delete();
         }
 
-        commentEdit.setText(selectedEvent.getComment());
+        commentEdit.setText(referenced_event.getComment());
     }
 
     public void pickPhoto(View view) {
@@ -121,10 +118,11 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     public void deleteCommand(View view) {
-        referenced_quirk.removeEvent(referenced_event_copy);
+        referenced_quirk.removeEvent(referenced_event);
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(currentlylogged);
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
