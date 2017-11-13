@@ -12,6 +12,7 @@ import cmput301f17t12.quirks.*;
 import cmput301f17t12.quirks.Adapters.QuirkListItemAdapter;
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
+
 import cmput301f17t12.quirks.Models.*;
 
 public class QuirksActivity extends BaseActivity {
@@ -25,6 +26,7 @@ public class QuirksActivity extends BaseActivity {
         //setContentView(R.layout.activity_quirks);
 
         //TODO: Get user's quirklist
+
         // Testing - replace this with a userID search later on.
         String jestID = "AV-xx8ahi8-My2t7XP4j";
 
@@ -35,6 +37,7 @@ public class QuirksActivity extends BaseActivity {
         testOccurence.add(Day.MONDAY);
         Date testTime = new Date(System.currentTimeMillis());
         Quirk testQuirk = new Quirk("Big ol test", "TEST", testTime, testOccurence, 3,"john");
+
         testQuirk.setUser("jlane");
         testQuirk.incCurrValue();
         quirkList.addQuirk(testQuirk);
@@ -42,11 +45,13 @@ public class QuirksActivity extends BaseActivity {
         ArrayList testOccurence2 = new ArrayList();
         testOccurence2.add(Day.MONDAY);
         Date testTime2 = new Date(System.currentTimeMillis());
+
         Quirk testQuirk2 = new Quirk("Big ol test", "TEST", testTime2, testOccurence2, 2,"david");
         testQuirk2.setUser("jlane");
         testQuirk2.incCurrValue();
         quirkList.addQuirk(testQuirk2);
         */
+
 
         //TODO: Create listView object and assign the custom adapter
         // create instance of custom adapter
@@ -65,7 +70,6 @@ public class QuirksActivity extends BaseActivity {
                 startActivityForResult(intent,1);
             }
         });
-
     }
 
     public void filterTest(){

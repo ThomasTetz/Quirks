@@ -4,30 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cmput301f17t12.quirks.Activities.NewEventActivity">
-
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:id="@+id/dropdown_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/newEvent_selectQuirk"
-        android:layout_alignParentTop="true"
-        android:textSize="17sp"
-        />
-
-    <Spinner
-        android:id="@+id/quirk_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@id/dropdown_text"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:popupBackground="@color/backgroundlight"
-        android:spinnerMode="dropdown"
-        android:textSize="17sp" />
+    tools:context="cmput301f17t12.quirks.Activities.EditEventActivity">
 
     <TextView
         android:layout_marginTop="10dp"
@@ -36,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/comment_text"
-        android:layout_below="@id/quirk_dropdown"
+        android:layout_alignParentStart="true"
         android:textSize="17sp" />
 
     <EditText
@@ -59,46 +36,6 @@
         android:text="@string/import_photo_text"
         android:layout_below="@id/comment_edittext"
         android:textSize="17sp" />
-
-    <LinearLayout
-        android:id="@+id/savecancel"
-        android:layout_above="@id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
-
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:onClick="saveCommand"
-            android:text="@string/save" />
-
-        <Button
-            android:id="@+id/cancel_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:onClick="cancelCommand"
-            android:text="@string/cancel" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:id="@+id/errormsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/errormsg_newevent"
-        android:visibility="invisible"
-        android:layout_above="@id/savecancel"
-        android:textSize="17sp"
-        android:textColor="@color/colorAccent"/>
 
     <RelativeLayout
         android:id="@+id/photobox"
@@ -137,17 +74,44 @@
             android:minHeight="140dp"
             android:background="@color/backgroundlight" />
 
-
     </RelativeLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <LinearLayout
+        android:id="@+id/savecancel"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/navigation" />
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:onClick="saveCommand"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:onClick="deleteCommand"
+            android:text="@string/delete" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:onClick="cancelCommand"
+            android:text="@string/cancel" />
+    </LinearLayout>
 
 </RelativeLayout>

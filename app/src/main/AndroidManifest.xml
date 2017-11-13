@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cmput301f17t12.quirks">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -9,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,10 +19,11 @@
         </activity>
         <activity android:name=".Activities.EventsActivity" />
         <activity android:name=".Activities.QuirksActivity" />
-        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.EditQuirkClickedActivity" />
         <activity android:name=".Activities.AddQuirkActivity" />
-        <activity android:name=".Activities.NewEventActivity"></activity>
+        <activity android:name=".Activities.NewEventActivity" />
+        <activity android:name=".Activities.EditEventActivity"></activity>
     </application>
 
 </manifest>

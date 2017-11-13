@@ -1,8 +1,6 @@
 package cmput301f17t12.quirks.Activities;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,6 +21,7 @@ import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchQuirkController;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
@@ -55,8 +54,6 @@ public class AddQuirkActivity extends AppCompatActivity {
     public String jestID;
     public User currentlylogged;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +68,7 @@ public class AddQuirkActivity extends AppCompatActivity {
         radButSat = (RadioButton)findViewById(R.id.radioButSaturday);
         radButSun = (RadioButton)findViewById(R.id.radioButSunday);
         SelectDate = (TextView)findViewById(R.id.textViewSelDate);
-
-
+      
         jestID = "AV-xx8ahi8-My2t7XP4j";
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
         getSingleUserTask.execute(jestID);
@@ -82,8 +78,6 @@ public class AddQuirkActivity extends AppCompatActivity {
         if (currentlylogged != null) {
             QuirkList quirks = currentlylogged.getQuirks();
         }
-
-
 
 
         SelectDate.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +119,7 @@ public class AddQuirkActivity extends AppCompatActivity {
         reason = ((EditText)findViewById(R.id.editTextReason)).getText().toString();
         goal = ((EditText)findViewById(R.id.editTextGoal)).getText().toString();
         ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
+
 
 
         if(type.equals("")||(title.equals(""))||(goal.equals(""))||reason.equals("")){
@@ -211,6 +206,7 @@ public class AddQuirkActivity extends AppCompatActivity {
      return Day;
     }
 
+
     public void emptyFieldsDialog() {
 
         builder.setMessage("All blanks must be filled out.")
@@ -238,4 +234,5 @@ public class AddQuirkActivity extends AppCompatActivity {
 
         builder.show();
     }
+
 }

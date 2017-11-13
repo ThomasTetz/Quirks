@@ -55,7 +55,9 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         Date testDate = new Date();
         ArrayList testOccurence = new ArrayList();
         testOccurence.add(Day.MONDAY);
+
         incomingQuirk = new Quirk("Big ol test", "TEST",testDate ,testOccurence, 3,"user1");
+
 
         /*
         Quirk incomingQuirk = (Quirk)getIntent().getSerializableExtra("Edit Quirk");
@@ -129,7 +131,6 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         Date someDate = new Date();
         Quirk quirkTest = new Quirk("Eat a fruit every sunday", "Eating",someDate, occurence, 10);
         String query = "something";
-
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
         getSingleUserTask.execute(query);
 

@@ -3,44 +3,68 @@ package cmput301f17t12.quirks.Models;
 import android.net.Uri;
 import android.text.format.DateUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Interfaces.Mappable;
 import cmput301f17t12.quirks.Interfaces.Newsable;
+import io.searchbox.annotations.JestId;
 
-/**
- * Created by thomas on 2017-10-21.
- */
+public class Event implements Mappable, Newsable, Serializable {
 
-public class Event implements Mappable, Newsable {
-
-    private Quirk quirk;
+    private String user;
     private String comment;
-    private Uri photoUri;
+    private String photoPath;
     private Date date;
     private Geolocation geolocation;
 
-    // Event without URI and geolocation
-    public Event(Quirk quirk, String comment, Date date){
-        this.quirk = quirk;
+    @JestId
+    private String eid;
+
+    // Event without Path and geolocation
+    public Event(String user, String comment, Date date){
+        this.user = user;
         this.comment = comment;
         this.date = date;
     }
 
-    public Event(Quirk quirk, String comment, Uri photoUri, Date date, Geolocation geolocation){
-        this.quirk = quirk;
+    // Event without geolocation
+    public Event(String user, String comment, String photoUri, Date date) {
+        this.user = user;
         this.comment = comment;
-        this.photoUri = photoUri;
+        if (comment == null) {
+            this.comment = "";
+        }
+        this.photoPath = photoUri;
+        if (photoUri == null) {
+            this.photoPath = "";
+        }
+        this.date = date;
+    }
+
+    public Event(String user, String comment, String photoUri, Date date, Geolocation geolocation) {
+        this.user = user;
+        this.comment = comment;
+        this.photoPath = photoUri;
         this.date = date;
         this.geolocation = geolocation;
     }
 
-    public Quirk getQuirk(){
-        return quirk;
+
+    public String getId(){
+        return eid;
     }
 
-    public void setQuirk(Quirk quirk){
-        this.quirk = quirk;
+    public void setId(String eid){
+        this.eid = eid;
+    }
+
+    public String getUser(){
+        return user;
+    }
+
+    public void setUser(String user){
+        this.user = user;
     }
 
     public String getComment(){
@@ -51,12 +75,12 @@ public class Event implements Mappable, Newsable {
         this.comment = comment;
     }
 
-    public Uri getPhotoUri(){
-        return photoUri;
+    public String getPhotoPath(){
+        return photoPath;
     }
 
-    public void setPhotoUri(Uri photoUri){
-        this.photoUri = photoUri;
+    public void setPhotoPath(String photoUri){
+        this.photoPath = photoUri;
     }
 
     public Date getDate(){
@@ -80,16 +104,13 @@ public class Event implements Mappable, Newsable {
     }
 
     public boolean isEquals(Event event){
-        if (this.quirk==event.quirk && this.comment==event.comment && this.photoUri==event.photoUri
-                && this.date==event.date && this.geolocation==event.geolocation) {
-            return true;
-        }
-        return false;
+        return this.user.equals(event.user) && this.comment.equals(event.comment) && this.photoPath.equals(event.photoPath)
+                && this.date.equals(event.date) && this.geolocation.equals(event.geolocation);
     }
 
     @Override
     public String buildNewsHeader() {
-        return getQuirk().getUser() + " logged an event!";
+        return getUser() + " logged an event!";
     }
 
     @Override

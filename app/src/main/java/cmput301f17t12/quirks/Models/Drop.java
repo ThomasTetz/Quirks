@@ -1,5 +1,7 @@
 package cmput301f17t12.quirks.Models;
 
+import java.io.Serializable;
+
 import cmput301f17t12.quirks.Enumerations.Rarity;
 
 /**
@@ -7,7 +9,7 @@ import cmput301f17t12.quirks.Enumerations.Rarity;
  */
 
 //public class Drop implements Tradable {
-public class Drop {
+public class Drop implements Serializable {
 
     public Rarity rarity;
     public String name;

@@ -24,6 +24,7 @@ public class Quirk implements Newsable, Serializable {
     @JestId
     private String qid;
 
+
     // Parameter with only required values
     public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue, String user) {
         this.events = new EventList();
@@ -41,7 +42,7 @@ public class Quirk implements Newsable, Serializable {
     }
 
     public Quirk(EventList events, String title, String type, String reason,
-                 Date startDate, ArrayList<Day> occDate, int currValue, int goalValue){
+                 Date startDate, ArrayList<Day> occDate, int currValue, int goalValue, String user){
         this.events = events;
         this.title = title;
         this.type = type;
@@ -50,6 +51,15 @@ public class Quirk implements Newsable, Serializable {
         this.occDate = occDate;
         this.currValue = currValue;
         this.goalValue = goalValue;
+        this.user = user;
+    }
+
+    public String getId(){
+        return qid;
+    }
+
+    public void setId(String qid){
+        this.qid = qid;
     }
 
     public String getId(){
@@ -144,6 +154,11 @@ public class Quirk implements Newsable, Serializable {
         this.user = user;
     }
 
+    public boolean isEquals(Quirk quirk){
+        return this.user.equals(quirk.user) && this.title.equals(quirk.title) && this.type.equals(quirk.type) && this.reason.equals(quirk.reason)
+                && this.startDate.equals(quirk.startDate) && this.occDate.equals(quirk.occDate) && this.currValue == quirk.currValue
+                && this.goalValue == quirk.goalValue && this.events.equals(quirk.events);
+    }
 
     @Override
     public String buildNewsHeader() {
