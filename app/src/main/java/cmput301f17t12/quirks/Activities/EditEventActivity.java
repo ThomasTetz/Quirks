@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
@@ -91,7 +92,10 @@ public class EditEventActivity extends AppCompatActivity {
         String comment = commentText.getText().toString();
 
         referenced_event.setComment(comment);
-        byte[] photoByte = bitmapToByte(bitmap);
+        byte[] photoByte = new byte[] {};
+        if (photoByte.length != 0) {
+            photoByte = bitmapToByte(bitmap);
+        }
         referenced_event.setPhotoByte(photoByte);
         referenced_event.setDate(new Date());
 
@@ -108,6 +112,7 @@ public class EditEventActivity extends AppCompatActivity {
 
     public void deleteCommand(View view) {
         referenced_quirk.removeEvent(referenced_event_copy);
+        referenced_quirk.decCurrValue();
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(currentlylogged);

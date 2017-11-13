@@ -8,39 +8,40 @@
     tools:context="cmput301f17t12.quirks.Activities.EditQuirkActivity">
 
     <RelativeLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="1dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/SaveBut"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/QuirkEditradioButtonSat"
-            android:onClick="saveButtonClicked"
-            android:text="Save" />
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/DeleteBut"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/QuirkEditradioButtonTue"
-            android:onClick="DeleteButtonClicked"
-            android:text="Delete" />
+            <Button
+                android:id="@+id/SaveBut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="saveButtonClicked"
+                android:text="Save" />
 
-        <Button
-            android:id="@+id/CancelBut"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/QuirkeditTextReason"
-            android:layout_alignParentBottom="true"
-            android:onClick="cancelButtonClicked"
-            android:text="Cancel" />
+            <Button
+                android:id="@+id/DeleteBut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="DeleteButtonClicked"
+                android:text="Delete" />
 
-        <RadioButton
+            <Button
+                android:id="@+id/CancelBut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="cancelButtonClicked"
+                android:text="Cancel" />
+        </LinearLayout>
+
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonFri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +50,7 @@
             android:layout_toEndOf="@+id/QuirkEditradioButtonThur"
             android:text="Friday" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonSat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
             android:layout_below="@+id/QuirkEditradioButtonMon"
             android:layout_alignStart="@+id/QuirkEditradioButtonMon" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonSun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
             android:layout_toEndOf="@+id/QuirkEditradioButtonSat"
             android:text="Sun" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonWed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +76,7 @@
             android:layout_alignBottom="@+id/QuirkEditradioButtonTue"
             android:layout_toEndOf="@+id/QuirkEditradioButtonTue" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonThur"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +85,7 @@
             android:layout_alignBottom="@+id/QuirkEditradioButtonWed"
             android:layout_toEndOf="@+id/QuirkEditradioButtonWed" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonTue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,102 +94,112 @@
             android:layout_alignBottom="@+id/QuirkEditradioButtonMon"
             android:layout_toEndOf="@+id/QuirkEditradioButtonMon" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/QuirkEditradioButtonMon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mon"
+            android:layout_alignStart="@+id/textViewOccurence"
             android:layout_below="@+id/textViewOccurence"
-            android:layout_alignStart="@+id/textViewOccurence" />
+            android:checked="false"
+            android:text="Mon" />
 
         <TextView
             android:id="@+id/textViewOccurence"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:text="Occurence"
+            android:layout_marginEnd="12dp"
             android:textSize="15sp"
             android:layout_below="@+id/QuirkeditTextReason"
             android:layout_alignStart="@+id/QuirkeditTextReason" />
 
         <EditText
             android:id="@+id/QuirkeditTextReason"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@color/backgroundlight"
-            android:ems="10"
-            android:hint="Reason"
             android:inputType="textPersonName"
+            android:layout_marginEnd="12dp"
             android:layout_below="@+id/textViewReason"
             android:layout_alignStart="@+id/textViewReason" />
 
         <TextView
             android:id="@+id/textViewReason"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reason"
-            android:textSize="15sp"
+            android:textSize="17sp"
+            android:layout_marginEnd="12dp"
             android:layout_below="@+id/QuirkeditTextGoal"
             android:layout_alignStart="@+id/QuirkeditTextGoal"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="12dp" />
 
         <TextView
             android:id="@+id/textViewGoal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/QuirkeditTextTitle"
             android:layout_below="@+id/QuirkeditTextTitle"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="17sp"
             android:text="Goal" />
 
         <EditText
             android:id="@+id/QuirkeditTextTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewTitle"
             android:layout_below="@+id/textViewTitle"
             android:background="@color/backgroundlight"
-            android:ems="10"
-            android:hint="Title"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginEnd="12dp"
+            android:textSize="17sp"/>
 
         <TextView
             android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/QuirkeditTextType"
             android:layout_below="@+id/QuirkeditTextType"
             android:layout_marginTop="10dp"
+            android:textSize="17sp"
+            android:layout_marginEnd="12dp"
             android:text="Title" />
 
         <TextView
             android:id="@+id/textViewType"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="12dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="17sp"
             android:text="Type" />
 
         <EditText
             android:id="@+id/QuirkeditTextType"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewType"
             android:layout_below="@+id/textViewType"
             android:background="@color/backgroundlight"
-            android:ems="10"
-            android:hint="Type"
+            android:layout_marginEnd="12dp"
+            android:textSize="17sp"
+
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/QuirkeditTextGoal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewGoal"
             android:layout_below="@+id/textViewGoal"
-            android:ems="10"
+            android:layout_marginEnd="12dp"
+            android:textSize="17sp"
             android:inputType="number" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

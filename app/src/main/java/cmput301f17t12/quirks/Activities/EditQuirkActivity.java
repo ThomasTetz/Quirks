@@ -1,17 +1,16 @@
 package cmput301f17t12.quirks.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Enumerations.Day;
@@ -23,13 +22,13 @@ import cmput301f17t12.quirks.R;
 public class EditQuirkActivity extends AppCompatActivity {
 
     private ArrayList<Day> occurence;
-    public RadioButton radButMon;
-    public RadioButton radButTue;
-    public RadioButton radButWed;
-    public RadioButton radButThur;
-    public RadioButton radButFri;
-    public RadioButton radButSat;
-    public RadioButton radButSun;
+    public CheckBox radButMon;
+    public CheckBox radButTue;
+    public CheckBox radButWed;
+    public CheckBox radButThur;
+    public CheckBox radButFri;
+    public CheckBox radButSat;
+    public CheckBox radButSun;
     public Quirk incomingQuirk;
 
     User currentlylogged;
@@ -38,15 +37,15 @@ public class EditQuirkActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_quirk_clicked);
+        setContentView(R.layout.activity_edit_quirk);
 
-        radButMon = (RadioButton)findViewById(R.id.QuirkEditradioButtonMon);
-        radButTue = (RadioButton)findViewById(R.id.QuirkEditradioButtonTue);
-        radButWed = (RadioButton)findViewById(R.id.QuirkEditradioButtonWed);
-        radButThur = (RadioButton)findViewById(R.id.QuirkEditradioButtonThur);
-        radButFri = (RadioButton)findViewById(R.id.QuirkEditradioButtonFri);
-        radButSat = (RadioButton)findViewById(R.id.QuirkEditradioButtonSat);
-        radButSun = (RadioButton)findViewById(R.id.QuirkEditradioButtonSun);
+        radButMon = (CheckBox)findViewById(R.id.QuirkEditradioButtonMon);
+        radButTue = (CheckBox)findViewById(R.id.QuirkEditradioButtonTue);
+        radButWed = (CheckBox)findViewById(R.id.QuirkEditradioButtonWed);
+        radButThur = (CheckBox)findViewById(R.id.QuirkEditradioButtonThur);
+        radButFri = (CheckBox)findViewById(R.id.QuirkEditradioButtonFri);
+        radButSat = (CheckBox)findViewById(R.id.QuirkEditradioButtonSat);
+        radButSun = (CheckBox)findViewById(R.id.QuirkEditradioButtonSun);
 
         EditText TitleEdit = (EditText)findViewById(R.id.QuirkeditTextTitle);
         EditText TypeEdit = (EditText)findViewById(R.id.QuirkeditTextType);

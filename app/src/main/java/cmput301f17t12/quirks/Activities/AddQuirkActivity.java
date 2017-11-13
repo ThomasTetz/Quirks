@@ -2,8 +2,10 @@ package cmput301f17t12.quirks.Activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -44,13 +47,13 @@ public class AddQuirkActivity extends AppCompatActivity {
     private ArrayList<Day> occurence;
     private TextView SelectDate;
     private DatePickerDialog.OnDateSetListener SelectDateListener;
-    public RadioButton radButMon;
-    public RadioButton radButTue;
-    public RadioButton radButWed;
-    public RadioButton radButThur;
-    public RadioButton radButFri;
-    public RadioButton radButSat;
-    public RadioButton radButSun;
+    public CheckBox radButMon;
+    public CheckBox radButTue;
+    public CheckBox radButWed;
+    public CheckBox radButThur;
+    public CheckBox radButFri;
+    public CheckBox radButSat;
+    public CheckBox radButSun;
     private AlertDialog.Builder builder;
     public String query;
     public String jestID;
@@ -61,26 +64,24 @@ public class AddQuirkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_quirk);
         Button Save_but = (Button)findViewById(R.id.SaveBut);
-        Button Cancel_but = (Button)findViewById(R.id.Cancelbut);
-        radButMon = (RadioButton)findViewById(R.id.radioButMonday);
-        radButTue = (RadioButton)findViewById(R.id.radioButTuesday);
-        radButWed = (RadioButton)findViewById(R.id.radioButWednesday);
-        radButThur = (RadioButton)findViewById(R.id.radioButThursday);
-        radButFri = (RadioButton)findViewById(R.id.radioButFriday);
-        radButSat = (RadioButton)findViewById(R.id.radioButSaturday);
-        radButSun = (RadioButton)findViewById(R.id.radioButSunday);
+        Button Cancel_but = (Button)findViewById(R.id.CancelBut);
+        radButMon = (CheckBox)findViewById(R.id.QuirkEditradioButtonMon);
+        radButTue = (CheckBox)findViewById(R.id.QuirkEditradioButtonTue);
+        radButWed = (CheckBox)findViewById(R.id.QuirkEditradioButtonWed);
+        radButThur = (CheckBox)findViewById(R.id.QuirkEditradioButtonThur);
+        radButFri = (CheckBox)findViewById(R.id.QuirkEditradioButtonFri);
+        radButSat = (CheckBox)findViewById(R.id.QuirkEditradioButtonSat);
+        radButSun = (CheckBox)findViewById(R.id.QuirkEditradioButtonSun);
         SelectDate = (TextView)findViewById(R.id.textViewSelDate);
-      
-        jestID = "AV-xx8ahi8-My2t7XP4j";
-        ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
-        getSingleUserTask.execute(jestID);
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        String jestID = settings.getString("jestID", "defaultvalue");
 
-        if (currentlylogged != null) {
-            QuirkList quirks = currentlylogged.getQuirks();
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
         }
 
+        currentlylogged = HelperFunctions.getUserObject(jestID);
 
         SelectDate.setOnClickListener(new View.OnClickListener() {
 
@@ -97,6 +98,7 @@ public class AddQuirkActivity extends AppCompatActivity {
            }
 
         });
+
         SelectDateListener = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -111,15 +113,12 @@ public class AddQuirkActivity extends AppCompatActivity {
 
     }
 
-    // TODO:
-    // Save button clicked -> create and save new quirk and return to the previous activity
-
     public void saveButtonClicked(View v){
 
-        type = ((EditText)findViewById(R.id.editTextType)).getText().toString();
-        title = ((EditText)findViewById(R.id.editTitle)).getText().toString();
-        reason = ((EditText)findViewById(R.id.editTextReason)).getText().toString();
-        goal = ((EditText)findViewById(R.id.editTextGoal)).getText().toString();
+        type = ((EditText)findViewById(R.id.QuirkeditTextType)).getText().toString();
+        title = ((EditText)findViewById(R.id.QuirkeditTextTitle)).getText().toString();
+        reason = ((EditText)findViewById(R.id.QuirkeditTextReason)).getText().toString();
+        goal = ((EditText)findViewById(R.id.QuirkeditTextGoal)).getText().toString();
         ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
 
 
@@ -136,13 +135,12 @@ public class AddQuirkActivity extends AppCompatActivity {
         else {
 
             QuirkOccurence = occurenceItemSelected();
-            //Intent intent = new Intent();
-            Date DatetoTest = new Date();
+
             int Quirk_goal = Integer.parseInt(goal);
 
             //The user in here should be the one query from db
+            Quirk QuirkCreated = new Quirk(title, type, startDate, QuirkOccurence, Quirk_goal, currentlylogged.getUsername(), reason);
             Log.d(TAG, "saveButtonClicked: The dateinput is now  " + startDate);
-            Quirk QuirkCreated = new Quirk(title,type,startDate,QuirkOccurence,Quirk_goal,currentlylogged.getUsername());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the type is  " + QuirkCreated.getType() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getDate() );
@@ -153,35 +151,16 @@ public class AddQuirkActivity extends AppCompatActivity {
             ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
             updateUserTask.execute(currentlylogged);
 
-
-            /*
-            String query = user.getId();
-            ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
-            getSingleUserTask.execute(query);
-            user.addQuirk(QuirkCreated);
-            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
-            updateUserTask.execute(user);
-
-            //intent.putExtra("Quirk_Created", QuirkCreated);
-            setResult(1, intent);
-            */
-
             finish();
         }
 
     }
 
-    // TODO:
-    // Cancel button clicked -> disregard selected options and return to the previous activity
     public void cancelButtonClicked(View v){
         Intent intent = new Intent(AddQuirkActivity.this,MainActivity.class);
-    //    intent.putExtra("Cancel",1);
-     //   setResult(1,intent);
         finish();
     }
 
-    // TODO:
-    // an occurence item was sl
     private ArrayList<Day> occurenceItemSelected(){
         ArrayList<Day> Day = new ArrayList<Day>();
         if(radButMon.isChecked()){
