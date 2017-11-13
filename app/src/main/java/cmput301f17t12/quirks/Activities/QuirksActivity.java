@@ -11,6 +11,7 @@ import java.util.Date;
 import cmput301f17t12.quirks.*;
 import cmput301f17t12.quirks.Adapters.QuirkListItemAdapter;
 import cmput301f17t12.quirks.Enumerations.Day;
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.*;
 
 public class QuirksActivity extends BaseActivity {
@@ -24,9 +25,13 @@ public class QuirksActivity extends BaseActivity {
         //setContentView(R.layout.activity_quirks);
 
         //TODO: Get user's quirklist
+        // Testing - replace this with a userID search later on.
+        String jestID = "AV-xx8ahi8-My2t7XP4j";
 
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        quirkList = currentlylogged.getQuirks();
         // Test the ListView format
-        ArrayList testOccurence = new ArrayList();
+      /*  ArrayList testOccurence = new ArrayList();
         testOccurence.add(Day.MONDAY);
         Date testTime = new Date(System.currentTimeMillis());
         Quirk testQuirk = new Quirk("Big ol test", "TEST", testTime, testOccurence, 3,"john");
@@ -41,7 +46,7 @@ public class QuirksActivity extends BaseActivity {
         testQuirk2.setUser("jlane");
         testQuirk2.incCurrValue();
         quirkList.addQuirk(testQuirk2);
-
+        */
 
         //TODO: Create listView object and assign the custom adapter
         // create instance of custom adapter
@@ -55,7 +60,7 @@ public class QuirksActivity extends BaseActivity {
         QuirkCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QuirksActivity.this,EditQuirkClickedActivity.class);
+                Intent intent = new Intent(QuirksActivity.this,AddQuirkActivity.class);
                 intent.putExtra("Editing",1);
                 startActivityForResult(intent,1);
             }
