@@ -19,6 +19,7 @@ import java.util.Date;
 import cmput301f17t12.quirks.*;
 import cmput301f17t12.quirks.Adapters.QuirkListItemAdapter;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 
 import cmput301f17t12.quirks.Models.*;
@@ -46,7 +47,7 @@ public class QuirksActivity extends BaseActivity {
         filterValue = (EditText) findViewById(R.id.filterVal);
 
         //updateQuirkList(jestID);
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        final User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirkList = currentlylogged.getQuirks();
 
         //TODO: Create listView object and assign the custom adapter
@@ -113,7 +114,8 @@ public class QuirksActivity extends BaseActivity {
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
                 else{
-                    applyFilter(query);
+//                    applyFilter(query);
+                    offlineFilter(query, extraString, currentlylogged);
                 }
             }
 
@@ -177,6 +179,63 @@ public class QuirksActivity extends BaseActivity {
         return query;
     }
 
+    public void offlineFilter(String query, String arg, User user){
+        QuirkList userQuirks = user.getQuirks();
+        QuirkList filteredQuirks = new QuirkList();
+        int size = user.getQuirks().size();
+
+
+        if (query.equals("all") || (query.equals("type") && arg.equals("")) || (query.equals("comment") && arg.equals(""))){
+            // show all
+            // maybe remove the conditions that default blank argument to showing all values
+            filteredQuirks = userQuirks;
+            applyOfflineFilter(filteredQuirks);
+        }
+        else if (query.equals("today")){
+            // show all today
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                ArrayList<Day> occurences = curQuirk.getOccDate();
+                // @TODO somehow get today
+                Day today = Day.MONDAY;
+                if (occurences.contains(today)){
+                    filteredQuirks.addQuirk(curQuirk);
+                }
+            }
+            applyOfflineFilter(filteredQuirks);
+        }
+        else if (query.equals("type") && !arg.equals("")){
+            // show all with that type
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                if (curQuirk.getType().equals(arg)){
+                    filteredQuirks.addQuirk(curQuirk);
+                }
+            }
+            applyOfflineFilter(filteredQuirks);
+        }
+        else if (query.equals("comment") && !arg.equals("")){
+            // show all with comment matching
+            // @TODO
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                EventList events = curQuirk.getEventList();
+                int size2 = events.size();
+                for (int j = 0; j < size2; j++){
+                    // @TODO, should this activity be showing events and not habits?
+                }
+            }
+            applyOfflineFilter(filteredQuirks);
+
+        }
+        else{
+            System.out.println("offline filter failed if/else statements");
+        }
+    }
+
+    public void applyOfflineFilter(QuirkList quirks){
+        // @TODO update the listview with the given QuirkList
+    }
     public void applyFilter(String query){
 
         ElasticSearchUserController.GetQuirksTask getQuirksTask
