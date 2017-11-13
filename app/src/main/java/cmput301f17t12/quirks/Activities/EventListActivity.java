@@ -67,12 +67,11 @@ public class EventListActivity extends AppCompatActivity {
         User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirk = currentlylogged.getQuirks().getQuirk(pos);
         eventList = quirk.getEventList();
-        
+
         tvQuirkName.setText(quirk.getTitle());
         adapter = new EventListItemAdapter(eventList, this);
         ListView lView = (ListView) findViewById(R.id.el_eventslistview);
         lView.setAdapter(adapter);
-
     }
 
     // Called if activity resumes. Loads any event updates from the database
