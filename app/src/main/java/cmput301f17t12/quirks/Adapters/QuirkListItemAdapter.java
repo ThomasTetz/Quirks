@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
         progressBar.setProgress(quirkItem.getCurrValue());
 
         // Handle Button
-        Button quirkButton = (Button) view.findViewById(R.id.quirk_button);
+        ImageButton quirkButton = (ImageButton) view.findViewById(R.id.quirk_button);
         quirkButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
