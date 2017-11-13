@@ -139,7 +139,7 @@ public class QuirksActivity extends BaseActivity {
 
         });
 
-        // Create listView handler (important all elements with a custom listview item must have focusable = false)
+        // Create listView handler (for custom listview important that all items must have focusable = false)
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
