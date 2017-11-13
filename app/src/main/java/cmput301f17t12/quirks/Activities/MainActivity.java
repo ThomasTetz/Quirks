@@ -64,10 +64,17 @@ public class MainActivity extends BaseActivity {
             currentlylogged = HelperFunctions.getUserObject(jestID);
         }
 
+        // TODO: Need to filter this quirk
         ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
+        ArrayList<String> types = new ArrayList<String>();
         for (int i = 0; i < quirks.size(); i++) {
-            newsitems.addAll(quirks.get(i).getEventList().getList());
+            ArrayList<Event> temp = quirks.get(i).getEventList().getList();
+            for (int j = 0; j < temp.size(); j++) {
+                newsitems.add(temp.get(j));
+                types.add(quirks.get(i).getType());
+            }
         }
+
         // Habit history doesn't show habits? I think..
         //newsitems.addAll(quirks);
 
@@ -78,7 +85,7 @@ public class MainActivity extends BaseActivity {
         });
 
         // instantiate custom adapter
-        adapter = new NewsItemAdapter(newsitems, this);
+        adapter = new NewsItemAdapter(newsitems, this, types);
 
         // handle listview and assign adapter
         ListView lView = (ListView) findViewById(R.id.newsfeed_listview);
