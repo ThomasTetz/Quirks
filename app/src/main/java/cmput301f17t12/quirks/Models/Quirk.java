@@ -271,12 +271,21 @@ public class Quirk implements Newsable, Serializable {
                 && this.startDate.equals(quirk.startDate) && this.occDate.equals(quirk.occDate) && this.currValue == quirk.currValue
                 && this.goalValue == quirk.goalValue && this.events.equals(quirk.events);
     }
-    
+
+    /**
+     * Build news header string
+     * @param extra Extra string to concatenate to user string
+     * @return News header string
+     */
     @Override
     public String buildNewsHeader(String extra) {
         return getUser() + " added a new Quirk!";
     }
 
+    /**
+     * Build TimeSpan for the Event
+     * @return Timespan
+     */
     @Override
     public String buildDate() {
         CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(
@@ -287,11 +296,18 @@ public class Quirk implements Newsable, Serializable {
         return relativeTimeSpan.toString();
     }
 
+    /**
+     * Build the description for the event
+     * @return Description string
+     */
     @Override
     public String buildNewsDescription() {
         return getTitle();
     }
 
+    /**
+     * Return quirk title as string representation of the quirk
+     */
     @Override
     public String toString() {
         return getTitle();

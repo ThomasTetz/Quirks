@@ -209,7 +209,7 @@ public class Event implements Mappable, Newsable, Serializable {
 
     /**
      * Build the description for the event
-     * @return
+     * @return Description string
      */
     @Override
     public String buildNewsDescription() {
