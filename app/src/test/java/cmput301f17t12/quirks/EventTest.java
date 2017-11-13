@@ -89,11 +89,11 @@ public class EventTest {
     }
 
     @Test
-    public void testsetPhotoURI() {
+    public void testSetPhotoURI() {
         Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
-        String somePath = "/storage/sdcard/DCIM/Camera/IMG_20171111_193451.jpg";
-        event.setPhotoPath(somePath);
-        assertEquals(event.getPhotoPath(), somePath);
+        byte[] someArray = {-1, -2, 40};
+        event.setPhotoByte(someArray);
+        assertEquals(event.getPhotoByte(), someArray);
     }
 
     @Test
