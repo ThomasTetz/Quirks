@@ -67,22 +67,6 @@
         app:layout_constraintTop_toBottomOf="@+id/event_map_button"
         app:layout_constraintVertical_bias="0.625" />
 
-    <EditText
-        android:id="@+id/filterVal"
-        android:layout_width="75dp"
-        android:layout_height="38dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:textSize="10sp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="39dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/filter_type"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.562" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -95,16 +79,6 @@
         android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/filter_type"
         app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Filter Value:"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/textView"
-        android:layout_marginLeft="112dp" />
 
     <Button
         android:id="@+id/applyFilterButton"
