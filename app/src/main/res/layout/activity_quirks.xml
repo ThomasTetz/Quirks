@@ -1,122 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/event_map_button"
-        android:layout_width="69dp"
-        android:layout_height="54dp"
-        android:text="Event Map"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="16dp"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="15dp"
-        tools:layout_editor_absoluteY="13dp" />
+    <LinearLayout
+        android:id="@+id/topbuttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/filter_type"
-        android:layout_width="144dp"
-        android:layout_height="30dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="35dp"
-        app:layout_constraintLeft_toRightOf="@+id/event_map_button"
-        android:layout_marginLeft="18dp"
-        tools:layout_editor_absoluteY="36dp" />
+        <Button
+            android:id="@+id/event_map_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Event Map" />
 
-    <Button
-        android:id="@+id/add_quirk_button"
-        android:layout_width="305dp"
-        android:layout_height="48dp"
-        android:text="New Quirk"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        <RelativeLayout
+            android:id="@+id/filterstuff"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
 
+            <RelativeLayout
+                android:id="@+id/textViewandButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="Filter:"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/applyFilterButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_toEndOf="@id/textView"
+                    android:text="Apply"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <Spinner
+                android:id="@+id/filter_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewandButton" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter Value:" />
+
+            <EditText
+                android:id="@+id/filterVal"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_below="@+id/textView3"
+                android:layout_marginEnd="5dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/navigation"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:menu="@menu/navigation" />
+
+    <Button
+        android:id="@+id/add_quirk_button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_above="@+id/bottom_navigation"
+        android:text="New Quirk" />
 
     <ListView
         android:id="@+id/quirk_listview"
-        android:layout_width="361dp"
-        android:layout_height="316dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_quirk_button"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_map_button"
-        app:layout_constraintVertical_bias="0.625" />
-
-    <EditText
-        android:id="@+id/filterVal"
-        android:layout_width="75dp"
-        android:layout_height="38dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:textSize="10sp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="39dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/filter_type"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.562" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Filter:"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/event_map_button"
-        android:layout_marginLeft="25dp"
-        android:layout_marginBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/filter_type"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_above="@id/add_quirk_button"
+        android:layout_below="@id/topbuttons"
+        android:layout_marginTop="8dp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Filter Value:"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/textView"
-        android:layout_marginLeft="112dp" />
-
-    <Button
-        android:id="@+id/applyFilterButton"
-        android:layout_width="52dp"
-        android:layout_height="36dp"
-        android:layout_marginLeft="8dp"
-        android:text="Apply"
-        android:textAllCaps="false"
-        android:textSize="8sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView"
-        app:layout_constraintLeft_toRightOf="@+id/textView"
-        tools:layout_editor_absoluteY="9dp" />
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
 

@@ -60,7 +60,7 @@ public class EventListActivity extends AppCompatActivity {
         quirk = currentlylogged.getQuirks().getQuirk(pos);
         eventList = quirk.getEventList();
 
-        tvQuirkName.setText(quirk.getTitle());
+        tvQuirkName.setText(String.format("Events for: %s", quirk.getTitle()));
         adapter = new EventListItemAdapter(eventList, this);
         ListView lView = (ListView) findViewById(R.id.el_eventslistview);
         lView.setAdapter(adapter);
