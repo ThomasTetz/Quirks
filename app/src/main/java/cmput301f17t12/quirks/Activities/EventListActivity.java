@@ -63,18 +63,17 @@ public class EventListActivity extends AppCompatActivity {
         ArrayList<Day> occurence = new ArrayList<Day>() {};
         occurence.add(Day.SUNDAY);
         Date thirtyminsago = new Date(System.currentTimeMillis() - 3600 * 500);
-        Quirk testQuirk = new Quirk("Boy dance", "dancing", thirtyminsago, occurence, 10);
-        testQuirk.setUser("jo");
-        Event testEvent = new Event(testQuirk, "Event0", new Date());
-        Event testEvent1 = new Event(testQuirk, "Event1", new Date());
-        Event testEvent2 = new Event(testQuirk, "Event2", new Date());
-        Event testEvent3 = new Event(testQuirk, "Event3", new Date());
-        Event testEvent4 = new Event(testQuirk, "Event4", new Date());
-        Event testEvent5 = new Event(testQuirk, "Event5", new Date());
-        Event testEvent6 = new Event(testQuirk, "Event6", new Date());
-        Event testEvent7 = new Event(testQuirk, "Event7", new Date());
-        Event testEvent8 = new Event(testQuirk, "Event8", new Date());
-        Event testEvent9 = new Event(testQuirk, "Event9", new Date());
+
+        Event testEvent = new Event("user", "Event0", new Date());
+        Event testEvent1 = new Event("user", "Event1", new Date());
+        Event testEvent2 = new Event("user", "Event2", new Date());
+        Event testEvent3 = new Event("user", "Event3", new Date());
+        Event testEvent4 = new Event("user", "Event4", new Date());
+        Event testEvent5 = new Event("user", "Event5", new Date());
+        Event testEvent6 = new Event("user", "Event6", new Date());
+        Event testEvent7 = new Event("user", "Event7", new Date());
+        Event testEvent8 = new Event("user", "Event8", new Date());
+        Event testEvent9 = new Event("user", "Event9", new Date());
 
         eventList.addEvent(testEvent);
         eventList.addEvent(testEvent1);
@@ -87,15 +86,9 @@ public class EventListActivity extends AppCompatActivity {
         eventList.addEvent(testEvent8);
         eventList.addEvent(testEvent9);
 
-
-        tvQuirkName.setText(testQuirk.getTitle());
         adapter = new EventListItemAdapter(eventList, this);
         ListView lView = (ListView) findViewById(R.id.el_eventslistview);
         lView.setAdapter(adapter);
-
-
-
-
     }
 
 

@@ -17,7 +17,6 @@ import java.util.Date;
 import cmput301f17t12.quirks.*;
 import cmput301f17t12.quirks.Adapters.QuirkListItemAdapter;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
-import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 
 import cmput301f17t12.quirks.Models.*;
@@ -144,9 +143,8 @@ public class QuirksActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(QuirksActivity.this, EditQuirkClickedActivity.class);
-                Quirk quirk = (Quirk) parent.getItemAtPosition(position);
-                intent.putExtra("Quirk", quirk);
+                Intent intent = new Intent(QuirksActivity.this, EditQuirkActivity.class);
+                intent.putExtra("SELECTED_QUIRK_INDEX", position);
                 startActivity(intent);
             }
         });

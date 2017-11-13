@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="cmput301f17t12.quirks.Activities.EditQuirkClickedActivity">
+    tools:context="cmput301f17t12.quirks.Activities.EditQuirkActivity">
 
     <RelativeLayout
         android:layout_width="368dp"

@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,17 +13,15 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.Date;
 
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Enumerations.Day;
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Quirk;
+import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
-public class EditQuirkClickedActivity extends AppCompatActivity {
+public class EditQuirkActivity extends AppCompatActivity {
 
-    private static final String TAG = "Inside EditQuirk";
-    private String type;
-    private String title;
-    private String reason;
-    private String goal;
     private ArrayList<Day> occurence;
     public RadioButton radButMon;
     public RadioButton radButTue;
@@ -32,13 +32,14 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
     public RadioButton radButSun;
     public Quirk incomingQuirk;
 
+    User currentlylogged;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_quirk_clicked);
-        Intent incomingIntent = getIntent();
+
         radButMon = (RadioButton)findViewById(R.id.QuirkEditradioButtonMon);
         radButTue = (RadioButton)findViewById(R.id.QuirkEditradioButtonTue);
         radButWed = (RadioButton)findViewById(R.id.QuirkEditradioButtonWed);
@@ -52,100 +53,67 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         EditText ReasonEdit = (EditText)findViewById(R.id.QuirkeditTextReason);
         EditText GoalEdit = (EditText)findViewById(R.id.QuirkeditTextGoal);
 
-        Date testDate = new Date();
-        ArrayList testOccurence = new ArrayList();
-        testOccurence.add(Day.MONDAY);
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        String jestID = settings.getString("jestID", "defaultvalue");
 
-        incomingQuirk = new Quirk("Big ol test", "TEST",testDate ,testOccurence, 3,"user1");
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
 
+        currentlylogged = HelperFunctions.getUserObject(jestID);
 
-        /*
-        Quirk incomingQuirk = (Quirk)getIntent().getSerializableExtra("Edit Quirk");
+        Integer incomingQuirkIndex = getIntent().getIntExtra("SELECTED_QUIRK_INDEX", -1);
 
+        if (incomingQuirkIndex == -1) {
+            Log.i("Error", "Failed to receive SELECTED_QUIRK_INDEX");
+            finish();
+        }
+
+        incomingQuirk = currentlylogged.getQuirks().getQuirk(incomingQuirkIndex);
         TitleEdit.setText(incomingQuirk.getTitle());
         TypeEdit.setText(incomingQuirk.getType());
         ReasonEdit.setText(incomingQuirk.getReason());
-        GoalEdit.setText(incomingQuirk.getGoalValue());
-        */
-
-
+        GoalEdit.setText(String.valueOf(incomingQuirk.getGoalValue()));
+        setOccurences();
     }
 
-    // TODO:
-    // Save button clicked -> save changes made to quirk, return to previous activity
     public void saveButtonClicked(View v){
-        Log.d(TAG, "saveButtonClicked: im in here now ");
-        type = ((EditText)findViewById(R.id.QuirkeditTextType)).getText().toString();
-        title = ((EditText)findViewById(R.id.QuirkeditTextTitle)).getText().toString();
-        reason = ((EditText)findViewById(R.id.QuirkeditTextReason)).getText().toString();
-        goal = ((EditText)findViewById(R.id.QuirkeditTextGoal)).getText().toString();
-        ArrayList<Day> QuirkOccurence = new ArrayList<Day>();
+        String type = ((EditText)findViewById(R.id.QuirkeditTextType)).getText().toString();
+        String title = ((EditText)findViewById(R.id.QuirkeditTextTitle)).getText().toString();
+        String reason = ((EditText)findViewById(R.id.QuirkeditTextReason)).getText().toString();
+        String goal = ((EditText)findViewById(R.id.QuirkeditTextGoal)).getText().toString();
+
+        ArrayList<Day> occurences = occurenceItemSelected();
 
         if((type.equals(""))||(title.equals(""))||(goal.equals(""))){
 
         }
 
         else{
-           QuirkOccurence = occurenceItemSelected();
-            Intent intent = new Intent();
-            int QuirkGoal = Integer.parseInt(goal);
-
             incomingQuirk.setTitle(title);
             incomingQuirk.setType(type);
             incomingQuirk.setReason(reason);
-            incomingQuirk.setOccDate(QuirkOccurence);
-            incomingQuirk.setGoalValue(QuirkGoal);
+            incomingQuirk.setOccDate(occurences);
+            incomingQuirk.setGoalValue(Integer.parseInt(goal));
 
-            intent.putExtra("editQuirk",incomingQuirk);
-
-            /*
-            using DB
-            String query = user.getId();
-            ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
-            getSingleUserTask.execute(query);
             ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
-            updateUserTask.execute(user);
-            */
-
+            updateUserTask.execute(currentlylogged);
 
             finish();
-
         }
-
     }
 
-
-    // TODO:
-    // Cancel button clicked -> discard any changes made to the quirk, return to previous activity
     public void cancelButtonClicked(View v){
         finish();
     }
 
-    // TODO:
-    // Delete button clicked -> delete quirk, return to previous screen
-    public void DeleteButtonClicked(View v){
-    //Delete from DB
-        //
-        /*
-        String query = user.getId();
-        Date someDate = new Date();
-        Quirk quirkTest = new Quirk("Eat a fruit every sunday", "Eating",someDate, occurence, 10);
-        String query = "something";
-        ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
-        getSingleUserTask.execute(query);
-
-        //Quirk userQuirk = user.getQuirk();
-        //user.DeleteQuirk(userQuirk);
+    public void DeleteButtonClicked(View v) {
+        currentlylogged.getQuirks().removeQuirk(incomingQuirk);
         ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
-
-        //updateUserTask.execute(user);
-        */
-
+        updateUserTask.execute(currentlylogged);
         finish();
     }
 
-    // TODO:
-    // Occurence item was selected, update the occurence ArrayList
     private ArrayList<Day> occurenceItemSelected(){
         ArrayList<Day> Day = new ArrayList<Day>();
         if(radButMon.isChecked()){
@@ -172,6 +140,31 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         return Day;
     }
 
+    private void setOccurences() {
+        ArrayList<Day> occurence = incomingQuirk.getOccDate();
+
+        if (occurence.contains(Day.MONDAY)) {
+            radButMon.setChecked(true);
+        }
+        if (occurence.contains(Day.TUESDAY)) {
+            radButTue.setChecked(true);
+        }
+        if (occurence.contains(Day.WEDNESDAY)) {
+            radButWed.setChecked(true);
+        }
+        if (occurence.contains(Day.THURSDAY)) {
+            radButThur.setChecked(true);
+        }
+        if (occurence.contains(Day.FRIDAY)) {
+            radButFri.setChecked(true);
+        }
+        if (occurence.contains(Day.SATURDAY)) {
+            radButSat.setChecked(true);
+        }
+        if (occurence.contains(Day.SUNDAY)) {
+            radButSun.setChecked(true);
+        }
+    }
 }
 
 
