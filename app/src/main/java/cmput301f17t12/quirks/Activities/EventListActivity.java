@@ -1,7 +1,10 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -50,49 +53,25 @@ public class EventListActivity extends AppCompatActivity {
         ivTopBorder.setBackgroundColor(0x8B999D);
         btnBack.setBackgroundColor(0x8B999D);
 
-        //Test User - TODO: replace this with actual userID
-        jestID = "AV-xx8ahi8-My2t7XP4j";
+        // Get userID
+        //jestID = "AV-xx8ahi8-My2t7XP4j";
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        jestID = settings.getString("jestID", "defaultvalue");
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
+        Log.d("DEBUG", jestID);
 
         // Use the quirk's pos to get the Eventlist
-        Integer pos = (Integer) getIntent().getSerializableExtra("quirkPos");
+        pos = (Integer) getIntent().getSerializableExtra("quirkPos");
         User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirk = currentlylogged.getQuirks().getQuirk(pos);
         eventList = quirk.getEventList();
-
-        /*
-        //Testing variables
-        ArrayList<Day> occurence = new ArrayList<Day>() {};
-        occurence.add(Day.SUNDAY);
-        Date thirtyminsago = new Date(System.currentTimeMillis() - 3600 * 500);
-        Quirk testQuirk = new Quirk("EVENT LIST TEST", "test", thirtyminsago, occurence, 10, jestID);
-
-        EventList testEventList = new EventList();
-
-        testEventList.addEvent(new Event(jestID, "Event0", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event1", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event2", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event3", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event4", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event5", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event6", new Date()));
-        testEventList.addEvent(new Event(jestID, "Event7", new Date()));
-        */
-
+        
         tvQuirkName.setText(quirk.getTitle());
         adapter = new EventListItemAdapter(eventList, this);
         ListView lView = (ListView) findViewById(R.id.el_eventslistview);
         lView.setAdapter(adapter);
-
-        /**
-         * When button back is clicked, return to view activity.
-         */
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-
-        });
 
     }
 

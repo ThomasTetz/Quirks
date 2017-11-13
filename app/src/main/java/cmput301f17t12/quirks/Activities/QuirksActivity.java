@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +38,13 @@ public class QuirksActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_quirks);
 
-        //TODO: Replace this test userID with the actual userID
-        jestID = "AV-xx8ahi8-My2t7XP4j";
+        // Get the UserID
+        //jestID = "AV-xx8ahi8-My2t7XP4j";
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        jestID = settings.getString("jestID", "defaultvalue");
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
 
         applyButton = (Button) findViewById(R.id.applyFilterButton);
         filterValue = (EditText) findViewById(R.id.filterVal);
