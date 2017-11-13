@@ -92,7 +92,7 @@ public class NewEventActivity extends BaseActivity {
         String comment = commentText.getText().toString();
 
         byte[] photoByte = new byte[] {};
-        if (photoByte.length != 0) {
+        if (bitmap != null) {
             photoByte = bitmapToByte(bitmap);
         }
 

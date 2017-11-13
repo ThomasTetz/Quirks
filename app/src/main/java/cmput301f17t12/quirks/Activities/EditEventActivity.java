@@ -68,8 +68,9 @@ public class EditEventActivity extends AppCompatActivity {
 
         Log.d("testing", Arrays.toString(referenced_event.getPhotoByte()));
 
-        if (photoByte != null) {
+        if (photoByte.length != 0) {
             bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
+            Log.d("testing", bitmap.toString());
             setImage(bitmap);
         }
 
@@ -98,7 +99,7 @@ public class EditEventActivity extends AppCompatActivity {
         referenced_event.setComment(comment);
 
         byte[] photoByte = new byte[] {};
-        if (photoByte.length != 0) {
+        if (bitmap != null) {
             photoByte = bitmapToByte(bitmap);
         }
 

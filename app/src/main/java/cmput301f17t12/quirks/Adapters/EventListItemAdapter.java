@@ -1,6 +1,7 @@
 package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import cmput301f17t12.quirks.Activities.EditQuirkActivity;
+import cmput301f17t12.quirks.Activities.EventListActivity;
+import cmput301f17t12.quirks.Activities.QuirksActivity;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.R;
@@ -48,15 +52,14 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
         eventHeader.setText(eventItem.getComment());
 
         // Delete event button
-        ImageButton btnEventDelete = (ImageButton) view.findViewById(R.id.el_eventdelbtn);
-        btnEventDelete.setOnClickListener( new View.OnClickListener() {
+        ImageButton eventView = (ImageButton) view.findViewById(R.id.el_eventview);
+        eventView.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Get information associated with the event
-                Event event = eventList.getEvent(pos);
-                eventList.removeEvent(event);
-                notifyDataSetChanged();
+                if (context instanceof EventListActivity) {
+                    ((EventListActivity)context).launchEditEvent(pos);
+                }
             }
         });
 

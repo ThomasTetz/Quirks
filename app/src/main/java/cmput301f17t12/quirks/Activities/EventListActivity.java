@@ -1,6 +1,7 @@
 package cmput301f17t12.quirks.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,10 +28,6 @@ import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
-/**
- * Created by charleshoang on 2017-11-12.
- */
-
 public class EventListActivity extends AppCompatActivity {
 
     private ImageView ivTopBorder;
@@ -50,8 +47,6 @@ public class EventListActivity extends AppCompatActivity {
         tvQuirkName = (TextView) findViewById(R.id.el_quirkname);
         ivTopBorder.setBackgroundColor(0x8B999D);
 
-        // Get userID
-        //jestID = "AV-xx8ahi8-My2t7XP4j";
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         jestID = settings.getString("jestID", "defaultvalue");
         if (jestID.equals("defaultvalue")) {
@@ -85,9 +80,12 @@ public class EventListActivity extends AppCompatActivity {
         quirk = currentlylogged.getQuirks().getQuirk(pos);
         EventList tempEventList = currentlylogged.getQuirks().getQuirk(pos).getEventList();
         eventList.clearAndAddEvents(tempEventList);
-
     }
 
-
-
+    public void launchEditEvent(Integer selectEventIndex) {
+        Intent intent = new Intent(EventListActivity.this, EditEventActivity.class);
+        intent.putExtra("SELECTED_EVENT_INDEX", selectEventIndex);
+        intent.putExtra("SELECTED_QUIRK_INDEX", pos);
+        startActivity(intent);
+    }
 }
