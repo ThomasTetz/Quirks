@@ -22,6 +22,7 @@ import cmput301f17t12.quirks.Adapters.NewsItemAdapter;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.BottomNavigationViewHelper;
 import cmput301f17t12.quirks.Enumerations.Day;
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.Quirk;
@@ -60,18 +61,7 @@ public class MainActivity extends BaseActivity {
                 Log.i("Error", "Did not find correct jestID");
             }
 
-            ElasticSearchUserController.GetSingleUserTask getSingleUserTask
-                    = new ElasticSearchUserController.GetSingleUserTask();
-            getSingleUserTask.execute(jestID);
-
-            try {
-                currentlylogged = getSingleUserTask.get();
-
-            }
-            catch (Exception e) {
-                Log.i("Error", "Failed to get the users from the async object");
-                Log.i("Error", e.toString());
-            }
+            currentlylogged = HelperFunctions.getUserObject(jestID);
         }
 
         ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
