@@ -37,6 +37,10 @@ public class QuirksActivity extends BaseActivity {
     private Button applyButton;
     private HashMap filterHashMap;
 
+    /**
+     * Called when the activity is first created. This initializes the activity and all class variables
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +137,9 @@ public class QuirksActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Function called when the app returns to this activity. This calls functions to update the ListView and notifies the adapter of any changes
+     */
     @Override
     protected void onResume(){
         super.onResume();
@@ -144,17 +151,24 @@ public class QuirksActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public int getFilteredIndex(Integer old) {
-        return (int) filterHashMap.get(old);
+    /**
+     * Get the index of the quirk in the user's quirklist based on the filtered index
+     * @param filterIndex Index of the filtered quirk
+     * @return Index of the quirk within the full quirkList
+     */
+    public int getFilteredIndex(Integer filterIndex) {
+        return (int) filterHashMap.get(filterIndex);
     }
 
-
+    /**
+     * Update the quirkList used in the Quirk ListView. This is called if the user has added or edited a quirk
+     * @param jestID
+     */
     public void updateQuirkList(String jestID){
         User currentlylogged = HelperFunctions.getUserObject(jestID);
         QuirkList tempList = currentlylogged.getQuirks();
         quirkList.clearAndAddQuirks(tempList);
     }
-
 
     public String getQueryFilterAll(){
         String query = "all";
@@ -172,6 +186,11 @@ public class QuirksActivity extends BaseActivity {
         return query;
     }
 
+    /**
+     * Creates a new quirkList of all filtered quirks. It then calls applyOfflineFilter to apply the filter
+     * @param query
+     * @param user
+     */
     public void offlineFilter(String query, User user){
         QuirkList userQuirks = user.getQuirks();
         QuirkList filteredQuirks = new QuirkList();
@@ -181,7 +200,7 @@ public class QuirksActivity extends BaseActivity {
         if (query.equals("all")){
             // show all
             // maybe remove the conditions that default blank argument to showing all values
-//            filteredQuirks = userQuirks;
+            // filteredQuirks = userQuirks;
             filterHashMap.clear();
             for(int i = 0; i < quirkList.size(); i++){
                 filterHashMap.put(i, i);
@@ -189,7 +208,7 @@ public class QuirksActivity extends BaseActivity {
 
             updateQuirkList(jestID);
             adapter.notifyDataSetChanged();
-//            applyOfflineFilter(quirkList);
+            //applyOfflineFilter(quirkList);
         }
         else if (query.equals("today")){
             // show all today
@@ -200,15 +219,6 @@ public class QuirksActivity extends BaseActivity {
                 ArrayList<Day> occurences = curQuirk.getOccDate();
                 // @TODO somehow get today
                 Day today = getToday();
-
-//                LocalDate date = LocalDate.of(2014, 2, 15); // 2014-06-15
-//                DayOfWeek dayOfWeek = date.getDayOfWeek();
-//                int dayOfWeekIntValue = dayOfWeek.getValue(); // 6
-//                String dayOfWeekName = dayOfWeek.name(); // SATURDAY
-//
-//
-//                System.out.println(DayOfWeek.of(1).toString());
-//                DateFormatSymbols.getInstance().getWeekdays();
 
                 if (occurences.contains(today)){
                     filterHashMap.put(j, i);
@@ -223,6 +233,10 @@ public class QuirksActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Updates the listView to now show the current filtered quirks
+     * @param filteredQuirks
+     */
     public void applyOfflineFilter(QuirkList filteredQuirks){
         System.out.println("the filtered quirks:");
         for (int i = 0; i < filteredQuirks.size(); i++){
@@ -247,6 +261,8 @@ public class QuirksActivity extends BaseActivity {
         System.out.println("after adapter");
     }
 
+
+    // No usages in the code -> Do we need this method?
     public void applyFilter(String query){
 
         ElasticSearchUserController.GetQuirksTask getQuirksTask
@@ -269,10 +285,6 @@ public class QuirksActivity extends BaseActivity {
 
     }
 
-    public void filterTest(){
-//        User user = new User("Test1", );
-    }
-
     @Override
     int getContentViewId() { return R.layout.activity_quirks; }
 
@@ -281,12 +293,10 @@ public class QuirksActivity extends BaseActivity {
         return R.id.action_quirklist;
     }
 
-    // TODO:
-    // Update the view -> Show quirks that fit the filter
-    public void setFilterClicked(){
-
-    }
-
+    /**
+     * Return enumerated date based on today's day of the week
+     * @return The enumerated value for the current weekday
+     */
     private Day getToday() {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
