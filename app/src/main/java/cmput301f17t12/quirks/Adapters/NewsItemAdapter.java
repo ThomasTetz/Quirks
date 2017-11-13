@@ -5,23 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cmput301f17t12.quirks.Activities.MainActivity;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import cmput301f17t12.quirks.R;
 
 public class NewsItemAdapter extends BaseAdapter implements ListAdapter {
 
+    private ArrayList<String> types = new ArrayList<>();
     private ArrayList<Newsable> list = new ArrayList<>();
     private Context context;
 
-    public NewsItemAdapter(ArrayList<Newsable> list, Context context) {
+    public NewsItemAdapter(ArrayList<Newsable> list, Context context, ArrayList<String> types) {
+        this.types = types;
         this.list = list;
         this.context = context;
     }
@@ -50,9 +50,10 @@ public class NewsItemAdapter extends BaseAdapter implements ListAdapter {
         }
 
         Newsable item = list.get(pos);
+
         //Handle TextView and display news header
         TextView listItemHeader = (TextView) view.findViewById(R.id.headerTxt);
-        listItemHeader.setText(item.buildNewsHeader());
+        listItemHeader.setText(item.buildNewsHeader(types.get(pos)));
 
         //Handle TextView and display news description
         TextView listItemDescription = (TextView) view.findViewById(R.id.captionTxt);

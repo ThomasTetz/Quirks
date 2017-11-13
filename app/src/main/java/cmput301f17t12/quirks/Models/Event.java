@@ -110,8 +110,8 @@ public class Event implements Mappable, Newsable, Serializable {
     }
 
     @Override
-    public String buildNewsHeader() {
-        return getUser() + " logged an event!";
+    public String buildNewsHeader(String extra) {
+        return getUser() + " logged to " + extra + "!";
     }
 
     @Override
