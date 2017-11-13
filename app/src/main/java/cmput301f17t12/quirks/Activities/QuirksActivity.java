@@ -125,7 +125,7 @@ public class QuirksActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int clickedPosition,
                                     long id) {
-                int quirkPosition = (int) filterHashMap.get(clickedPosition);
+                int quirkPosition = getFilteredIndex(clickedPosition);
                 Intent intent = new Intent(QuirksActivity.this, EditQuirkActivity.class);
                 intent.putExtra("SELECTED_QUIRK_INDEX", quirkPosition);
                 startActivity(intent);
@@ -137,8 +137,17 @@ public class QuirksActivity extends BaseActivity {
     protected void onResume(){
         super.onResume();
         updateQuirkList(jestID);
+        filterHashMap.clear();
+        for(int i = 0; i < quirkList.size(); i++){
+            filterHashMap.put(i, i);
+        }
         adapter.notifyDataSetChanged();
     }
+
+    public int getFilteredIndex(Integer old) {
+        return (int) filterHashMap.get(old);
+    }
+
 
     public void updateQuirkList(String jestID){
         User currentlylogged = HelperFunctions.getUserObject(jestID);

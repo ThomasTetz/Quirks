@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import cmput301f17t12.quirks.Activities.EditEventActivity;
 import cmput301f17t12.quirks.Activities.EventListActivity;
+import cmput301f17t12.quirks.Activities.QuirksActivity;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.R;
@@ -61,10 +62,12 @@ public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(viewGroup.getContext(), EventListActivity.class);
-                Integer serializableInt = pos;
-                intent.putExtra("quirkPos", serializableInt);
-                context.startActivity(intent);
+                if (context instanceof QuirksActivity) {
+                    Integer serializableInt = ((QuirksActivity)context).getFilteredIndex(pos);
+                    Intent intent = new Intent(viewGroup.getContext(), EventListActivity.class);
+                    intent.putExtra("quirkPos", serializableInt);
+                    context.startActivity(intent);
+                }
             }
         });
 
