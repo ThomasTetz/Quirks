@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
@@ -17,9 +18,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
@@ -36,7 +40,7 @@ import cmput301f17t12.quirks.R;
 public class NewEventActivity extends BaseActivity {
 
     private static final int SELECTED_PICTURE = 0;
-    private String photoPath = "";
+    private Bitmap bitmap;
     private User currentlylogged;
 
     @Override
@@ -84,7 +88,7 @@ public class NewEventActivity extends BaseActivity {
     public void removePhoto(View view) {
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageResource(0);
-        photoPath = "";
+        bitmap = null;
     }
 
     public void saveCommand(View view) {
@@ -94,12 +98,10 @@ public class NewEventActivity extends BaseActivity {
         Quirk selectedQuirk = (Quirk) dropdown.getSelectedItem();
         String comment = commentText.getText().toString();
 
-        Log.d("testing", selectedQuirk.toString());
-        Log.d("testing", comment);
-        Log.d("testing", photoPath);
+        byte[] photoByte = bitmapToByte(bitmap);
 
         EventList events = selectedQuirk.getEventList();
-        Event newEvent = new Event(currentlylogged.getUsername(), comment, photoPath, new Date());
+        Event newEvent = new Event(currentlylogged.getUsername(), comment, photoByte, new Date());
         events.addEvent(newEvent);
 
         ElasticSearchUserController.UpdateUserTask updateUserTask
@@ -118,28 +120,36 @@ public class NewEventActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SELECTED_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            setImage(uri);
+            Uri photouri = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photouri);
+                setImage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void setImage(Uri uri) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-            imageView.setImageBitmap(bitmap);
+    private void setImage(Bitmap photo) {
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setImageBitmap(photo);
 
-            photoPath = getRealPathFromURI(uri);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Button savebutton = (Button) findViewById(R.id.save_button);
+        TextView errormsg = (TextView) findViewById(R.id.errormsg);
+        if (bitmapToByte(photo).length >= 65536) {
+            savebutton.setEnabled(false);
+            errormsg.setVisibility(View.VISIBLE);
+            errormsg.setText("Photo size is too big!");
+        } else {
+            savebutton.setEnabled(true);
+            errormsg.setVisibility(View.INVISIBLE);
         }
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
+    public byte[] bitmapToByte(Bitmap bmp) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 
     @Override

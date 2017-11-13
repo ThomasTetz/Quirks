@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.text.format.DateUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Interfaces.Mappable;
@@ -14,7 +15,7 @@ public class Event implements Mappable, Newsable, Serializable {
 
     private String user;
     private String comment;
-    private String photoPath;
+    private byte[] photoByte;
     private Date date;
     private Geolocation geolocation;
 
@@ -29,23 +30,23 @@ public class Event implements Mappable, Newsable, Serializable {
     }
 
     // Event without geolocation
-    public Event(String user, String comment, String photoUri, Date date) {
+    public Event(String user, String comment, byte[] photoByte, Date date) {
         this.user = user;
         this.comment = comment;
         if (comment == null) {
             this.comment = "";
         }
-        this.photoPath = photoUri;
-        if (photoUri == null) {
-            this.photoPath = "";
+        this.photoByte = photoByte;
+        if (photoByte == null) {
+            this.photoByte = new byte[] {};
         }
         this.date = date;
     }
 
-    public Event(String user, String comment, String photoUri, Date date, Geolocation geolocation) {
+    public Event(String user, String comment, byte[] photoByte, Date date, Geolocation geolocation) {
         this.user = user;
         this.comment = comment;
-        this.photoPath = photoUri;
+        this.photoByte = photoByte;
         this.date = date;
         this.geolocation = geolocation;
     }
@@ -75,12 +76,12 @@ public class Event implements Mappable, Newsable, Serializable {
         this.comment = comment;
     }
 
-    public String getPhotoPath(){
-        return photoPath;
+    public byte[] getPhotoByte(){
+        return photoByte;
     }
 
-    public void setPhotoPath(String photoUri){
-        this.photoPath = photoUri;
+    public void setPhotoByte(byte[] photoByte){
+        this.photoByte = photoByte;
     }
 
     public Date getDate(){
@@ -104,7 +105,7 @@ public class Event implements Mappable, Newsable, Serializable {
     }
 
     public boolean isEquals(Event event){
-        return this.user.equals(event.user) && this.comment.equals(event.comment) && this.photoPath.equals(event.photoPath)
+        return this.user.equals(event.user) && this.comment.equals(event.comment) && Arrays.equals(this.photoByte, event.photoByte)
                 && this.date.equals(event.date) && this.geolocation.equals(event.geolocation);
     }
 
