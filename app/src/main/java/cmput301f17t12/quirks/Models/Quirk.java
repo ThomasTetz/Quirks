@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Models;
 
 import android.text.format.DateUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,11 +10,7 @@ import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import io.searchbox.annotations.JestId;
 
-/**
- * Created by thomas on 2017-10-21.
- */
-
-public class Quirk implements Newsable {
+public class Quirk implements Newsable, Serializable {
     private EventList events;
     private String user;
     private String title;
@@ -27,8 +24,9 @@ public class Quirk implements Newsable {
     @JestId
     private String qid;
 
+
     // Parameter with only required values
-    public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue) {
+    public Quirk(String title, String type, Date startDate, ArrayList<Day> occDate, int goalValue, String user, String reason) {
         this.events = new EventList();
         this.title = title;
         this.type = type;
@@ -40,10 +38,12 @@ public class Quirk implements Newsable {
         this.occDate = occDate;
         this.goalValue = goalValue;
         this.currValue = 0;
+        this.user = user;
+        this.reason = reason;
     }
 
     public Quirk(EventList events, String title, String type, String reason,
-                 Date startDate, ArrayList<Day> occDate, int currValue, int goalValue){
+                 Date startDate, ArrayList<Day> occDate, int currValue, int goalValue, String user){
         this.events = events;
         this.title = title;
         this.type = type;
@@ -52,6 +52,7 @@ public class Quirk implements Newsable {
         this.occDate = occDate;
         this.currValue = currValue;
         this.goalValue = goalValue;
+        this.user = user;
     }
 
     public String getId(){
@@ -102,11 +103,11 @@ public class Quirk implements Newsable {
         this.reason = reason;
     }
 
-    public Date getStartDate(){
+    public Date getDate(){
         return startDate;
     }
 
-    public void setStartDate(Date startdate){
+    public void setDate(Date startdate){
         this.startDate = startDate;
     }
 
@@ -132,12 +133,14 @@ public class Quirk implements Newsable {
 
     public void incCurrValue(){
         if(currValue < goalValue) {
-            this.currValue += 1; // @TODO may need to adjust the increment value
+            this.currValue += 1;
         }
     }
 
-    public void resetCurrValue(){
-        this.currValue = 0; // @TODO potentially change what this does
+    public void decCurrValue(){
+        if(currValue > 0) {
+            this.currValue -= 1;
+        }
     }
 
     public String getUser(){ return user; }
@@ -146,6 +149,11 @@ public class Quirk implements Newsable {
         this.user = user;
     }
 
+    public boolean isEquals(Quirk quirk){
+        return this.user.equals(quirk.user) && this.title.equals(quirk.title) && this.type.equals(quirk.type) && this.reason.equals(quirk.reason)
+                && this.startDate.equals(quirk.startDate) && this.occDate.equals(quirk.occDate) && this.currValue == quirk.currValue
+                && this.goalValue == quirk.goalValue && this.events.equals(quirk.events);
+    }
 
     @Override
     public String buildNewsHeader() {
@@ -155,7 +163,7 @@ public class Quirk implements Newsable {
     @Override
     public String buildDate() {
         CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(
-                getStartDate().getTime(),
+                getDate().getTime(),
                 System.currentTimeMillis(),
                 DateUtils.SECOND_IN_MILLIS,
                 DateUtils.FORMAT_ABBREV_RELATIVE);
@@ -164,6 +172,11 @@ public class Quirk implements Newsable {
 
     @Override
     public String buildNewsDescription() {
+        return getTitle();
+    }
+
+    @Override
+    public String toString() {
         return getTitle();
     }
 }

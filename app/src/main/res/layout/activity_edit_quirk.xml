@@ -136,34 +136,11 @@
             android:layout_marginTop="12dp" />
 
         <TextView
-            android:id="@+id/textViewSelDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/backgroundlight"
-            android:hint="Select a Starting Date"
-            android:layout_marginEnd="12dp"
-            android:textSize="17sp"
-            android:layout_below="@+id/textViewStartDate"
-            android:layout_alignStart="@+id/textViewTitle"
-            android:layout_marginTop="11dp" />
-
-        <TextView
-            android:id="@+id/textViewStartDate"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="12dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/QuirkeditTextTitle"
-            android:layout_alignStart="@+id/textViewTitle"
-            android:layout_marginTop="14dp"
-            android:text="Starting Date"
-            android:textSize="15sp" />
-
-        <TextView
             android:id="@+id/textViewGoal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/QuirkeditTextTitle"
-            android:layout_below="@+id/textViewSelDate"
+            android:layout_below="@+id/QuirkeditTextTitle"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="12dp"
             android:textSize="17sp"
@@ -190,7 +167,6 @@
             android:textSize="17sp"
             android:layout_marginEnd="12dp"
             android:text="Title" />
-
 
         <TextView
             android:id="@+id/textViewType"
@@ -225,6 +201,5 @@
             android:layout_marginEnd="12dp"
             android:textSize="17sp"
             android:inputType="number" />
-
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

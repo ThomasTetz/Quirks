@@ -13,4 +13,6 @@
     <string name="new_event_bottombutton">Remove</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="errormsg_newevent">You have no Quirks to log an event to.</string>
 </resources>

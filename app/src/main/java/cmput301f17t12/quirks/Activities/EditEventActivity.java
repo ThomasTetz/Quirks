@@ -4,42 +4,42 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Event;
-import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Quirk;
-import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
-public class NewEventActivity extends BaseActivity {
+public class EditEventActivity extends AppCompatActivity {
 
     private static final int SELECTED_PICTURE = 0;
-    private Bitmap bitmap;
     private User currentlylogged;
+    Bitmap bitmap;
+    private Event referenced_event;
+    private Quirk referenced_quirk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
+        setContentView(R.layout.activity_edit_event);
 
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         String jestID = settings.getString("jestID", "defaultvalue");
@@ -50,23 +50,31 @@ public class NewEventActivity extends BaseActivity {
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
 
-        if (currentlylogged != null) {
-            QuirkList quirks = currentlylogged.getQuirks();
-            ArrayAdapter<Quirk> adapter = new ArrayAdapter<Quirk>(this, android.R.layout.simple_spinner_item, quirks.getList());
-            dropdown.setAdapter(adapter);
+        final EditText commentEdit = (EditText) findViewById(R.id.comment_edittext);
 
-            Button savebutton = (Button) findViewById(R.id.save_button);
-            TextView errormsg = (TextView) findViewById(R.id.errormsg);
+        Integer eventIndex = getIntent().getIntExtra("SELECTED_EVENT_INDEX", -1);
+        Integer quirkIndex = getIntent().getIntExtra("SELECTED_QUIRK_INDEX", -1);
 
-            if (quirks.getList().isEmpty()) {
-                savebutton.setEnabled(false);
-                errormsg.setVisibility(View.VISIBLE);
-            }
-            else {
-                savebutton.setEnabled(true);
-                errormsg.setVisibility(View.INVISIBLE);
-            }
+        if (eventIndex == -1 || quirkIndex == -1) {
+            Log.i("Error", "Failed to read eventIndex or quirkIndex");
+            finish();
         }
+
+        ArrayList<Quirk> quirklist = currentlylogged.getQuirks().getList();
+
+        referenced_quirk = quirklist.get(quirkIndex);
+        referenced_event = referenced_quirk.getEvent(eventIndex);
+        byte[] photoByte = referenced_event.getPhotoByte();
+
+        Log.d("testing", Arrays.toString(referenced_event.getPhotoByte()));
+
+        if (photoByte.length != 0) {
+            bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
+            Log.d("testing", bitmap.toString());
+            setImage(bitmap);
+        }
+
+        commentEdit.setText(referenced_event.getComment());
     }
 
     public void pickPhoto(View view) {
@@ -84,21 +92,19 @@ public class NewEventActivity extends BaseActivity {
     }
 
     public void saveCommand(View view) {
-        Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
         EditText commentText = (EditText) findViewById(R.id.comment_edittext);
 
-        Quirk selectedQuirk = (Quirk) dropdown.getSelectedItem();
-        selectedQuirk.incCurrValue();
         String comment = commentText.getText().toString();
+
+        referenced_event.setComment(comment);
 
         byte[] photoByte = new byte[] {};
         if (bitmap != null) {
             photoByte = bitmapToByte(bitmap);
         }
 
-        EventList events = selectedQuirk.getEventList();
-        Event newEvent = new Event(currentlylogged.getUsername(), comment, photoByte, new Date());
-        events.addEvent(newEvent);
+        referenced_event.setPhotoByte(photoByte);
+        referenced_event.setDate(new Date());
 
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
@@ -108,6 +114,16 @@ public class NewEventActivity extends BaseActivity {
     }
 
     public void cancelCommand(View view) {
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    public void deleteCommand(View view) {
+        referenced_quirk.removeEvent(referenced_event);
+        referenced_quirk.decCurrValue();
+
+        ElasticSearchUserController.UpdateUserTask updateUserTask
+                = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(currentlylogged);
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -138,7 +154,10 @@ public class NewEventActivity extends BaseActivity {
             errormsg.setText("Photo size is too big!");
         } else {
             savebutton.setEnabled(true);
-            errormsg.setVisibility(View.INVISIBLE);
+
+            if (errormsg.getVisibility() == View.VISIBLE) {
+                errormsg.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -146,15 +165,5 @@ public class NewEventActivity extends BaseActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
-    }
-
-    @Override
-    int getContentViewId() {
-        return R.layout.activity_new_event;
-    }
-
-    @Override
-    int getNavigationMenuItemId() {
-        return R.id.action_newevent;
     }
 }
