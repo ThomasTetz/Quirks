@@ -30,6 +30,7 @@ import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Interfaces.Newsable;
 import cmput301f17t12.quirks.Models.Event;
+import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
@@ -96,24 +97,24 @@ public class MainActivity extends BaseActivity {
                 String query = "";
                 String extraString = "";
                 if (String.valueOf(spinner.getSelectedItem()).equals("By Type")){
-                    //query = getQueryFilterType();
+                    query = getQueryFilterType();
                     extraString = filterValue.getText().toString();
                 }
                 else if (String.valueOf(spinner.getSelectedItem()).equals("By Comment")){
-                   // query = getQueryFilterComment();
+                    query = getQueryFilterComment();
                     extraString = filterValue.getText().toString();
                 }
 //                Toast.makeText(QuirksActivity.this,
 //                        "OnClickListener : " +
 //                                "\nSpinner  : "+ String.valueOf(spinner.getSelectedItem()) + " " +extraString,
 //                        Toast.LENGTH_SHORT).show();
-//                if (query.equals("")){
-//                    Log.i("Error", "Failed to get query based on spinner selection");
-//                }
-//                else{
-////                    applyFilter(query);
-//                    offlineFilter(query, extraString, currentlylogged);
-//                }
+                if (query.equals("")){
+                    Log.i("Error", "Failed to get query based on spinner selection");
+                }
+                else{
+//                    applyFilter(query);
+                    offlineFilter(query, extraString, currentlylogged);
+                }
 
 
                 // TODO: call buildFeed() with the filtered ArrayList of quirks.
@@ -159,6 +160,75 @@ public class MainActivity extends BaseActivity {
         }
         return types;
     }
+
+
+    public String getQueryFilterType(){
+        String query = "type";
+        // for the user
+        // look in quirklist
+        // match where type is type
+        return query;
+    }
+
+    public String getQueryFilterComment(){
+        String query = "comment";
+        // for the user
+        // look in quirklist
+        // look at events
+        // match where comment contains the word
+        return query;
+    }
+
+    public void offlineFilter(String query, String arg, User user){
+        QuirkList userQuirks = user.getQuirks();
+        EventList filteredEvents = new EventList();
+        int size = user.getQuirks().size();
+
+        if (arg.equals("")){ // no filter -> show all
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                int size2 = curQuirk.getEventList().size();
+                for (int j = 0; j < size2; j++){
+                    filteredEvents.addEvent(curQuirk.getEvent(j));
+                }
+            }
+            applyOfflineFilter(filteredEvents);
+        }
+        else if (query.equals("type") && !arg.equals("")){
+            // show all events with that type -> just give the eventlist of that quirk
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                if (curQuirk.getType().equals(arg)){
+                    filteredEvents = curQuirk.getEventList();
+                }
+            }
+            applyOfflineFilter(filteredEvents);
+        }
+        else if (query.equals("comment") && !arg.equals("")){
+            // show all with comment matching
+            // @TODO
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                EventList curEventList = curQuirk.getEventList();
+                int size2 = curEventList.size();
+                for (int j = 0; j < size2; j++){
+                    if (curEventList.getEvent(j).getComment().equals("apple")){
+                        filteredEvents.addEvent(curEventList.getEvent(j));
+                    }
+                }
+            }
+            applyOfflineFilter(filteredEvents);
+
+        }
+        else{
+            System.out.println("offline filter failed if/else statements");
+        }
+    }
+
+    public void applyOfflineFilter(EventList events){
+        // @TODO update the listview with the given QuirkList
+    }
+
 
 }
 
