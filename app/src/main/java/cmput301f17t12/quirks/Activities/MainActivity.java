@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +53,12 @@ public class MainActivity extends BaseActivity {
         else{
             System.out.println("Intent had no extras");
 
-            String jestID = "AV-xx8ahi8-My2t7XP4j";
+            SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+            String jestID = settings.getString("jestID", "defaultvalue");
+
+            if (jestID.equals("defaultvalue")) {
+                Log.i("Error", "Did not find correct jestID");
+            }
 
             ElasticSearchUserController.GetSingleUserTask getSingleUserTask
                     = new ElasticSearchUserController.GetSingleUserTask();
