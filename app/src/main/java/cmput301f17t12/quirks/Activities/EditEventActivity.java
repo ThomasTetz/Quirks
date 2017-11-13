@@ -14,9 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +34,6 @@ public class EditEventActivity extends AppCompatActivity {
     private User currentlylogged;
     Bitmap bitmap;
     private Event referenced_event;
-    private Event referenced_event_copy;
     private Quirk referenced_quirk;
 
     @Override
@@ -55,20 +52,28 @@ public class EditEventActivity extends AppCompatActivity {
 
         final EditText commentEdit = (EditText) findViewById(R.id.comment_edittext);
 
-        Event selectedEvent = (Event) getIntent().getSerializableExtra("EDIT_EVENT");
-        Quirk selectedQuirk = (Quirk) getIntent().getSerializableExtra("SELECTED_QUIRK");
+        Integer eventIndex = getIntent().getIntExtra("SELECTED_EVENT_INDEX", -1);
+        Integer quirkIndex = getIntent().getIntExtra("SELECTED_QUIRK_INDEX", -1);
+
+        if (eventIndex == -1 || quirkIndex == -1) {
+            Log.i("Error", "Failed to read eventIndex or quirkIndex");
+            finish();
+        }
 
         ArrayList<Quirk> quirklist = currentlylogged.getQuirks().getList();
-        referenced_quirk = quirklist.get(quirklist.indexOf(selectedQuirk));
-        ArrayList<Event> temp = referenced_quirk.getEventList().getList();
-        referenced_event = temp.get(temp.indexOf(selectedEvent));
-        referenced_event_copy = referenced_event;
 
-        byte[] photoByte = selectedEvent.getPhotoByte();
-        bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
-        setImage(bitmap);
+        referenced_quirk = quirklist.get(quirkIndex);
+        referenced_event = referenced_quirk.getEvent(eventIndex);
+        byte[] photoByte = referenced_event.getPhotoByte();
 
-        commentEdit.setText(selectedEvent.getComment());
+        Log.d("testing", Arrays.toString(referenced_event.getPhotoByte()));
+
+        if (photoByte != null) {
+            bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
+            setImage(bitmap);
+        }
+
+        commentEdit.setText(referenced_event.getComment());
     }
 
     public void pickPhoto(View view) {
@@ -86,16 +91,17 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     public void saveCommand(View view) {
-        Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
         EditText commentText = (EditText) findViewById(R.id.comment_edittext);
 
         String comment = commentText.getText().toString();
 
         referenced_event.setComment(comment);
+
         byte[] photoByte = new byte[] {};
         if (photoByte.length != 0) {
             photoByte = bitmapToByte(bitmap);
         }
+
         referenced_event.setPhotoByte(photoByte);
         referenced_event.setDate(new Date());
 
@@ -111,11 +117,13 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     public void deleteCommand(View view) {
-        referenced_quirk.removeEvent(referenced_event_copy);
+        referenced_quirk.removeEvent(referenced_event);
         referenced_quirk.decCurrValue();
+
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(currentlylogged);
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
@@ -145,7 +153,10 @@ public class EditEventActivity extends AppCompatActivity {
             errormsg.setText("Photo size is too big!");
         } else {
             savebutton.setEnabled(true);
-            errormsg.setVisibility(View.INVISIBLE);
+
+            if (errormsg.getVisibility() == View.VISIBLE) {
+                errormsg.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
