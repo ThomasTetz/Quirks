@@ -16,10 +16,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
@@ -56,16 +58,23 @@ public class EditEventActivity extends AppCompatActivity {
 
         Event selectedEvent = (Event) getIntent().getSerializableExtra("EDIT_EVENT");
         Quirk selectedQuirk = (Quirk) getIntent().getSerializableExtra("SELECTED_QUIRK");
+        String filepath = getIntent().getStringExtra("FILE_PATH");
 
         ArrayList<Quirk> quirklist = currentlylogged.getQuirks().getList();
-        referenced_quirk = quirklist.get(quirklist.indexOf(selectedQuirk));
-        ArrayList<Event> temp = referenced_quirk.getEventList().getList();
-        referenced_event = temp.get(temp.indexOf(selectedEvent));
-        referenced_event_copy = referenced_event;
 
-        byte[] photoByte = selectedEvent.getPhotoByte();
-        bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
-        setImage(bitmap);
+//        referenced_quirk = quirklist.get(quirklist.indexOf(selectedQuirk));
+//        ArrayList<Event> temp = referenced_quirk.getEventList().getList();
+//        referenced_event = temp.get(temp.indexOf(selectedEvent));
+//        referenced_event_copy = referenced_event;
+
+        Log.d("testing", filepath);
+        //loads the file
+        if (!filepath.isEmpty()) {
+            File file = new File(filepath);
+            bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            setImage(bitmap);
+            file.delete();
+        }
 
         commentEdit.setText(selectedEvent.getComment());
     }
@@ -85,13 +94,18 @@ public class EditEventActivity extends AppCompatActivity {
     }
 
     public void saveCommand(View view) {
-        Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
         EditText commentText = (EditText) findViewById(R.id.comment_edittext);
 
         String comment = commentText.getText().toString();
 
         referenced_event.setComment(comment);
-        byte[] photoByte = bitmapToByte(bitmap);
+        byte[] photoByte;
+        if (bitmap != null) {
+            photoByte = bitmapToByte(bitmap);
+        } else {
+            photoByte = null;
+        }
+
         referenced_event.setPhotoByte(photoByte);
         referenced_event.setDate(new Date());
 
@@ -140,7 +154,10 @@ public class EditEventActivity extends AppCompatActivity {
             errormsg.setText("Photo size is too big!");
         } else {
             savebutton.setEnabled(true);
-            errormsg.setVisibility(View.INVISIBLE);
+
+            if (errormsg.getVisibility() == View.VISIBLE) {
+                errormsg.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
