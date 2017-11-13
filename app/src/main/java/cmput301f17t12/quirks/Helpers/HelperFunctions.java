@@ -7,6 +7,7 @@ package cmput301f17t12.quirks.Helpers;
 
 public class HelperFunctions {
 
+
     public static User getUserObject(String jestID) {
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask
                 = new ElasticSearchUserController.GetSingleUserTask();
@@ -22,3 +23,4 @@ public class HelperFunctions {
         return null;
     }
 }
+

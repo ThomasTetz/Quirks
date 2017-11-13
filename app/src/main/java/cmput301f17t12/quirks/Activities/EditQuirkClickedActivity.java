@@ -55,7 +55,9 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         Date testDate = new Date();
         ArrayList testOccurence = new ArrayList();
         testOccurence.add(Day.MONDAY);
-        incomingQuirk = new Quirk("Big ol test", "TEST",testDate ,testOccurence, 3);
+
+        incomingQuirk = new Quirk("Big ol test", "TEST",testDate ,testOccurence, 3,"user1");
+
 
         /*
         Quirk incomingQuirk = (Quirk)getIntent().getSerializableExtra("Edit Quirk");
@@ -117,8 +119,6 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
     // Cancel button clicked -> discard any changes made to the quirk, return to previous activity
     public void cancelButtonClicked(View v){
         finish();
-
-
     }
 
     // TODO:
@@ -131,7 +131,6 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
         Date someDate = new Date();
         Quirk quirkTest = new Quirk("Eat a fruit every sunday", "Eating",someDate, occurence, 10);
         String query = "something";
-
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
         getSingleUserTask.execute(query);
 
@@ -141,6 +140,7 @@ public class EditQuirkClickedActivity extends AppCompatActivity {
 
         //updateUserTask.execute(user);
         */
+
         finish();
     }
 
