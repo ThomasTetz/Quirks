@@ -1,6 +1,7 @@
 package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import cmput301f17t12.quirks.Activities.EditEventActivity;
+import cmput301f17t12.quirks.Activities.EventListActivity;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.R;
@@ -38,14 +41,14 @@ public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
     public long getItemId(int i){ return 0; }
 
     @Override //TODO:
-    public View getView(final int pos, View convertView, ViewGroup viewGroup) {
+    public View getView(final int pos, View convertView, final ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.quirk_item, null);
         }
 
-        Quirk quirkItem = quirkList.getQuirk(pos);
+        final Quirk quirkItem = quirkList.getQuirk(pos);
 
         // Set item title to quirk title
         TextView quirkHeader = (TextView) view.findViewById(R.id.headerText);
@@ -62,7 +65,10 @@ public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
 
             @Override
             public void onClick(View v) {
-                // TODO Get list of all events assosciated with this quirk
+                Intent intent = new Intent(viewGroup.getContext(), EventListActivity.class);
+                Integer serializableInt = pos;
+                intent.putExtra("quirkPos", serializableInt);
+                context.startActivity(intent);
             }
         });
 

@@ -36,9 +36,7 @@ public class QuirksActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_quirks);
 
-        //TODO: Get user's quirklist
-
-        // Testing - replace this with a userID search later on.
+        //TODO: Replace this test userID with the actual userID
         jestID = "AV-xx8ahi8-My2t7XP4j";
 
         applyButton = (Button) findViewById(R.id.applyFilterButton);
@@ -47,27 +45,6 @@ public class QuirksActivity extends BaseActivity {
         //updateQuirkList(jestID);
         User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirkList = currentlylogged.getQuirks();
-
-        // Test the ListView format
-      /*  ArrayList testOccurence = new ArrayList();
-        testOccurence.add(Day.MONDAY);
-        Date testTime = new Date(System.currentTimeMillis());
-        Quirk testQuirk = new Quirk("Big ol test", "TEST", testTime, testOccurence, 3,"john");
-
-        testQuirk.setUser("jlane");
-        testQuirk.incCurrValue();
-        quirkList.addQuirk(testQuirk);
-
-        ArrayList testOccurence2 = new ArrayList();
-        testOccurence2.add(Day.MONDAY);
-        Date testTime2 = new Date(System.currentTimeMillis());
-
-        Quirk testQuirk2 = new Quirk("Big ol test", "TEST", testTime2, testOccurence2, 2,"david");
-        testQuirk2.setUser("jlane");
-        testQuirk2.incCurrValue();
-        quirkList.addQuirk(testQuirk2);
-        */
-
 
         //TODO: Create listView object and assign the custom adapter
         // create instance of custom adapter
@@ -159,14 +136,19 @@ public class QuirksActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void updateQuirkList(String jestID){
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        QuirkList tempList = currentlylogged.getQuirks();
+        quirkList.clearAndAddQuirks(tempList);
+    }
+
+
     public String getQueryFilterAll(){
         String query = "all";
         // for the user
         // look in quirklist
         // match all
         return query;
-
-
     }
 
     public String getQueryFilterToday(){
@@ -218,14 +200,6 @@ public class QuirksActivity extends BaseActivity {
     public void filterTest(){
 //        User user = new User("Test1", );
     }
-
-    public void updateQuirkList(String jestID){
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
-        QuirkList tempList = currentlylogged.getQuirks();
-        Log.d("DEBUG", "Got into here");
-        quirkList.clearAndAddQuirks(tempList);
-    }
-
 
     @Override
     int getContentViewId() { return R.layout.activity_quirks; }
