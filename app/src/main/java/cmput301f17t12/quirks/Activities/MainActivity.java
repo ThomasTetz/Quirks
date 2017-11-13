@@ -54,14 +54,12 @@ public class MainActivity extends BaseActivity {
         if (extras != null){
             if (extras.containsKey("user")){
                 currentlylogged = (User) getIntent().getSerializableExtra("user");
-                System.out.println("Main Activity as:\n\tUser object: " + currentlylogged + "\n\tusername: " + currentlylogged.getUsername());
             }
             else{
-                System.out.println("Intent had extras but not user");
+                Log.i("Error", "Intent had extras but not user");
             }
         }
         else{
-            System.out.println("Intent had no extras");
 
             SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
             String jestID = settings.getString("jestID", "defaultvalue");
@@ -103,10 +101,6 @@ public class MainActivity extends BaseActivity {
                     query = getQueryFilterComment();
                     extraString = filterValue.getText().toString();
                 }
-//                Toast.makeText(QuirksActivity.this,
-//                        "OnClickListener : " +
-//                                "\nSpinner  : "+ String.valueOf(spinner.getSelectedItem()) + " " +extraString,
-//                        Toast.LENGTH_SHORT).show();
                 if (query.equals("")){
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
@@ -114,9 +108,6 @@ public class MainActivity extends BaseActivity {
 //                    applyFilter(query);
                     offlineFilter(query, extraString, currentlylogged);
                 }
-
-
-                // TODO: call buildFeed() with the filtered ArrayList of quirks.
 
             }
 
@@ -157,18 +148,6 @@ public class MainActivity extends BaseActivity {
                 types.add(quirks.get(i).getType());
             }
         }
-        return types;
-    }
-
-    public ArrayList<String> buildFeedFiltered (ArrayList<Event> events){
-        ArrayList<String> types = new ArrayList<>();
-//        for (int i = 0; i < events.size(); i++) {
-//            ArrayList<Event> temp = quirks.get(i).getEventList().getList();
-//            for (int j = 0; j < temp.size(); j++) {
-//                newsitems.add(temp.get(j));
-//                types.add(quirks.get(i).getType());
-//            }
-//        }
         return types;
     }
 
@@ -217,14 +196,11 @@ public class MainActivity extends BaseActivity {
         }
         else if (query.equals("comment") && !arg.equals("")){
             // show all with comment matching
-            // @TODO
-            System.out.println("all event comments: ");
             for (int i = 0; i < size; i++){
                 Quirk curQuirk = userQuirks.getQuirk(i);
                 EventList curEventList = curQuirk.getEventList();
                 int size2 = curEventList.size();
                 for (int j = 0; j < size2; j++){
-                    System.out.println("\t" + curEventList.getEvent(j).getComment());
                     String pattern = ".*" + arg + ".*";
                     if (curEventList.getEvent(j).getComment().matches(pattern)){
                         filteredEvents.addEvent(curEventList.getEvent(j));
@@ -233,15 +209,11 @@ public class MainActivity extends BaseActivity {
             }
 
 
-            System.out.println("events matching comment: " + arg);
-            for (int i = 0; i < filteredEvents.size(); i ++){
-                System.out.println("\t" + filteredEvents.getEvent(i).getComment());
-            }
             applyOfflineCommentFilter(filteredEvents);
 
         }
         else{
-            System.out.println("offline filter failed if/else statements");
+            Log.i("Error", "offline filter failed if/else statements");
         }
     }
 
@@ -250,24 +222,12 @@ public class MainActivity extends BaseActivity {
     }
 
     public void applyOfflineTypeFilter(EventList events){
-        // @TODO update the listview with the given QuirkList
-        System.out.println("applying offline type filter");
-        System.out.println("should show events:");
-        for (int i = 0; i< events.size(); i++){
-            System.out.println("\t" + events.getEvent(i).getComment());
-        }
         newsitems.clear();
         newsitems.addAll(events.getList());
         adapter.notifyDataSetChanged();
     }
 
     public void applyOfflineCommentFilter(EventList events){
-        // @TODO update the listview with the given QuirkList
-        System.out.println("applying offline comment filter");
-        System.out.println("should show events:");
-        for (int i = 0; i< events.size(); i++){
-            System.out.println("\t" + events.getEvent(i).getComment());
-        }
         newsitems.clear();
         newsitems.addAll(events.getList());
         adapter.notifyDataSetChanged();
