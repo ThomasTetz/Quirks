@@ -22,6 +22,7 @@ public class QuirksActivity extends BaseActivity {
     private QuirkList quirkList = new QuirkList();
     private Date dateFilter;
     private QuirkListItemAdapter adapter;
+    private String jestID; //TODO: Change this with shared preferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,9 @@ public class QuirksActivity extends BaseActivity {
         //TODO: Get user's quirklist
 
         // Testing - replace this with a userID search later on.
-        String jestID = "AV-xx8ahi8-My2t7XP4j";
+        jestID = "AV-xx8ahi8-My2t7XP4j";
 
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
-        quirkList = currentlylogged.getQuirks();
+        updateListView(jestID);
         // Test the ListView format
       /*  ArrayList testOccurence = new ArrayList();
         testOccurence.add(Day.MONDAY);
@@ -105,8 +105,32 @@ public class QuirksActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
+        updateListView(jestID);
+        adapter.notifyDataSetChanged();
+    }
+
+    /*
+    @Override
+    protected void onResume(){
+        super.onResume();
+        updateListView(jestID);
+    }
+    */
+
     public void filterTest(){
 //        User user = new User("Test1", );
+    }
+
+    public void updateListView(String jestID){
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        quirkList = currentlylogged.getQuirks();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
