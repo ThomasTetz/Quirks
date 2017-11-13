@@ -19,12 +19,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+
 import cmput301f17t12.quirks.*;
 import cmput301f17t12.quirks.Adapters.QuirkListItemAdapter;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Enumerations.Day;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
-
 import cmput301f17t12.quirks.Models.*;
 
 public class QuirksActivity extends BaseActivity {
@@ -34,6 +35,7 @@ public class QuirksActivity extends BaseActivity {
     private String jestID; //TODO: Change this with shared preferences
     private Spinner spinner;
     private Button applyButton;
+    private HashMap filterHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,16 @@ public class QuirksActivity extends BaseActivity {
         }
 
         applyButton = (Button) findViewById(R.id.applyFilterButton);
-        //updateQuirkList(jestID);
         final User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirkList = currentlylogged.getQuirks();
 
-        //TODO: Create listView object and assign the custom adapter
+        // Filter Hash Map: Filter position: Old Position
+        // Initialize HashMap so each key = value
+        filterHashMap = new HashMap(quirkList.size());
+        for(int i = 0; i < quirkList.size(); i++){
+            filterHashMap.put(i, i);
+        }
+
         // create instance of custom adapter
         adapter = new QuirkListItemAdapter(quirkList, this);
 
@@ -116,10 +123,11 @@ public class QuirksActivity extends BaseActivity {
         // Create listView handler (for custom listview important that all items must have focusable = false)
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
+            public void onItemClick(AdapterView<?> parent, View view, int clickedPosition,
                                     long id) {
+                int quirkPosition = (int) filterHashMap.get(clickedPosition);
                 Intent intent = new Intent(QuirksActivity.this, EditQuirkActivity.class);
-                intent.putExtra("SELECTED_QUIRK_INDEX", position);
+                intent.putExtra("SELECTED_QUIRK_INDEX", quirkPosition);
                 startActivity(intent);
             }
         });
@@ -165,12 +173,19 @@ public class QuirksActivity extends BaseActivity {
             // show all
             // maybe remove the conditions that default blank argument to showing all values
 //            filteredQuirks = userQuirks;
+            filterHashMap.clear();
+            for(int i = 0; i < quirkList.size(); i++){
+                filterHashMap.put(i, i);
+            }
+
             updateQuirkList(jestID);
             adapter.notifyDataSetChanged();
 //            applyOfflineFilter(quirkList);
         }
         else if (query.equals("today")){
             // show all today
+            int j = 0;
+            filterHashMap.clear();
             for (int i = 0; i < size; i++){
                 Quirk curQuirk = userQuirks.getQuirk(i);
                 ArrayList<Day> occurences = curQuirk.getOccDate();
@@ -187,7 +202,9 @@ public class QuirksActivity extends BaseActivity {
 //                DateFormatSymbols.getInstance().getWeekdays();
 
                 if (occurences.contains(today)){
+                    filterHashMap.put(j, i);
                     filteredQuirks.addQuirk(curQuirk);
+                    j++;
                 }
             }
             applyOfflineFilter(filteredQuirks);
