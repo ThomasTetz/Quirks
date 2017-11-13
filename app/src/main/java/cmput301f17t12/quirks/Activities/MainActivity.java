@@ -11,7 +11,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +39,9 @@ public class MainActivity extends BaseActivity {
     private ArrayList<Newsable> newsitems = new ArrayList<>();
     private NewsItemAdapter adapter;
     private User currentlylogged;
+    private Spinner spinner;
+    private Button applyButton;
+    private EditText filterValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +72,52 @@ public class MainActivity extends BaseActivity {
             currentlylogged = HelperFunctions.getUserObject(jestID);
         }
 
-        // TODO: Need to filter this quirk
-        ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
-        ArrayList<String> types = new ArrayList<String>();
-        for (int i = 0; i < quirks.size(); i++) {
-            ArrayList<Event> temp = quirks.get(i).getEventList().getList();
-            for (int j = 0; j < temp.size(); j++) {
-                newsitems.add(temp.get(j));
-                types.add(quirks.get(i).getType());
-            }
-        }
+        spinner = (Spinner) findViewById(R.id.spinner);
+        applyButton = (Button) findViewById(R.id.applyFilterButton);
+        filterValue = (EditText) findViewById(R.id.filterValue);
 
-        // Habit history doesn't show habits? I think..
-        //newsitems.addAll(quirks);
+        // Spinner Drop down elements
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("By Type");
+        categories.add("By Comment");
+
+        // Creating adapter for spinner, and attach adapter
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
+        applyButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String query = "";
+                String extraString = "";
+                if (String.valueOf(spinner.getSelectedItem()).equals("By Type")){
+                    //query = getQueryFilterType();
+                    extraString = filterValue.getText().toString();
+                }
+                else if (String.valueOf(spinner.getSelectedItem()).equals("By Comment")){
+                   // query = getQueryFilterComment();
+                    extraString = filterValue.getText().toString();
+                }
+//                Toast.makeText(QuirksActivity.this,
+//                        "OnClickListener : " +
+//                                "\nSpinner  : "+ String.valueOf(spinner.getSelectedItem()) + " " +extraString,
+//                        Toast.LENGTH_SHORT).show();
+//                if (query.equals("")){
+//                    Log.i("Error", "Failed to get query based on spinner selection");
+//                }
+//                else{
+////                    applyFilter(query);
+//                    offlineFilter(query, extraString, currentlylogged);
+//                }
+                Log.d("testingfilter", String.valueOf(spinner.getSelectedItem()) + extraString);
+            }
+
+        });
+
+        ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
+        ArrayList<String> types = buildFeed(quirks);
 
         Collections.sort(newsitems, new Comparator<Newsable>() {
             public int compare(Newsable m1, Newsable m2) {
@@ -101,6 +142,19 @@ public class MainActivity extends BaseActivity {
     int getNavigationMenuItemId() {
         return R.id.action_home;
     }
+
+    public ArrayList<String> buildFeed(ArrayList<Quirk> quirks) {
+        ArrayList<String> types = new ArrayList<String>();
+        for (int i = 0; i < quirks.size(); i++) {
+            ArrayList<Event> temp = quirks.get(i).getEventList().getList();
+            for (int j = 0; j < temp.size(); j++) {
+                newsitems.add(temp.get(j));
+                types.add(quirks.get(i).getType());
+            }
+        }
+        return types;
+    }
+
 }
 
 
