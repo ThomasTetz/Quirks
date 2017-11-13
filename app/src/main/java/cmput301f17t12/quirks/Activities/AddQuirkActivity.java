@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,8 +22,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchQuirkController;
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Enumerations.Day;
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
+import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.Quirk;
+import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class AddQuirkActivity extends AppCompatActivity {
@@ -45,6 +51,10 @@ public class AddQuirkActivity extends AppCompatActivity {
     public RadioButton radButSat;
     public RadioButton radButSun;
     private AlertDialog.Builder builder;
+    public String query;
+    public String jestID;
+    public User currentlylogged;
+
 
 
     @Override
@@ -62,7 +72,19 @@ public class AddQuirkActivity extends AppCompatActivity {
         radButSun = (RadioButton)findViewById(R.id.radioButSunday);
         SelectDate = (TextView)findViewById(R.id.textViewSelDate);
 
-        //Need the date
+
+        jestID = "AV-xx8ahi8-My2t7XP4j";
+        ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
+        getSingleUserTask.execute(jestID);
+
+        currentlylogged = HelperFunctions.getUserObject(jestID);
+
+        if (currentlylogged != null) {
+            QuirkList quirks = currentlylogged.getQuirks();
+        }
+
+
+
 
         SelectDate.setOnClickListener(new View.OnClickListener() {
 
@@ -123,15 +145,19 @@ public class AddQuirkActivity extends AppCompatActivity {
 
             //The user in here should be the one query from db
             Log.d(TAG, "saveButtonClicked: The dateinput is now  " + startDate);
-            Quirk QuirkCreated = new Quirk(title,type,startDate,QuirkOccurence,Quirk_goal,"user");
-
+            Quirk QuirkCreated = new Quirk(title,type,startDate,QuirkOccurence,Quirk_goal,currentlylogged.getUsername());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the type is  " + QuirkCreated.getType() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Date is  " + QuirkCreated.getDate() );
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Occurence Date is  " + QuirkCreated.getOccDate());
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Goal is  " + QuirkCreated.getGoalValue());
 
-             /*
+            currentlylogged.addQuirk(QuirkCreated);
+            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+            updateUserTask.execute(currentlylogged);
+
+
+            /*
             String query = user.getId();
             ElasticSearchUserController.GetSingleUserTask getSingleUserTask = new ElasticSearchUserController.GetSingleUserTask();
             getSingleUserTask.execute(query);
