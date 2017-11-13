@@ -35,10 +35,7 @@ public class QuirksActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_quirks);
 
-        // Get the UserID
-        //jestID = "AV-xx8ahi8-My2t7XP4j";
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         jestID = settings.getString("jestID", "defaultvalue");
         if (jestID.equals("defaultvalue")) {
