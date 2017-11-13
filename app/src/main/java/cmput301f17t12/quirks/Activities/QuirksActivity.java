@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import cmput301f17t12.quirks.*;
@@ -161,8 +162,10 @@ public class QuirksActivity extends BaseActivity {
         if (query.equals("all")){
             // show all
             // maybe remove the conditions that default blank argument to showing all values
-            filteredQuirks = userQuirks;
-            applyOfflineFilter(filteredQuirks);
+//            filteredQuirks = userQuirks;
+            updateQuirkList(jestID);
+            adapter.notifyDataSetChanged();
+//            applyOfflineFilter(quirkList);
         }
         else if (query.equals("today")){
             // show all today
@@ -171,6 +174,16 @@ public class QuirksActivity extends BaseActivity {
                 ArrayList<Day> occurences = curQuirk.getOccDate();
                 // @TODO somehow get today
                 Day today = Day.MONDAY;
+
+//                LocalDate date = LocalDate.of(2014, 2, 15); // 2014-06-15
+//                DayOfWeek dayOfWeek = date.getDayOfWeek();
+//                int dayOfWeekIntValue = dayOfWeek.getValue(); // 6
+//                String dayOfWeekName = dayOfWeek.name(); // SATURDAY
+//
+//
+//                System.out.println(DayOfWeek.of(1).toString());
+//                DateFormatSymbols.getInstance().getWeekdays();
+
                 if (occurences.contains(today)){
                     filteredQuirks.addQuirk(curQuirk);
                 }
@@ -182,9 +195,30 @@ public class QuirksActivity extends BaseActivity {
         }
     }
 
-    public void applyOfflineFilter(QuirkList quirks){
-        // @TODO update the listview with the given QuirkList
+    public void applyOfflineFilter(QuirkList filteredQuirks){
+        System.out.println("the filtered quirks:");
+        for (int i = 0; i < filteredQuirks.size(); i++){
+            System.out.println("\t" + filteredQuirks.getQuirk(i).getType());
+        }
+
+        System.out.println("previously displayed quirks:");
+        for (int i = 0; i < quirkList.size(); i++){
+            System.out.println("\t" + quirkList.getQuirk(i).getType());
+        }
+
+        System.out.println("before clearAndAdd, passing size: " + filteredQuirks.size());
+        quirkList.clearAndAddQuirks(filteredQuirks);
+        System.out.println("after clearAndAdd, the passed now has size: " + filteredQuirks.size());
+
+        System.out.println("currently displayed quirks:");
+        for (int i = 0; i < quirkList.size(); i++){
+            System.out.println("\t" + quirkList.getQuirk(i).getType());
+        }
+        System.out.println("before adapter");
+        adapter.notifyDataSetChanged();
+        System.out.println("after adapter");
     }
+
     public void applyFilter(String query){
 
         ElasticSearchUserController.GetQuirksTask getQuirksTask
