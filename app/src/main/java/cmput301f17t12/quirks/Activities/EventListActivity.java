@@ -34,7 +34,6 @@ import cmput301f17t12.quirks.R;
 public class EventListActivity extends AppCompatActivity {
 
     private ImageView ivTopBorder;
-    private ImageButton btnBack;
     private TextView tvQuirkName;
     private EventListItemAdapter adapter;
     private EventList eventList = new EventList();
@@ -48,10 +47,8 @@ public class EventListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_list);
 
         ivTopBorder = (ImageView) findViewById(R.id.el_topborder);
-        btnBack = (ImageButton)findViewById(R.id.el_btnBack);
         tvQuirkName = (TextView) findViewById(R.id.el_quirkname);
         ivTopBorder.setBackgroundColor(0x8B999D);
-        btnBack.setBackgroundColor(0x8B999D);
 
         // Get userID
         //jestID = "AV-xx8ahi8-My2t7XP4j";
