@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,7 @@ public class QuirksActivity extends BaseActivity {
     private QuirkList quirkList = new QuirkList();
     private Date dateFilter;
     private QuirkListItemAdapter adapter;
+    private String jestID; //TODO: Change this with shared preferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,12 @@ public class QuirksActivity extends BaseActivity {
         //TODO: Get user's quirklist
 
         // Testing - replace this with a userID search later on.
-        String jestID = "AV-xx8ahi8-My2t7XP4j";
+        jestID = "AV-xx8ahi8-My2t7XP4j";
 
+        //updateQuirkList(jestID);
         User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirkList = currentlylogged.getQuirks();
+
         // Test the ListView format
       /*  ArrayList testOccurence = new ArrayList();
         testOccurence.add(Day.MONDAY);
@@ -105,9 +109,25 @@ public class QuirksActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        updateQuirkList(jestID);
+        adapter.notifyDataSetChanged();
+    }
+
+
     public void filterTest(){
 //        User user = new User("Test1", );
     }
+
+    public void updateQuirkList(String jestID){
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        QuirkList tempList = currentlylogged.getQuirks();
+        Log.d("DEBUG", "Got into here");
+        quirkList.clearAndAddQuirks(tempList);
+    }
+
 
     @Override
     int getContentViewId() { return R.layout.activity_quirks; }
