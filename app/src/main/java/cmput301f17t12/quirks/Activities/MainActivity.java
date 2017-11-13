@@ -68,7 +68,8 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < quirks.size(); i++) {
             newsitems.addAll(quirks.get(i).getEventList().getList());
         }
-        newsitems.addAll(quirks);
+        // Habit history doesn't show habits? I think..
+        //newsitems.addAll(quirks);
 
         Collections.sort(newsitems, new Comparator<Newsable>() {
             public int compare(Newsable m1, Newsable m2) {

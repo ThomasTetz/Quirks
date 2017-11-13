@@ -119,8 +119,9 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@color/backgroundlight"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
             android:layout_marginEnd="12dp"
+            android:maxLength="30"
             android:layout_below="@+id/textViewReason"
             android:layout_alignStart="@+id/textViewReason" />
 
@@ -155,6 +156,7 @@
             android:background="@color/backgroundlight"
             android:inputType="textPersonName"
             android:layout_marginEnd="12dp"
+            android:maxLength="20"
             android:textSize="17sp"/>
 
         <TextView
