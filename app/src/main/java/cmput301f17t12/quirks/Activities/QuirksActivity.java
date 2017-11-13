@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import cmput301f17t12.quirks.*;
@@ -159,8 +160,10 @@ public class QuirksActivity extends BaseActivity {
         if (query.equals("all")){
             // show all
             // maybe remove the conditions that default blank argument to showing all values
-            filteredQuirks = userQuirks;
-            applyOfflineFilter(filteredQuirks);
+//            filteredQuirks = userQuirks;
+            updateQuirkList(jestID);
+            adapter.notifyDataSetChanged();
+//            applyOfflineFilter(quirkList);
         }
         else if (query.equals("today")){
             // show all today
@@ -169,6 +172,16 @@ public class QuirksActivity extends BaseActivity {
                 ArrayList<Day> occurences = curQuirk.getOccDate();
                 // @TODO somehow get today
                 Day today = Day.MONDAY;
+
+//                LocalDate date = LocalDate.of(2014, 2, 15); // 2014-06-15
+//                DayOfWeek dayOfWeek = date.getDayOfWeek();
+//                int dayOfWeekIntValue = dayOfWeek.getValue(); // 6
+//                String dayOfWeekName = dayOfWeek.name(); // SATURDAY
+//
+//
+//                System.out.println(DayOfWeek.of(1).toString());
+//                DateFormatSymbols.getInstance().getWeekdays();
+
                 if (occurences.contains(today)){
                     filteredQuirks.addQuirk(curQuirk);
                 }
