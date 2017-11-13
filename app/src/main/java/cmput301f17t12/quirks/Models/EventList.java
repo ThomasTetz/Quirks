@@ -22,6 +22,13 @@ public class EventList implements Serializable {
         return events.contains(event);
     }
 
+    public void clearAndAddEvents(EventList eventList){
+        events.clear();
+        for(int i = 0; i<eventList.size(); i++){
+            events.add(eventList.getEvent(i));
+        }
+    }
+
     public Event getEvent(int i){
         return events.get(i);
     }

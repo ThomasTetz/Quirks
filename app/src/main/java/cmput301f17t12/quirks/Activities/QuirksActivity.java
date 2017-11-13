@@ -1,6 +1,8 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,38 +38,20 @@ public class QuirksActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_quirks);
 
-        //TODO: Get user's quirklist
-
-        // Testing - replace this with a userID search later on.
-        jestID = "AV-xx8ahi8-My2t7XP4j";
+        // Get the UserID
+        //jestID = "AV-xx8ahi8-My2t7XP4j";
+        SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        jestID = settings.getString("jestID", "defaultvalue");
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
 
         applyButton = (Button) findViewById(R.id.applyFilterButton);
         filterValue = (EditText) findViewById(R.id.filterVal);
 
         //updateQuirkList(jestID);
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        final User currentlylogged = HelperFunctions.getUserObject(jestID);
         quirkList = currentlylogged.getQuirks();
-
-        // Test the ListView format
-      /*  ArrayList testOccurence = new ArrayList();
-        testOccurence.add(Day.MONDAY);
-        Date testTime = new Date(System.currentTimeMillis());
-        Quirk testQuirk = new Quirk("Big ol test", "TEST", testTime, testOccurence, 3,"john");
-
-        testQuirk.setUser("jlane");
-        testQuirk.incCurrValue();
-        quirkList.addQuirk(testQuirk);
-
-        ArrayList testOccurence2 = new ArrayList();
-        testOccurence2.add(Day.MONDAY);
-        Date testTime2 = new Date(System.currentTimeMillis());
-
-        Quirk testQuirk2 = new Quirk("Big ol test", "TEST", testTime2, testOccurence2, 2,"david");
-        testQuirk2.setUser("jlane");
-        testQuirk2.incCurrValue();
-        quirkList.addQuirk(testQuirk2);
-        */
-
 
         //TODO: Create listView object and assign the custom adapter
         // create instance of custom adapter
@@ -133,20 +117,20 @@ public class QuirksActivity extends BaseActivity {
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
                 else{
-                    applyFilter(query);
+//                    applyFilter(query);
+                    offlineFilter(query, extraString, currentlylogged);
                 }
             }
 
         });
 
-        // Create listView handler (important all elements with a custom listview item must have focusable = false)
+        // Create listView handler (for custom listview important that all items must have focusable = false)
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(QuirksActivity.this, EditQuirkClickedActivity.class);
-                Quirk quirk = (Quirk) parent.getItemAtPosition(position);
-                intent.putExtra("Quirk", quirk);
+                Intent intent = new Intent(QuirksActivity.this, EditQuirkActivity.class);
+                intent.putExtra("SELECTED_QUIRK_INDEX", position);
                 startActivity(intent);
             }
         });
@@ -159,14 +143,19 @@ public class QuirksActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void updateQuirkList(String jestID){
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        QuirkList tempList = currentlylogged.getQuirks();
+        quirkList.clearAndAddQuirks(tempList);
+    }
+
+
     public String getQueryFilterAll(){
         String query = "all";
         // for the user
         // look in quirklist
         // match all
         return query;
-
-
     }
 
     public String getQueryFilterToday(){
@@ -193,6 +182,63 @@ public class QuirksActivity extends BaseActivity {
         return query;
     }
 
+    public void offlineFilter(String query, String arg, User user){
+        QuirkList userQuirks = user.getQuirks();
+        QuirkList filteredQuirks = new QuirkList();
+        int size = user.getQuirks().size();
+
+
+        if (query.equals("all") || (query.equals("type") && arg.equals("")) || (query.equals("comment") && arg.equals(""))){
+            // show all
+            // maybe remove the conditions that default blank argument to showing all values
+            filteredQuirks = userQuirks;
+            applyOfflineFilter(filteredQuirks);
+        }
+        else if (query.equals("today")){
+            // show all today
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                ArrayList<Day> occurences = curQuirk.getOccDate();
+                // @TODO somehow get today
+                Day today = Day.MONDAY;
+                if (occurences.contains(today)){
+                    filteredQuirks.addQuirk(curQuirk);
+                }
+            }
+            applyOfflineFilter(filteredQuirks);
+        }
+        else if (query.equals("type") && !arg.equals("")){
+            // show all with that type
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                if (curQuirk.getType().equals(arg)){
+                    filteredQuirks.addQuirk(curQuirk);
+                }
+            }
+            applyOfflineFilter(filteredQuirks);
+        }
+        else if (query.equals("comment") && !arg.equals("")){
+            // show all with comment matching
+            // @TODO
+            for (int i = 0; i < size; i++){
+                Quirk curQuirk = userQuirks.getQuirk(i);
+                EventList events = curQuirk.getEventList();
+                int size2 = events.size();
+                for (int j = 0; j < size2; j++){
+                    // @TODO, should this activity be showing events and not habits?
+                }
+            }
+            applyOfflineFilter(filteredQuirks);
+
+        }
+        else{
+            System.out.println("offline filter failed if/else statements");
+        }
+    }
+
+    public void applyOfflineFilter(QuirkList quirks){
+        // @TODO update the listview with the given QuirkList
+    }
     public void applyFilter(String query){
 
         ElasticSearchUserController.GetQuirksTask getQuirksTask
@@ -218,14 +264,6 @@ public class QuirksActivity extends BaseActivity {
     public void filterTest(){
 //        User user = new User("Test1", );
     }
-
-    public void updateQuirkList(String jestID){
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
-        QuirkList tempList = currentlylogged.getQuirks();
-        Log.d("DEBUG", "Got into here");
-        quirkList.clearAndAddQuirks(tempList);
-    }
-
 
     @Override
     int getContentViewId() { return R.layout.activity_quirks; }
