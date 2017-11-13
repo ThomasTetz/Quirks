@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity {
     private Spinner spinner;
     private Button applyButton;
     private EditText filterValue;
+    private ArrayList<Quirk> quirks_filtered = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,8 @@ public class MainActivity extends BaseActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
+        ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
+
         applyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -111,12 +114,14 @@ public class MainActivity extends BaseActivity {
 ////                    applyFilter(query);
 //                    offlineFilter(query, extraString, currentlylogged);
 //                }
-                Log.d("testingfilter", String.valueOf(spinner.getSelectedItem()) + extraString);
+
+
+                // TODO: call buildFeed() with the filtered ArrayList of quirks.
+
             }
 
         });
 
-        ArrayList<Quirk> quirks = currentlylogged.getQuirks().getList();
         ArrayList<String> types = buildFeed(quirks);
 
         Collections.sort(newsitems, new Comparator<Newsable>() {
