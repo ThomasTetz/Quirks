@@ -15,7 +15,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import cmput301f17t12.quirks.*;
 import cmput301f17t12.quirks.Adapters.QuirkListItemAdapter;
@@ -173,7 +175,7 @@ public class QuirksActivity extends BaseActivity {
                 Quirk curQuirk = userQuirks.getQuirk(i);
                 ArrayList<Day> occurences = curQuirk.getOccDate();
                 // @TODO somehow get today
-                Day today = Day.MONDAY;
+                Day today = getToday();
 
 //                LocalDate date = LocalDate.of(2014, 2, 15); // 2014-06-15
 //                DayOfWeek dayOfWeek = date.getDayOfWeek();
@@ -257,6 +259,35 @@ public class QuirksActivity extends BaseActivity {
     // Update the view -> Show quirks that fit the filter
     public void setFilterClicked(){
 
+    }
+
+    private Day getToday() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                return Day.SUNDAY;
+
+            case Calendar.MONDAY:
+                return Day.MONDAY;
+
+            case Calendar.TUESDAY:
+                return Day.TUESDAY;
+
+            case Calendar.WEDNESDAY:
+                return Day.WEDNESDAY;
+
+            case Calendar.THURSDAY:
+                return Day.THURSDAY;
+
+            case Calendar.FRIDAY:
+                return Day.FRIDAY;
+
+            case Calendar.SATURDAY:
+                return Day.SATURDAY;
+        }
+        return null;
     }
 
 }
