@@ -168,7 +168,7 @@ public class ElasticSearchQuirkController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 Log.i("Error", e.toString());
             }
-            return new Quirk("errTitle", "errType", new Date(), new ArrayList<Day>(), 10);
+            return new Quirk("errTitle", "errType", new Date(), new ArrayList<Day>(), 10, "user");
         }
     }
 

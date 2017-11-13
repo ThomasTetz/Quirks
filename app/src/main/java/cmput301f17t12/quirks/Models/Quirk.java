@@ -62,14 +62,6 @@ public class Quirk implements Newsable, Serializable {
         this.qid = qid;
     }
 
-    public String getId(){
-        return qid;
-    }
-
-    public void setId(String qid){
-        this.qid = qid;
-    }
-
     public void addEvent(Event event){
         events.addEvent(event);
     }
