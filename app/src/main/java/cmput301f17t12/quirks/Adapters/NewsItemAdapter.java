@@ -26,11 +26,20 @@ public class NewsItemAdapter extends BaseAdapter implements ListAdapter {
         this.context = context;
     }
 
+    /**
+     * Return the size of the News List
+     * @return
+     */
     @Override
     public int getCount() {
         return list.size();
     }
 
+     /**
+     * Return item at the specified index
+     * @param pos Index
+     * @return Item object
+     */
     @Override
     public Object getItem(int pos) {
         return list.get(pos);
@@ -41,6 +50,13 @@ public class NewsItemAdapter extends BaseAdapter implements ListAdapter {
         return 0;
     }
 
+    /**
+     * Displays the data at specified indexes within the ListView
+     * @param pos Position of the item selected
+     * @param convertView The old view that can be reused
+     * @param viewGroup The parent ListView
+     * @return A View representing the data at the corresponding position
+     */
     @Override
     public View getView(final int pos, View convertView, ViewGroup viewGroup) {
         View view = convertView;

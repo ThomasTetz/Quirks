@@ -23,28 +23,48 @@ public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
     private QuirkList quirkList = new QuirkList();
     private Context context;
 
+    /**
+     * Constructor the QuirkListItemAdapter. The Adapter is used for the Quirk ListView
+     * @param quirkList QuirkList to shown in the ListView
+     * @param context Current state of the application
+     */
     public QuirkListItemAdapter(QuirkList quirkList, Context context) {
         this.quirkList = quirkList;
         this.context = context;
     }
 
+    /**
+     * Return the size of the QuirkList
+     * @return
+     */
     @Override
     public int getCount(){ return quirkList.size(); }
 
+    /**
+     * Return a quirk at a specified index
+     * @param i Index
+     * @return Quirk object
+     */
     @Override
     public Object getItem(int i){ return quirkList.getQuirk(i); }
 
     @Override //Not sure if this needs to be changed
     public long getItemId(int i){ return 0; }
 
-    @Override //TODO:
+    /**
+     * Displays the data at specified indexes within the ListView
+     * @param pos Position of the item selected
+     * @param convertView The old view that can be reused
+     * @param viewGroup The parent ListView
+     * @return A View representing the data at the corresponding position
+     */
+    @Override
     public View getView(final int pos, View convertView, final ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.quirk_item, null);
         }
-
         final Quirk quirkItem = quirkList.getQuirk(pos);
 
         // Set item title to quirk title
@@ -56,7 +76,7 @@ public class QuirkListItemAdapter extends BaseAdapter implements ListAdapter {
         progressBar.setMax(quirkItem.getGoalValue());
         progressBar.setProgress(quirkItem.getCurrValue());
 
-        // Handle Button
+        // Handle Image Button
         ImageButton quirkButton = (ImageButton) view.findViewById(R.id.quirk_button);
         quirkButton.setOnClickListener( new View.OnClickListener() {
 

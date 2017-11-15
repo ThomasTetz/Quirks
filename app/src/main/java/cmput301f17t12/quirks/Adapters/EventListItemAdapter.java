@@ -28,15 +28,31 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
         this.context = context;
     }
 
+    /**
+     * Return the size of the EventList
+     * @return
+     */
     @Override
     public int getCount(){ return eventList.getList().size(); }
 
+    /**
+     * Return an Event at the specified index
+     * @param i Index
+     * @return Event object
+     */
     @Override
     public Object getItem(int i){ return eventList.getEvent(i); }
 
     @Override //Not sure if this needs to be changed
     public long getItemId(int i){ return 0; }
 
+    /**
+     * Displays the data at specified indexes within the ListView
+     * @param pos Position of the item selected
+     * @param convertView The old view that can be reused
+     * @param viewGroup The parent ListView
+     * @return A View representing the data at the corresponding position
+     */
     @Override //TODO:
     public View getView(final int pos, View convertView, ViewGroup viewGroup) {
         View view = convertView;
@@ -62,9 +78,6 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
                 }
             }
         });
-
-
-
 
         return view;
     }
