@@ -11,10 +11,19 @@ public class QuirkList implements Serializable {
 
     }
 
+    /**
+     * Add Quirk object to the QuirkList
+     * @param quirk Quirk to add
+     */
     public void addQuirk(Quirk quirk){
         quirks.add(quirk);
     }
 
+    /**
+     * Copy contents of inputted QuirkList. Called clearAndAdd because it clears the original
+     * QuirkList and then adds all Quirks from the QuirkList that the class is copying from
+     * @param newQuirks QuirkList that the class is copying
+     */
     public void clearAndAddQuirks(QuirkList newQuirks){
         System.out.println("the passed size inside clearAndAdd: " + newQuirks.size());
         System.out.println("the quirks to add inside clearAndAdd before clear:");
@@ -32,31 +41,50 @@ public class QuirkList implements Serializable {
         }
     }
 
+    /**
+     * Returns true if the QuirkList contains the specified Quirk
+     * @param quirk Quirk to check
+     * @return Boolean value based on if the provided Quirk is in the QuirkList
+     */
     public boolean hasQuirk(Quirk quirk){
         return quirks.contains(quirk);
     }
 
+    /**
+     * Returns the quirk at the specified position in this QuirkList.
+     * @param i The Index
+     * @return The Quirk at that index
+     */
     public Quirk getQuirk(int i){
         return quirks.get(i);
     }
 
+    /**
+     * Removes the Quirk at the specified position in the QuirkList
+     * @param quirk A Quirk
+     */
     public void removeQuirk(Quirk quirk){
         quirks.remove(quirk);
     }
 
+    /**
+     * Returns the full QuirkList
+     * @return The full QuirkList
+     */
     public ArrayList<Quirk> getList(){
         return quirks;
     }
 
-    public void printQuirks(){
-        for (int i=0; i<quirks.size(); i++){
-            System.out.println(quirks.get(i).getType());
-        }
-    }
-
+    /**
+     * Returns the number of Quirks in the QuirkList
+     * @return Number of Quirks in the QuirkList
+     */
     public int size(){ return quirks.size(); }
 
-    // Testing
+    /**
+     * Prints the contents of the QuirkList - Used for Testing
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
