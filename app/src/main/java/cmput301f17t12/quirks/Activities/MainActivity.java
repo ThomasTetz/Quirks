@@ -181,7 +181,10 @@ public class MainActivity extends BaseActivity {
             for (int i = 0; i < size; i++){
                 Quirk curQuirk = userQuirks.getQuirk(i);
                 if (curQuirk.getType().equals(arg)){
-                    filteredEvents = curQuirk.getEventList();
+                    EventList templist = curQuirk.getEventList();
+                    for (int z = 0; z < templist.size(); z++) {
+                        filteredEvents.addEvent(templist.getEvent(z));
+                    }
                 }
             }
             applyOfflineTypeFilter(filteredEvents);
