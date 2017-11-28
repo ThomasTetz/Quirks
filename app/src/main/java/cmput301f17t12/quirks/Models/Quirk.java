@@ -278,7 +278,7 @@ public class Quirk implements Newsable, Serializable {
      * @return News header string
      */
     @Override
-    public String buildNewsHeader(String extra) {
+    public String buildNewsHeader() {
         return getUser() + " added a new Quirk!";
     }
 

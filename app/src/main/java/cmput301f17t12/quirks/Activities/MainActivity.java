@@ -113,7 +113,12 @@ public class MainActivity extends BaseActivity {
 
         });
 
-        ArrayList<String> types = buildFeed(quirks);
+        for (int i = 0; i < quirks.size(); i++) {
+            ArrayList<Event> temp = quirks.get(i).getEventList().getList();
+            for (int j = 0; j < temp.size(); j++) {
+                newsitems.add(temp.get(j));
+            }
+        }
 
         Collections.sort(newsitems, new Comparator<Newsable>() {
             public int compare(Newsable m1, Newsable m2) {
@@ -122,7 +127,7 @@ public class MainActivity extends BaseActivity {
         });
 
         // instantiate custom adapter
-        adapter = new NewsItemAdapter(newsitems, this, types);
+        adapter = new NewsItemAdapter(newsitems, this);
 
         // handle listview and assign adapter
         ListView lView = (ListView) findViewById(R.id.newsfeed_listview);
@@ -138,19 +143,6 @@ public class MainActivity extends BaseActivity {
     int getNavigationMenuItemId() {
         return R.id.action_home;
     }
-
-    public ArrayList<String> buildFeed(ArrayList<Quirk> quirks) {
-        ArrayList<String> types = new ArrayList<String>();
-        for (int i = 0; i < quirks.size(); i++) {
-            ArrayList<Event> temp = quirks.get(i).getEventList().getList();
-            for (int j = 0; j < temp.size(); j++) {
-                newsitems.add(temp.get(j));
-                types.add(quirks.get(i).getType());
-            }
-        }
-        return types;
-    }
-
 
     public String getQueryFilterType(){
         String query = "type";

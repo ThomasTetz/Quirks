@@ -97,7 +97,7 @@ public class NewEventActivity extends BaseActivity {
         }
 
         EventList events = selectedQuirk.getEventList();
-        Event newEvent = new Event(currentlylogged.getUsername(), comment, photoByte, new Date());
+        Event newEvent = new Event(currentlylogged.getUsername(), comment, photoByte, new Date(), selectedQuirk.getType());
         events.addEvent(newEvent);
 
         ElasticSearchUserController.UpdateUserTask updateUserTask
