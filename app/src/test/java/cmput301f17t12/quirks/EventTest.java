@@ -16,14 +16,14 @@ public class EventTest {
     @Test
     public void testGetUser() {
 
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         assertEquals(event.getUser(), "testuser123");
     }
 
     @Test
     public void testSetUser() {
 
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         event.setUser("zafra");
         assertEquals(event.getUser(), "zafra");
     }
@@ -32,13 +32,13 @@ public class EventTest {
     @Test
     public void testGetComment() {
 
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         assertEquals(event.getComment(), "ate lettuce");
     }
 
     @Test
     public void testSetComment() {
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         event.setComment("Some new comment");
         assertEquals(event.getComment(), "Some new comment");
     }
@@ -47,14 +47,14 @@ public class EventTest {
     @Test
     public void testGetGeolocation() {
         Geolocation geolocation = new Geolocation(53.544389, -113.490927);
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         Geolocation returnedGeolocation = event.getGeolocation();
         assertEquals(geolocation, returnedGeolocation);
     }
 
     @Test
     public void testSetGeolocation() {
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
 
         Geolocation geolocation1 = new Geolocation(53.544389, -113.490927);
         event.setGeolocation(geolocation1);
@@ -79,7 +79,7 @@ public class EventTest {
 
     @Test
     public void testDeleteGeolocation() {
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
 
         Geolocation geolocation1 = new Geolocation(53.544389, -113.490927);
         event.setGeolocation(geolocation1);
@@ -90,7 +90,7 @@ public class EventTest {
 
     @Test
     public void testSetPhotoURI() {
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         byte[] someArray = {-1, -2, 40};
         event.setPhotoByte(someArray);
         assertEquals(event.getPhotoByte(), someArray);
@@ -99,13 +99,13 @@ public class EventTest {
     @Test
     public void testGetDate() {
         Date date = new Date();
-        Event event = new Event(user, "ate lettuce", null, date, geolocation);
+        Event event = new Event(user, "ate lettuce", null, date, geolocation, "Test");
         assertEquals(event.getDate(), date);
     }
 
     @Test
     public void testSetDate() {
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
         Date date = new Date();
         event.setDate(date);
         assertEquals(event.getDate(), date);
