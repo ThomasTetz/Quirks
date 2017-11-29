@@ -186,7 +186,7 @@ public class Quirk implements Newsable, Serializable {
      * @param startdate Quirk startDate
      */
     public void setDate(Date startdate){
-        this.startDate = startDate;
+        this.startDate = startdate;
     }
 
     /**
