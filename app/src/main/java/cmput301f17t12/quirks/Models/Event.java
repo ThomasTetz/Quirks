@@ -229,6 +229,6 @@ public class Event implements Mappable, Newsable, Serializable {
      */
     @Override
     public String buildNewsDescription() {
-        return '"' + getComment() + '"';
+        return getComment();
     }
 }

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import cmput301f17t12.quirks.Enumerations.Rarity;
+import cmput301f17t12.quirks.Enumerations.DropType;
 import cmput301f17t12.quirks.Models.Drop;
 import cmput301f17t12.quirks.Models.Inventory;
 
@@ -15,8 +15,8 @@ public class InventoryTest {
     // Test to getInventory
     @Test
     public void testGetList() {
-        Drop drop1 = new Drop(Rarity.COMMON, "drop_name1");
-        Drop drop2 = new Drop(Rarity.RARE, "drop_name2");
+        Drop drop1 = new Drop(DropType.COMMON, "drop_name1");
+        Drop drop2 = new Drop(DropType.RARE, "drop_name2");
 
         Inventory myInventory = new Inventory();
         myInventory.addDrop(drop1);
@@ -32,7 +32,7 @@ public class InventoryTest {
     // Test adding Drop to inventory
     @Test
     public void testAddDrop() {
-        Drop drop = new Drop(Rarity.COMMON, "drop_name");
+        Drop drop = new Drop(DropType.COMMON, "drop_name");
 
         Inventory myInventory = new Inventory();
 
@@ -44,7 +44,7 @@ public class InventoryTest {
     // Test if Drop exists in Inventory
     @Test
     public void testHasDrop() {
-        Drop drop = new Drop(Rarity.COMMON, "drop_name");
+        Drop drop = new Drop(DropType.COMMON, "drop_name");
         Inventory myInventory = new Inventory();
         myInventory.addDrop(drop);
 
@@ -54,7 +54,7 @@ public class InventoryTest {
     // Test to return the Drop at location from Inventory
     @Test
     public void testGetDrop() {
-        Drop drop = new Drop(Rarity.COMMON, "drop_name");
+        Drop drop = new Drop(DropType.COMMON, "drop_name");
         Inventory myInventory = new Inventory();
         myInventory.addDrop(drop);
 
@@ -64,7 +64,7 @@ public class InventoryTest {
     // Test to remove Drop from Inventory
     @Test
     public void testRemoveDrop() {
-        Drop drop = new Drop(Rarity.COMMON, "drop_name");
+        Drop drop = new Drop(DropType.COMMON, "drop_name");
         Inventory myInventory = new Inventory();
         myInventory.addDrop(drop);
         assertTrue(myInventory.hasDrop(drop));
