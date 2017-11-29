@@ -91,11 +91,11 @@ public class AddQuirkActivity extends AppCompatActivity {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-               DatePickerDialog dialog = new DatePickerDialog(AddQuirkActivity.this, android.R.style.Theme_Holo_Dialog_MinWidth,SelectDateListener,year,month,day);
+                DatePickerDialog dialog = new DatePickerDialog(AddQuirkActivity.this, android.R.style.Theme_Holo_Dialog_MinWidth,SelectDateListener,year,month,day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
-           }
+            }
 
         });
 
@@ -106,7 +106,11 @@ public class AddQuirkActivity extends AppCompatActivity {
                 date2 = month + "/" + day + "/" + year;
                 SelectDate.setText(date2);
                 Log.d(TAG, "onDateSet: the date is now   " + date2);
-                 startDate = new Date(year,month,day);
+                Log.d(TAG, "onDateSet: the year is now " + year);
+                Log.d(TAG, "onDateSet: the month is now " + month);
+                Log.d(TAG, "onDateSet: the day is now " + day);
+                startDate = new Date(year-1900,month-1,day);
+                Log.d(TAG, "onDateSet: the startdate is now " + startDate);
 
             }
         };
@@ -124,7 +128,7 @@ public class AddQuirkActivity extends AppCompatActivity {
 
 
         if(type.equals("")||(title.equals(""))||(goal.equals(""))||reason.equals("")){
-          // emptyFieldsDialog();
+            // emptyFieldsDialog();
         }
         /*
         else if (title.length() > 20 || reason.length() > 30){
@@ -139,6 +143,7 @@ public class AddQuirkActivity extends AppCompatActivity {
             int Quirk_goal = Integer.parseInt(goal);
 
             //The user in here should be the one query from db
+            Log.d(TAG, "saveButtonClicked: the startdate is now " + startDate);
             Quirk QuirkCreated = new Quirk(title, type, startDate, QuirkOccurence, Quirk_goal, currentlylogged.getUsername(), reason);
             Log.d(TAG, "saveButtonClicked: The dateinput is now  " + startDate);
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the title is  " + QuirkCreated.getTitle() );
@@ -184,7 +189,7 @@ public class AddQuirkActivity extends AppCompatActivity {
         if(radButSun.isChecked()){
             Day.add(cmput301f17t12.quirks.Enumerations.Day.SUNDAY);
         }
-     return Day;
+        return Day;
     }
 
 
