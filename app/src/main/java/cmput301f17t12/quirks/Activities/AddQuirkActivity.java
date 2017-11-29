@@ -130,7 +130,7 @@ public class AddQuirkActivity extends AppCompatActivity {
 
         if(type.equals("")||(title.equals(""))||(goal.equals(""))||reason.equals("")){
             Toast.makeText(AddQuirkActivity.this,"All blanks must be filled", Toast.LENGTH_SHORT).show();
-            //emptyFieldsDialog();
+
         }
         /*
         else if (title.length() > 20 || reason.length() > 30){
