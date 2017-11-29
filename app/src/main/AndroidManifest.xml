@@ -24,6 +24,7 @@
         <activity android:name=".Activities.AddQuirkActivity" />
         <activity android:name=".Activities.NewEventActivity" />
         <activity android:name=".Activities.EditEventActivity" />
+        <activity android:name=".Activities.SocialActivity" />
         <activity android:name=".Activities.EventListActivity"></activity>
     </application>
 
