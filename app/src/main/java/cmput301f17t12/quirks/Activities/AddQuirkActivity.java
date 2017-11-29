@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -128,7 +129,8 @@ public class AddQuirkActivity extends AppCompatActivity {
 
 
         if(type.equals("")||(title.equals(""))||(goal.equals(""))||reason.equals("")){
-            // emptyFieldsDialog();
+            Toast.makeText(AddQuirkActivity.this,"All blanks must be filled", Toast.LENGTH_SHORT).show();
+            //emptyFieldsDialog();
         }
         /*
         else if (title.length() > 20 || reason.length() > 30){
@@ -199,7 +201,6 @@ public class AddQuirkActivity extends AppCompatActivity {
                 .setNegativeButton("Return", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        ;
                     }
                 })
                 .setTitle("Missing Fields");

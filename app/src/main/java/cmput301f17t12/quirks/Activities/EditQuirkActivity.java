@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -141,6 +142,7 @@ public class EditQuirkActivity extends AppCompatActivity {
         ArrayList<Day> occurences = occurenceItemSelected();
 
         if((type.equals(""))||(title.equals(""))||(goal.equals(""))){
+            Toast.makeText(EditQuirkActivity.this,"All blanks must be filled", Toast.LENGTH_SHORT).show();
 
         }
 
