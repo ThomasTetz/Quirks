@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
-import cmput301f17t12.quirks.Enumerations.Rarity;
-import cmput301f17t12.quirks.Models.Drop;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
@@ -218,9 +216,9 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 //    private void testUpdate2(User user){
 //        // update
-//        user.getInventory().addDrop(new Drop(Rarity.UNCOMMON, "frog"));
-////        while(user.getInventory().hasDrop(new Drop(Rarity.UNCOMMON, "frog"))){
-////            user.getInventory().removeDrop(new Drop(Rarity.UNCOMMON, "frog"));
+//        user.getInventory().addDrop(new Drop(DropType.UNCOMMON, "frog"));
+////        while(user.getInventory().hasDrop(new Drop(DropType.UNCOMMON, "frog"))){
+////            user.getInventory().removeDrop(new Drop(DropType.UNCOMMON, "frog"));
 ////        }
 //
 ////        user.getUsername();

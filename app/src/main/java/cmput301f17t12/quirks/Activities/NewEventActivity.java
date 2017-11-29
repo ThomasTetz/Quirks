@@ -1,12 +1,16 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,12 +22,19 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+import cmput301f17t12.quirks.Enumerations.DropType;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
+import cmput301f17t12.quirks.Models.Drop;
 import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.EventList;
+import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
@@ -31,6 +42,7 @@ import cmput301f17t12.quirks.R;
 
 public class NewEventActivity extends BaseActivity {
 
+    Dialog myDialog;
     private static final int SELECTED_PICTURE = 0;
     private Bitmap bitmap;
     private User currentlylogged;
@@ -38,6 +50,7 @@ public class NewEventActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myDialog = new Dialog(this);
 
         Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
 
@@ -100,11 +113,53 @@ public class NewEventActivity extends BaseActivity {
         Event newEvent = new Event(currentlylogged.getUsername(), comment, photoByte, new Date(), selectedQuirk.getType());
         events.addEvent(newEvent);
 
+        Inventory inventory = currentlylogged.getInventory();
+        DropType randomDrop = getDrop();
+        inventory.addDrop(new Drop(randomDrop));
+
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(currentlylogged);
 
-        startActivity(new Intent(this, MainActivity.class));
+        TextView txtclose, dropname;
+
+        myDialog.setContentView(R.layout.drop_popup);
+        dropname =(TextView) myDialog.findViewById(R.id.dropname);
+        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+
+        dropname.setText(randomDrop.getName());
+        switch (randomDrop.getType()) {
+            case "COMMON":
+                dropname.setTextColor(ContextCompat.getColor(this, R.color.commondrop));
+                break;
+            case "UNCOMMON":
+                dropname.setTextColor(ContextCompat.getColor(this, R.color.uncommondrop));
+                break;
+            case "RARE":
+                dropname.setTextColor(ContextCompat.getColor(this, R.color.raredrop));
+                break;
+            case "MYTHICAL":
+                dropname.setTextColor(ContextCompat.getColor(this, R.color.mythicaldrop));
+                break;
+            case "LEGENDARY":
+                dropname.setTextColor(ContextCompat.getColor(this, R.color.legendarydrop));
+                break;
+            case "ANCIENT":
+                dropname.setTextColor(ContextCompat.getColor(this, R.color.ancientdrop));
+                break;
+        }
+
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+                startActivity(new Intent(v.getContext(), MainActivity.class));
+            }
+        });
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+
+        //startActivity(new Intent(this, MainActivity.class));
     }
 
     public void cancelCommand(View view) {
@@ -146,6 +201,42 @@ public class NewEventActivity extends BaseActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
+    }
+
+    private DropType getDrop() {
+        HashMap<Double, LinkedList<DropType>> dropTypesMap = new HashMap<>();
+        List<DropType> dropTypeList = Arrays.asList(DropType.values());
+        double totalWeight = 0.0d;
+
+        for (DropType droptype : dropTypeList) {
+            if (!dropTypesMap.containsKey(droptype.getWeight())) {
+                LinkedList<DropType> tmp = new LinkedList<>();
+                tmp.add(droptype);
+                dropTypesMap.put(droptype.getWeight(), tmp);
+                totalWeight += droptype.getWeight();
+            } else {
+                LinkedList<DropType> tmp = dropTypesMap.get(droptype.getWeight());
+                tmp.add(droptype);
+            }
+        }
+
+        double randomWeight = -1;
+        double random = Math.random() * totalWeight;
+        Double[] weights = dropTypesMap.keySet().toArray(new Double[0]);
+        for (int i = 0; i < weights.length; i++) {
+            random -= weights[i];
+            if (random <= 0.0d) {
+                randomWeight = weights[i];
+                break;
+            }
+        }
+
+        LinkedList<DropType> drops = dropTypesMap.get(randomWeight);
+        int randomIndex = (int) (Math.random() * drops.size() - 1);
+        Log.d("droprandom", String.valueOf(randomWeight));
+        Log.d("droprandom", String.valueOf(randomIndex));
+        Log.d("droprandom", drops.get(randomIndex).getName());
+        return drops.get(randomIndex);
     }
 
     @Override

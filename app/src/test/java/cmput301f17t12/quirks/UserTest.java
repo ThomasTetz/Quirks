@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Enumerations.Day;
-import cmput301f17t12.quirks.Enumerations.Rarity;
+import cmput301f17t12.quirks.Enumerations.DropType;
 import cmput301f17t12.quirks.Models.Drop;
 import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Inventory;
@@ -97,8 +97,8 @@ public class UserTest {
         User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new QuirkList());
         User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new QuirkList());
 
-        Drop drop1 = new Drop(Rarity.COMMON, "drop_1");
-        Drop drop2 = new Drop(Rarity.COMMON, "drop_2");
+        Drop drop1 = new Drop(DropType.COMMON, "drop_1");
+        Drop drop2 = new Drop(DropType.COMMON, "drop_2");
 
         user1.getInventory().addDrop(drop1);
         user2.getInventory().addDrop(drop2);

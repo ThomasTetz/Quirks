@@ -37,7 +37,7 @@ public class Inventory implements Serializable {
 
         for (int i = 0; i<inventory.size(); i++){
             Drop d = inventory.get(i);
-            if (d.getName().equals(drop.getName()) && d.getRarity()==drop.getRarity()){
+            if (d.getDropType().equals(drop.getDropType()) && d.getDropType()==drop.getDropType()){
                 return true;
             }
         }
@@ -74,7 +74,7 @@ public class Inventory implements Serializable {
      */
     public void printItems(){
         for (int i = 0; i<inventory.size(); i++){
-            System.out.println(" >"+inventory.get(i).getName());
+            System.out.println(" >"+inventory.get(i).getDropType().getName());
         }
     }
 
