@@ -9,6 +9,11 @@
         android:title="Friends"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_findFriends"
+        android:enabled="false"
+        android:title="Find Friends"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_request"
         android:enabled="true"
         android:title="Requests" />
