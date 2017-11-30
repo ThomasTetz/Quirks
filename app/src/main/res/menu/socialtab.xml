@@ -10,7 +10,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_request"
-        android:enabled="false"
+        android:enabled="true"
         android:title="Requests" />
     <item
         android:id="@+id/action_feed"

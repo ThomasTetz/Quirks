@@ -47,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 //                break;
             case R.id.action_social:
                 // TODO: Part 5
-               startActivity(new Intent(this, SocialActivity.class));
+               startActivity(new Intent(this, FriendActivity.class));
                 break;
             case R.id.action_newevent:
                 startActivity(new Intent(this, NewEventActivity.class));

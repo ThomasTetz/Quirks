@@ -51,6 +51,8 @@ public  class SocialActivity extends BaseActivity {
             case R.id.action_friends:
                 startActivity(new Intent(this, FriendActivity.class));
                 break;
+            case R.id.action_request:
+                startActivity(new Intent(this,RequestActivity.class));
 
         }
         finish();
@@ -76,7 +78,7 @@ public  class SocialActivity extends BaseActivity {
 
     @Override
     int getContentViewId() {
-        return R.layout.activity_social;
+        return R.layout.activity_friends;
     }
 
     @Override
