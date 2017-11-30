@@ -43,10 +43,14 @@ public class MainActivity extends BaseActivity {
     private Spinner spinner;
     private Button applyButton;
     private EditText filterValue;
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+         settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+
 
         // get the user
         Intent intent = getIntent();
@@ -61,7 +65,7 @@ public class MainActivity extends BaseActivity {
         }
         else{
 
-            SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+
             String jestID = settings.getString("jestID", "defaultvalue");
 
             if (jestID.equals("defaultvalue")) {

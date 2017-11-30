@@ -44,10 +44,11 @@ public class ElasticSearchUserController {
                     if (result.isSucceeded())
                     {
                         user.setId(result.getId());
+                        Log.i("Error", "Elasticsearch successful on:" + indexString);
                     }
                     else
                     {
-                        Log.i("Error", "Elasticsearch was not able to add the user");
+                        Log.i("Error", "Elasticsearch query failed");
                     }
                 }
                 catch (Exception e) {
@@ -95,16 +96,22 @@ public class ElasticSearchUserController {
             ArrayList<User> users = new ArrayList<User>();
 
             // Build the query
-
+            Log.i("Error", "Building index on:" + indexString);
             Search search = new Search.Builder(search_parameters[0])
                     .addIndex(indexString)
                     .addType(typeString)
                     .build();
             try {
+                Log.i("Error", "Executing on:" + indexString);
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()) {
                     List<User> foundUsers = result.getSourceAsObjectList(User.class);
                     users.addAll(foundUsers);
+                }
+                else{
+                    Log.i("Error", "Get failed but no exception thrown on: " + indexString);
+                    Log.i("Error", "Error " + Integer.toString(result.getResponseCode()));
+                    return null;
                 }
             }
             catch (Exception e) {
