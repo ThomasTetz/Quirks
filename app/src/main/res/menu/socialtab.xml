@@ -16,5 +16,9 @@
         android:id="@+id/action_feed"
         android:enabled="false"
         android:title="Feed"/>
+    <item
+        android:id="@+id/action_trade"
+        android:enabled="false"
+        android:title="Tade"/>
 
 </menu>
