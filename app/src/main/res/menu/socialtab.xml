@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_friends"
-        android:enabled="false"
+        android:enabled="true"
         android:title="Friends"
         app:showAsAction="ifRoom" />
     <item
