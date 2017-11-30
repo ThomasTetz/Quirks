@@ -109,14 +109,18 @@ public class ElasticSearchUserController {
                     users.addAll(foundUsers);
                 }
                 else{
-                    Log.i("Error", "Get failed but no exception thrown on: " + indexString);
+                    // the index doesn't exist (possibly also just down)
+                    Log.i("Error", "Index not found or failed to load " + indexString);
                     Log.i("Error", "Error " + Integer.toString(result.getResponseCode()));
                     return null;
                 }
             }
             catch (Exception e) {
+                // no internet
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i("Error", "(No internet connection)");
                 Log.i("Error", e.toString());
+                return null;
             }
 
             return users;
