@@ -31,6 +31,8 @@ public class RequestActivity extends  SocialActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestlist = new ArrayList<>();
+
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         String jestID = settings.getString("jestID", "defaultvalue");
 
@@ -49,19 +51,19 @@ public class RequestActivity extends  SocialActivity{
         User dummy2 = new User("dummy2",dummyInv,friends,requests,quirks);
         User dummy3 = new User("Alex",dummyInv,friends,requests,quirks);
 
-        //dummy.sendFriendRequest(currentlylogged,dummy);
-        //dummy2.sendFriendRequest(currentlylogged,dummy2);
-        //dummy3.sendFriendRequest(currentlylogged,dummy3);
+        dummy.sendFriendRequest(currentlylogged);
+        dummy2.sendFriendRequest(currentlylogged);
+        dummy3.sendFriendRequest(currentlylogged);
 
         requestlist = currentlylogged.getRequests();
-        requestlist.add(dummy);
+       /* requestlist.add(dummy);
         requestlist.add(dummy2);
         requestlist.add(dummy3);
-        //Log.d(TAG, "onCreate: the size of requestlist is " + requestlist.size());
-
+        */
+        Log.d(TAG, "onCreate: the requestlist is " + requestlist.size());
+        ListView lView = (ListView)findViewById(R.id.listviewRequest);
 
         adapter = new RequestListItemAdapter(requestlist,this);
-        ListView lView = (ListView)findViewById(R.id.listviewRequest);
         lView.setAdapter(adapter);
 
 
