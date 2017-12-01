@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import cmput301f17t12.quirks.Enumerations.DropType;
 import cmput301f17t12.quirks.Interfaces.Tradable;
-
 public class Drop implements Serializable {
 
     private DropType dropType;

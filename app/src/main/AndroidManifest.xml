@@ -25,7 +25,11 @@
         <activity android:name=".Activities.AddQuirkActivity" />
         <activity android:name=".Activities.NewEventActivity" />
         <activity android:name=".Activities.EditEventActivity" />
-        <activity android:name=".Activities.EventListActivity" />
+        <activity android:name=".Activities.SocialActivity" />
+        <activity android:name=".Activities.FriendActivity" />
+        <activity android:name=".Activities.RequestActivity" />
+        <activity android:name=".Activities.FindFriendActivity" />
+        <activity android:name=".Activities.EventListActivity"></activity>
     </application>
 
 </manifest>
