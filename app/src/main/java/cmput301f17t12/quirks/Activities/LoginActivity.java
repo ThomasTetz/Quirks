@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
     //Need to check, is signing up new users in the spec??
     private void registerUser(String username){
         // create new user
-        User user = new User(username, new Inventory(), new ArrayList<User>(), new QuirkList());
+        User user = new User(username, new Inventory(), new ArrayList<User>(),new ArrayList<User>() ,new QuirkList());
 
         ElasticSearchUserController.AddUsersTask addUsersTask
                 = new ElasticSearchUserController.AddUsersTask();

@@ -197,7 +197,7 @@ public class ElasticSearchUserController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 Log.i("Error", e.toString());
             }
-            return new User("fake name", new Inventory(), new ArrayList<User>(), new QuirkList());
+            return new User("fake name", new Inventory(), new ArrayList<User>(),new ArrayList<User>(), new QuirkList());
         }
     }
 
