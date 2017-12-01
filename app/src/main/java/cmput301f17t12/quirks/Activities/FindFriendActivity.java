@@ -65,6 +65,7 @@ public class FindFriendActivity extends SocialActivity {
         userList.add(dummy2);
         userList.add(dummy3);
         */
+
         ListView lView = (ListView)findViewById(R.id.findfriend_listview);
         adapter = new FindFriendListItemAdapter(userList,this);
         lView.setAdapter(adapter);

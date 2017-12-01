@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import cmput301f17t12.quirks.R;
 
 public class RequestListItemAdapter extends BaseAdapter implements ListAdapter {
 
-    ArrayList<User> requests = new ArrayList<>();
+    ArrayList<User> requests = new ArrayList<User>();
     private Context context;
 
     public RequestListItemAdapter(ArrayList<User> requests, Context context){
@@ -44,7 +45,7 @@ public class RequestListItemAdapter extends BaseAdapter implements ListAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
 
         View view = convertView;
         if (view == null) {
@@ -55,8 +56,8 @@ public class RequestListItemAdapter extends BaseAdapter implements ListAdapter {
         TextView friendHeader = (TextView) view.findViewById(R.id.friendRequestText);
         friendHeader.setText(user.getUsername());
 
-        ImageButton Acceptfriendbut = (ImageButton) view.findViewById(R.id.buttonAccept);
-        ImageButton Declinefriendbut = (ImageButton) view.findViewById(R.id.buttonDeclineFriend);
+        Button Acceptfriendbut = (Button) view.findViewById(R.id.buttonAccept);
+        Button Declinefriendbut = (Button) view.findViewById(R.id.buttonDeclineFriend);
 
 
         return view;
