@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
-import cmput301f17t12.quirks.Enumerations.Rarity;
-import cmput301f17t12.quirks.Models.Drop;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cmput301f17t12.quirks.Enumerations.Day;
-import cmput301f17t12.quirks.Enumerations.Rarity;
 import cmput301f17t12.quirks.Models.Drop;
 import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.Models.Inventory;
