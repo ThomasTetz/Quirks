@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cmput301f17t12.quirks">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -24,7 +25,7 @@
         <activity android:name=".Activities.AddQuirkActivity" />
         <activity android:name=".Activities.NewEventActivity" />
         <activity android:name=".Activities.EditEventActivity" />
-        <activity android:name=".Activities.EventListActivity"></activity>
+        <activity android:name=".Activities.EventListActivity" />
     </application>
 
 </manifest>
