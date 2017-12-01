@@ -2,6 +2,7 @@
     <string name="app_name">Quirks</string>
     <string name="geomap_desc">Map</string>
     <string name="social_image_desc">Social</string>
+    <string name="card_image_desc">Cards</string>
     <string name="event_image_desc">New Event</string>
     <string name="quirklist_image_desc">Quirks</string>
     <string name="home_image_desc">Home</string>

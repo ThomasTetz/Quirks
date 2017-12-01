@@ -161,7 +161,6 @@ public class NewEventActivity extends BaseActivity {
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
 
-        //startActivity(new Intent(this, MainActivity.class));
     }
 
     public void cancelCommand(View view) {
