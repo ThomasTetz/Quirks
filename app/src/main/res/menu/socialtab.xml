@@ -10,7 +10,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_findFriends"
-        android:enabled="false"
+        android:enabled="true"
         android:title="Find Friends"
         app:showAsAction="ifRoom" />
     <item

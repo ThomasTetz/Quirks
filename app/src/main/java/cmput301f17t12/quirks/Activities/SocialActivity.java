@@ -53,7 +53,10 @@ public  class SocialActivity extends BaseActivity {
                 break;
             case R.id.action_request:
                 startActivity(new Intent(this,RequestActivity.class));
-
+                break;
+            case R.id.action_findFriends:
+                startActivity(new Intent(this,FindFriendActivity.class));
+                break;
         }
         finish();
         return true;

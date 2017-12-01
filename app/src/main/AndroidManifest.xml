@@ -27,6 +27,7 @@
         <activity android:name=".Activities.SocialActivity" />
         <activity android:name=".Activities.FriendActivity" />
         <activity android:name=".Activities.RequestActivity" />
+        <activity android:name=".Activities.FindFriendActivity" />
         <activity android:name=".Activities.EventListActivity"></activity>
     </application>
 
