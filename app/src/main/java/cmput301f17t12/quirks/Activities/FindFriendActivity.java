@@ -11,9 +11,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import cmput301f17t12.quirks.Adapters.FindFriendListItemAdapter;
 import cmput301f17t12.quirks.Adapters.FriendListItemAdapter;
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
@@ -28,6 +30,8 @@ public class FindFriendActivity extends SocialActivity {
     public User currentlylogged;
     private FindFriendListItemAdapter adapter;
     private ArrayList<User> userList;
+    private static final String TAG = "FindFriendActivity" ;
+
     EditText searchFriendUser;
 
     @Override
@@ -37,13 +41,13 @@ public class FindFriendActivity extends SocialActivity {
         Button addFriendButton = (Button) findViewById(R.id.buttonAddFriend);
         searchFriendUser = (EditText)findViewById(R.id.editTextFindFriend);
         ImageButton searchFriendButton = (ImageButton) findViewById(R.id.imageButtonSearch);
+
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         String jestID = settings.getString("jestID", "defaultvalue");
 
         if (jestID.equals("defaultvalue")) {
             Log.i("Error", "Did not find correct jestID");
         }
-
 
         Inventory dummyInv = new Inventory();
         ArrayList<User> friends = new ArrayList<>();
@@ -55,22 +59,46 @@ public class FindFriendActivity extends SocialActivity {
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
 
-        userList.add(dummy);
+       /* userList.add(dummy);
         userList.add(dummy2);
         userList.add(dummy3);
-
+        */
         ListView lView = (ListView)findViewById(R.id.findfriend_listview);
         adapter = new FindFriendListItemAdapter(userList,this);
         lView.setAdapter(adapter);
 
-
-
     }
 
     public void findFriendSearchBut(View view){
-        String query = "";
-        query = getQueryFilterUser();
-        String searchFriendsUser = searchFriendUser.getText().toString();
+        String stringSearchUser = searchFriendUser.getText().toString();
+        String query = "{" +
+                "  \"query\": {" +
+                "    \"match\": {" +
+                "      \"username\": \"" + stringSearchUser + "\"" +
+                "    }" +
+                "  }" +
+                "}";
+
+        ElasticSearchUserController.GetUsersTask getUsersTask = new ElasticSearchUserController.GetUsersTask();
+        getUsersTask.execute(query);
+        ArrayList<User> UserfromQueries = new ArrayList<>();
+        UserfromQueries.clear();
+        Log.d(TAG, "findFriendSearchBut: the userfromqueries is " + UserfromQueries.size());
+        try {
+            UserfromQueries =getUsersTask.get();
+            Log.d(TAG, "findFriendSearchBut: " + UserfromQueries.get(0).getUsername());
+            Log.d(TAG, "findFriendSearchBut: " + UserfromQueries.size());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        userList.clear();
+        userList.addAll(UserfromQueries);
+        Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.size());
+        Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.get(0).getUsername());
+        adapter.notifyDataSetChanged();
     }
 
     public void addFriendsBut(View view){
@@ -83,6 +111,15 @@ public class FindFriendActivity extends SocialActivity {
         // look in quirklist
         // match where type is type
         return query;
+    }
+
+    public void applyOfflineUserFilter(){
+
+    }
+
+    public void offlineFilter(String query, String arg, User user) {
+
+
     }
 
     @Override

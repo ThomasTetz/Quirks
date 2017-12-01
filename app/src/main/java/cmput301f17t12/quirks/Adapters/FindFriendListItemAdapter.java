@@ -45,20 +45,20 @@ public class FindFriendListItemAdapter extends BaseAdapter implements ListAdapte
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.findfriend_item, null);
-
-            User user = users.get(i);
+        }
+          final User user = users.get(i);
             TextView friendHeader = (TextView) view.findViewById(R.id.FindFriendtext);
             friendHeader.setText(user.getUsername());
 
             CheckBox checkBoxfriends = (CheckBox) view.findViewById(R.id.checkBoxSelectFriend);
 
 
-        }
+
 
         return view;
     }
