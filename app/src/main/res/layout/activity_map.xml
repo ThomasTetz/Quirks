@@ -16,12 +16,10 @@
             class="com.google.android.gms.maps.SupportMapFragment" />
         <!-- A small label at the top of the screen. -->
         <TextView
-            android:id="@+id/top_text"
+            android:id="@+id/tap_text"
+            android:text="Tap on the map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textColor="#000" />
+            android:layout_height="wrap_content" />
     </RelativeLayout>
     <!-- A set of test buttons. -->
     <RelativeLayout
