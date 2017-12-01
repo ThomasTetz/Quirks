@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -113,12 +114,8 @@ public class FindFriendActivity extends SocialActivity {
         return query;
     }
 
-    public void applyOfflineUserFilter(){
-
-    }
-
-    public void offlineFilter(String query, String arg, User user) {
-
+    public void addFriend(View view){
+        Toast.makeText(FindFriendActivity.this,"Sending Friend Request", Toast.LENGTH_SHORT).show();
 
     }
 

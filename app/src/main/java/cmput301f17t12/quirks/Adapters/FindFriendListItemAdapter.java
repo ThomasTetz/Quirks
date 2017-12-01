@@ -55,10 +55,7 @@ public class FindFriendListItemAdapter extends BaseAdapter implements ListAdapte
             TextView friendHeader = (TextView) view.findViewById(R.id.FindFriendtext);
             friendHeader.setText(user.getUsername());
 
-            CheckBox checkBoxfriends = (CheckBox) view.findViewById(R.id.checkBoxSelectFriend);
-
-
-
+            ImageButton addfriendbut = (ImageButton) view.findViewById(R.id.buttonAddFriend);
 
         return view;
     }
