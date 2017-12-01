@@ -57,6 +57,19 @@ public  class SocialActivity extends BaseActivity {
             case R.id.action_findFriends:
                 startActivity(new Intent(this,FindFriendActivity.class));
                 break;
+            case R.id.action_home:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.action_quirklist:
+                startActivity(new Intent(this, QuirksActivity.class));
+                break;
+            case R.id.action_newevent:
+                startActivity(new Intent(this, NewEventActivity.class));
+                break;
+            case R.id.action_social:
+                // TODO: Part 5
+                startActivity(new Intent(this, FriendActivity.class));
+                break;
         }
         finish();
         return true;
