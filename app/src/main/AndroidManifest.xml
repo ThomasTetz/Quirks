@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cmput301f17t12.quirks">
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,6 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +33,8 @@
         <activity android:name=".Activities.AddQuirkActivity" />
         <activity android:name=".Activities.NewEventActivity" />
         <activity android:name=".Activities.EditEventActivity" />
-        <activity android:name=".Activities.EventListActivity"></activity>
+        <activity android:name=".Activities.EventListActivity" />
+        <activity android:name=".Activities.MapActivity" />
     </application>
 
 </manifest>

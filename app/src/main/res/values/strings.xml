@@ -15,4 +15,6 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="errormsg_newevent">You have no Quirks to log an event to.</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps2">Map</string>
 </resources>
