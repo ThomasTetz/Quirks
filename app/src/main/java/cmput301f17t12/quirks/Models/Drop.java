@@ -2,13 +2,8 @@ package cmput301f17t12.quirks.Models;
 
 import java.io.Serializable;
 
-<<<<<<< HEAD
 import cmput301f17t12.quirks.Enumerations.DropType;
 import cmput301f17t12.quirks.Interfaces.Tradable;
-
-=======
-//public class Drop implements Tradable {
->>>>>>> 35bec57a9da5c7310a52dcb4ef22bb4cdcae2fd2
 public class Drop implements Serializable {
 
     private DropType dropType;
