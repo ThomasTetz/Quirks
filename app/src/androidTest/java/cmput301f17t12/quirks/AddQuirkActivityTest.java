@@ -70,7 +70,7 @@ public class AddQuirkActivityTest {
     @Test
     public void addQuirkTitleTest(){
         Intents.init();
-        onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
+        onView(withId(R.id.loginUser)).perform(typeText("alex"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_quirklist)).perform(click());
         onView(withId(R.id.add_quirk_button)).perform(click());
