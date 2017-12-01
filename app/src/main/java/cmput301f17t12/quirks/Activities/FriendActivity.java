@@ -36,10 +36,11 @@ public class FriendActivity extends SocialActivity {
 
         Inventory dummyInv = new Inventory();
         ArrayList<User> friends = new ArrayList<>();
+        ArrayList<User> requests = new ArrayList<>();
         QuirkList quirks = new QuirkList();
-        User dummy = new User("dummy",dummyInv,friends,quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,quirks);
+        User dummy = new User("dummy",dummyInv,friends,requests,quirks);
+        User dummy2 = new User("dummy2",dummyInv,friends,requests,quirks);
+        User dummy3 = new User("Alex",dummyInv,friends,requests,quirks);
         currentlylogged = HelperFunctions.getUserObject(jestID);
         super.onCreate(savedInstanceState);
         currentlylogged.addFriend(dummy);
