@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -103,8 +104,13 @@ public class FindFriendActivity extends SocialActivity {
         Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.get(0).getUsername());
         adapter.notifyDataSetChanged();
     }
+    
+    
 
     public void addFriendsBut(View view){
+        LinearLayout vwParentRow = (LinearLayout) view.getParent();
+        Log.d(TAG, "addFriendsBut: im pressing the button");
+
 
     }
 
