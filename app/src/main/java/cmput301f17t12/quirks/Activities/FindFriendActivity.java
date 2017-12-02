@@ -117,9 +117,9 @@ public class FindFriendActivity extends SocialActivity {
                 Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
-            userList.clear();
-            userList.addAll(UserfromQueries);
-            if(userList.size() == 0){
+            allusers.clear();
+            allusers.addAll(UserfromQueries);
+            if(allusers.size() == 0){
                 Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
             }
             else {
