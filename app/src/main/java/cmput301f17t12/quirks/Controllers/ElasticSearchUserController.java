@@ -14,7 +14,6 @@ import java.util.List;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
-import cmput301f17t12.quirks.Models.Request;
 import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.Models.UserRequest;
@@ -32,10 +31,10 @@ public class ElasticSearchUserController {
     private static String indexString = "cmput301f17t12_quirks";
     private static String typeString = "users";
 
-    public static class AddUsersTask extends AsyncTask<User, Void, Void> {
+    public static class AddUsersTask extends AsyncTask<User, Void, String> {
 
         @Override
-        protected Void doInBackground(User... users) {
+        protected String doInBackground(User... users) {
             verifySettings();
 
             for (User user : users) {
@@ -48,26 +47,30 @@ public class ElasticSearchUserController {
                     {
                         user.setId(result.getId());
                         Log.i("Error", "Elasticsearch successful on:" + indexString);
+                        return result.getId();
                     }
                     else
                     {
-                        Log.i("Error", "Elasticsearch query failed");
+                        // the index doesn't exist (possibly also just down)
+                        Log.i("Error", "Index not found or failed to load " + indexString);
+                        Log.i("Error", "Error " + Integer.toString(result.getResponseCode()));
+                        return null;
                     }
                 }
                 catch (Exception e) {
                     Log.i("Error", "The application failed to build and send the users");
+                    return null;
                 }
-
             }
             return null;
         }
     }
 
 
-    public static class UpdateUserTask extends AsyncTask<User, Void, Void> {
+    public static class UpdateUserTask extends AsyncTask<User, Void, Integer> {
 
         @Override
-        protected Void doInBackground(User... users) {
+        protected Integer doInBackground(User... users) {
             verifySettings();
             Index index = new Index.Builder(users[0]).index(indexString).type(typeString).id(users[0].getId()).build();
 
@@ -77,17 +80,21 @@ public class ElasticSearchUserController {
                 if (result.isSucceeded())
                 {
                     Log.i("Error", "updated user: " + users[0].getUsername());
+                    return 1;
                 }
                 else
                 {
-                    Log.i("Error", "Elasticsearch was not able to update the user");
+                    // the index doesn't exist (possibly also just down)
+                    Log.i("Error", "Index not found or failed to load " + indexString);
+                    Log.i("Error", "Error " + Integer.toString(result.getResponseCode()));
+                    return -1;
                 }
             }
             catch (Exception e) {
                 Log.i("Error", "The application failed to build and send the users");
             }
 
-            return null;
+            return -1;
         }
     }
 
@@ -159,10 +166,17 @@ public class ElasticSearchUserController {
                     List<Quirk> foundQuirks = result.getSourceAsObjectList(Quirk.class);
                     quirks.addAll(foundQuirks);
                 }
+                else{
+                    // the index doesn't exist (possibly also just down)
+                    Log.i("Error", "Index not found or failed to load " + indexString);
+                    Log.i("Error", "Error " + Integer.toString(result.getResponseCode()));
+                    return null;
+                }
             }
             catch (Exception e) {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 Log.i("Error", e.toString());
+                return null;
             }
 
             return quirks;
@@ -174,7 +188,15 @@ public class ElasticSearchUserController {
         protected User doInBackground(String... username) {
             verifySettings();
 
+
+            // Build the query
+
+            System.out.print("search_parameters[0]: ");
+            System.out.println(username[0]);
+
             Get get = new Get.Builder(indexString, username[0]).type(typeString).build();
+
+
 
             try {
                 JestResult result = client.execute(get);
@@ -185,7 +207,10 @@ public class ElasticSearchUserController {
 
                 }
                 else{
-                    Log.i("Error", "fail no error");
+                    // the index doesn't exist (possibly also just down)
+                    Log.i("Error", "Index not found or failed to load " + indexString);
+                    Log.i("Error", "Error " + Integer.toString(result.getResponseCode()));
+                    return null;
                 }
             }
             catch (Exception e) {
