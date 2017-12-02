@@ -44,9 +44,6 @@ public class SocialActivity extends BaseActivity {
             case R.id.action_trade:
                 startActivity(new Intent(this, TradeActivity.class));
                 break;
-            case R.id.action_feed:
-//                startActivity(new Intent(this, FeedActivity.class));
-//                break;
             case R.id.action_friends:
                 startActivity(new Intent(this, FriendActivity.class));
                 break;
