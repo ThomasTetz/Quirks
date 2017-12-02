@@ -14,7 +14,10 @@ import java.util.List;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Request;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
@@ -171,15 +174,7 @@ public class ElasticSearchUserController {
         protected User doInBackground(String... username) {
             verifySettings();
 
-
-            // Build the query
-
-            System.out.print("search_parameters[0]: ");
-            System.out.println(username[0]);
-
             Get get = new Get.Builder(indexString, username[0]).type(typeString).build();
-
-
 
             try {
                 JestResult result = client.execute(get);
@@ -197,7 +192,7 @@ public class ElasticSearchUserController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 Log.i("Error", e.toString());
             }
-            return new User("fake name", new Inventory(), new ArrayList<User>(),new ArrayList<User>(), new QuirkList());
+            return new User("fake name", new Inventory(), new ArrayList<User>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
         }
     }
 

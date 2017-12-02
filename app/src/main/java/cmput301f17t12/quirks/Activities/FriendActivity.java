@@ -13,7 +13,10 @@ import cmput301f17t12.quirks.Adapters.FriendListItemAdapter;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Request;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
 
 /**
@@ -36,11 +39,13 @@ public class FriendActivity extends SocialActivity {
 
         Inventory dummyInv = new Inventory();
         ArrayList<User> friends = new ArrayList<>();
-        ArrayList<User> requests = new ArrayList<>();
         QuirkList quirks = new QuirkList();
-        User dummy = new User("dummy",dummyInv,friends,requests,quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,requests,quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,requests,quirks);
+        ArrayList<TradeRequest> traderequests = new ArrayList<>();
+        ArrayList<UserRequest> requests = new ArrayList<>();
+
+        User dummy = new User("dummy",dummyInv,friends,requests, traderequests, quirks);
+        User dummy2 = new User("dummy2",dummyInv,friends,requests, traderequests, quirks);
+        User dummy3 = new User("Alex",dummyInv,friends,requests, traderequests, quirks);
         currentlylogged = HelperFunctions.getUserObject(jestID);
         super.onCreate(savedInstanceState);
         currentlylogged.addFriend(dummy);

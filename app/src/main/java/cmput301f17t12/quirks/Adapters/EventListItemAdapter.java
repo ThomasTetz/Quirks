@@ -53,7 +53,7 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
      * @param viewGroup The parent ListView
      * @return A View representing the data at the corresponding position
      */
-    @Override //TODO:
+
     public View getView(final int pos, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
