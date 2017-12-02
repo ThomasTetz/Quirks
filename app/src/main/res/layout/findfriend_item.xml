@@ -40,7 +40,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="10dp"
-        android:onClick="addFriend"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
 </RelativeLayout>

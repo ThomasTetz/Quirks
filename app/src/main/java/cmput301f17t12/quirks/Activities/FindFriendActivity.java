@@ -126,12 +126,14 @@ public class FindFriendActivity extends SocialActivity {
         return query;
     }
 
-    public void addFriend(View view){
-        Toast.makeText(FindFriendActivity.this,"Sending Friend Request", Toast.LENGTH_SHORT).show();
-
+    public void addFriend(int selectFriendIndex) {
+        Toast.makeText(FindFriendActivity.this,"Sending Friend Request",Toast.LENGTH_SHORT).show();
+        String username = userList.get(selectFriendIndex).getUsername();
+        Log.d(TAG, "addFriend: the index is this " + selectFriendIndex);
+        Log.d(TAG, "addFriend: the index is this " + username);
     }
 
-    @Override
+        @Override
     int getContentViewId() {
         return R.layout.activity_findfriends;
     }
