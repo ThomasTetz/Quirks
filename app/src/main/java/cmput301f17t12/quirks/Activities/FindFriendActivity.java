@@ -43,7 +43,6 @@ public class FindFriendActivity extends SocialActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userList = new ArrayList<>();
-        Button addFriendButton = (Button) findViewById(R.id.buttonAddFriend);
         searchFriendUser = (EditText)findViewById(R.id.editTextFindFriend);
         ImageButton searchFriendButton = (ImageButton) findViewById(R.id.imageButtonSearch);
 
@@ -77,54 +76,51 @@ public class FindFriendActivity extends SocialActivity {
 
     }
 
-    public void findFriendSearchBut(View view){
+    public void findFriendSearchBut(View view) {
         String stringSearchUser = searchFriendUser.getText().toString();
-        String query = "{" +
-                "  \"query\": {" +
-                "    \"match\": {" +
-                "      \"username\": \"" + stringSearchUser + "\"" +
-                "    }" +
-                "  }" +
-                "}";
-
-        ElasticSearchUserController.GetUsersTask getUsersTask = new ElasticSearchUserController.GetUsersTask();
-        getUsersTask.execute(query);
-        ArrayList<User> UserfromQueries = new ArrayList<>();
-        UserfromQueries.clear();
-        Log.d(TAG, "findFriendSearchBut: the userfromqueries is " + UserfromQueries.size());
-        try {
-            UserfromQueries =getUsersTask.get();
-            Log.d(TAG, "findFriendSearchBut: " + UserfromQueries.get(0).getUsername());
-            Log.d(TAG, "findFriendSearchBut: " + UserfromQueries.size());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if(stringSearchUser.equals(currentlylogged.getUsername())){
+            Toast.makeText(FindFriendActivity.this,"Cannot input yourself",Toast.LENGTH_SHORT).show();
+            return;
         }
+        if (stringSearchUser.equals("")) {
+            Toast.makeText(FindFriendActivity.this,"Please input a username",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
+            Toast.makeText(FindFriendActivity.this,"Searching for user",Toast.LENGTH_SHORT).show();
+            String query = "{" +
+                    "  \"query\": {" +
+                    "    \"match\": {" +
+                    "      \"username\": \"" + stringSearchUser + "\"" +
+                    "    }" +
+                    "  }" +
+                    "}";
 
-        userList.clear();
-        userList.addAll(UserfromQueries);
-        Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.size());
-        Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.get(0).getUsername());
-        adapter.notifyDataSetChanged();
+            ElasticSearchUserController.GetUsersTask getUsersTask = new ElasticSearchUserController.GetUsersTask();
+            getUsersTask.execute(query);
+            ArrayList<User> UserfromQueries = new ArrayList<>();
+            UserfromQueries.clear();
+            Log.d(TAG, "findFriendSearchBut: the userfromqueries is " + UserfromQueries.size());
+            try {
+                UserfromQueries = getUsersTask.get();
+            } catch (InterruptedException e) {
+                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            userList.clear();
+            userList.addAll(UserfromQueries);
+            if(userList.size() == 0){
+                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                adapter.notifyDataSetChanged();
+                }
+            }
     }
-    
-    
 
-    public void addFriendsBut(View view){
-        LinearLayout vwParentRow = (LinearLayout) view.getParent();
-        Log.d(TAG, "addFriendsBut: im pressing the button");
-
-
-    }
-
-    public String getQueryFilterUser(){
-        String query = "user";
-        // for the user
-        // look in quirklist
-        // match where type is type
-        return query;
-    }
 
     public void addFriend(int selectFriendIndex) {
         Toast.makeText(FindFriendActivity.this,"Sending Friend Request",Toast.LENGTH_SHORT).show();
