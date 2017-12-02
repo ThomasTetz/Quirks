@@ -28,10 +28,41 @@
     </android.support.design.widget.BottomNavigationView>
 
     <TextView
+        android:id="@+id/collectiontext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TRADE WINDOW TEST"
-        android:textSize="50sp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Your collection:"
+        android:textSize="20sp"
         android:layout_below="@id/top_navigation"/>
+
+    <ListView
+        android:id="@+id/collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/collectiontext"
+        android:layout_marginTop="8dp" />
+
+    <LinearLayout
+        android:id="@+id/tradestuff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/bottom_navigation"
+        android:layout_below="@id/collection"
+        android:layout_above="@id/bottom_navigation">
+        <TextView
+            android:id="@+id/tradetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Trading:"
+            android:textSize="20sp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trade"/>
+    </LinearLayout>
 
 </RelativeLayout>
