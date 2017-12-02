@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -34,7 +37,7 @@ import cmput301f17t12.quirks.R;
 import static cmput301f17t12.quirks.R.id.map;
 
 public class MapActivity extends BaseActivity
-        implements OnMapReadyCallback, OnMapClickListener, OnMapLongClickListener, OnCameraIdleListener {
+        implements OnMapReadyCallback, OnMapClickListener, OnCameraIdleListener {
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
@@ -132,25 +135,24 @@ public class MapActivity extends BaseActivity
     public void onMapReady(GoogleMap googleMap) {
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        Log.d("DEBUG", "Map is ready");
+        Log.d("DEBUG", "Map activity is ready");
 
         mMap = googleMap;
 
         mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
         mMap.setOnCameraIdleListener(this);
-
-        //Ualberta location - for testing
-        //userLoc.setLatitude(53.5232);
-        //userLoc.setLongitude(-113.5263);
-
-        //TODO: Default location is based on Users Location -> Is default location calculated or just hardcoded??
 
         LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(userLatLon)
-                .title("Marker in Sydney"));
+                .title("University of Alberta"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLon));
     }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        mTapTextView.setText("tapped, point=" + point);
+    }
+
 
     /**
      * This is called during the User Permission Request. This function checks if the user gave the
@@ -209,14 +211,6 @@ public class MapActivity extends BaseActivity
     @Override
     public void onCameraIdle() { mTapTextView.setText(mMap.getCameraPosition().toString());}
 
-    @Override
-    public void onMapClick(LatLng point) {
-        mTapTextView.setText("tapped, point=" + point);
-    }
-
-    @Override
-    public void onMapLongClick(LatLng point) { mTapTextView.setText("long pressed, point=" + point);}
-
     // [Navigation Bar]
     int getContentViewId() {
         return R.layout.activity_map;
@@ -226,5 +220,4 @@ public class MapActivity extends BaseActivity
     int getNavigationMenuItemId() {
         return R.id.action_geomap;
     }
-
 }
