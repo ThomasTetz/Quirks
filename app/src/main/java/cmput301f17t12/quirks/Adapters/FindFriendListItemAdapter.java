@@ -24,13 +24,13 @@ import cmput301f17t12.quirks.R;
 
 public class FindFriendListItemAdapter extends BaseAdapter implements ListAdapter {
 
-    ArrayList<User> users = new ArrayList<>();
+    ArrayList<String> users = new ArrayList<>();
     private Context context;
     private static final String TAG = "FindFriendListItem";
 
 
 
-    public FindFriendListItemAdapter(ArrayList<User> users, Context context){
+    public FindFriendListItemAdapter(ArrayList<String> users, Context context){
         this.users = users;
         this.context = context;
     }
@@ -57,9 +57,9 @@ public class FindFriendListItemAdapter extends BaseAdapter implements ListAdapte
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.findfriend_item, null);
         }
-          final User user = users.get(i);
+          final String user = users.get(i);
             TextView friendHeader = (TextView) view.findViewById(R.id.FindFriendtext);
-            friendHeader.setText(user.getUsername());
+            friendHeader.setText(user);
 
             ImageButton addfriendbut = (ImageButton) view.findViewById(R.id.imageButtonAddFriend);
 
