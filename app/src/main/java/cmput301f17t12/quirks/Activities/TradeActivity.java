@@ -43,61 +43,81 @@ public class TradeActivity extends SocialActivity {
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
 
-        String query = "{" +
-                "  \"from\": 0, \"size\": 5000, " +
-                "  \"query\": {" +
-                "    \"match_all\": {}" +
-                "  }" +
-                "}";
+        if (currentlylogged != null) {
+//            String query = "{" +
+//                    "  \"from\": 0, \"size\": 5000, " +
+//                    "  \"query\": {" +
+//                    "    \"match_all\": {}" +
+//                    "  }" +
+//                    "}";
 
-        ArrayList<User> allusers = HelperFunctions.getAllUsers(query);
-        for (User item : allusers) {
-            Log.d("users", item.toString());
-        }
+//            String query = "{" +
+//                    "  \"from\": 0, \"size\": 5000, " +
+//                    "  \"query\": {" +
+//                    "    \"bool\": {" +
+//                    "      \"must_not\": {" +
+//                    "        \"username\": \"" + currentlylogged.getUsername() + "\"" +
+//                    "      }" +
+//                    "    }" +
+//                    "  }" +
+//                    "}";
+            String query = "{" +
+                    "  \"from\": 0, \"size\": 5000, " +
+                    "  \"query\": {" +
+                    "    \"bool\": {" +
+                    "      \"must_not\": {" +
+                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}"+
+                    "      }" +
+                    "    }" +
+                    "  }" +
+                    "}";
 
-        if (currentlylogged != null && allusers != null) {
-            ArrayAdapter<User> useradapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allusers);
-            dropdown.setAdapter(useradapter);
+            ArrayList<User> allusers = HelperFunctions.getAllUsers(query);
 
-            final TextView myUsername = (TextView) findViewById(R.id.usernametext);
-            final TextView theirUsername = (TextView) findViewById(R.id.theirusername);
-            Button tradebutton = (Button) findViewById(R.id.tradebtn);
+            if (allusers != null) {
+                ArrayAdapter<User> useradapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allusers);
+                dropdown.setAdapter(useradapter);
 
-            tradedUser = (User)dropdown.getSelectedItem();
+                final TextView myUsername = (TextView) findViewById(R.id.usernametext);
+                final TextView theirUsername = (TextView) findViewById(R.id.theirusername);
+                Button tradebutton = (Button) findViewById(R.id.tradebtn);
 
-            myUsername.setText(currentlylogged.getUsername());
-            theirUsername.setText(tradedUser.getUsername());
+                tradedUser = (User)dropdown.getSelectedItem();
 
-            // instantiate custom adapter for both inventories
-            loggeduserAdapter = new CollectibleItemAdapter(currentlylogged.getInventory().getList(), this);
+                myUsername.setText(currentlylogged.getUsername());
+                theirUsername.setText(tradedUser.getUsername());
 
-            final ArrayList<Drop> tmpInventory = tradedUser.getInventory().getList();
-            tradeduserAdapter = new CollectibleItemAdapter(tmpInventory, this);
+                // instantiate custom adapter for both inventories
+                loggeduserAdapter = new CollectibleItemAdapter(currentlylogged.getInventory().getList(), this);
 
-            // handle listview and assign adapter
-            ListView yourCollection = (ListView) findViewById(R.id.yourcollection);
-            ListView theircollection = (ListView) findViewById(R.id.theircollection);
-            yourCollection.setAdapter(loggeduserAdapter);
-            theircollection.setAdapter(tradeduserAdapter);
+                final ArrayList<Drop> tmpInventory = tradedUser.getInventory().getList();
+                tradeduserAdapter = new CollectibleItemAdapter(tmpInventory, this);
 
-            dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    tradedUser = (User)parentView.getItemAtPosition(position);
-                    tmpInventory.clear();
-                    tmpInventory.addAll(tradedUser.getInventory().getList());
-                    theirUsername.setText(tradedUser.getUsername());
-                    tradeduserAdapter.notifyDataSetChanged();
-                }
+                // handle listview and assign adapter
+                ListView yourCollection = (ListView) findViewById(R.id.yourcollection);
+                ListView theircollection = (ListView) findViewById(R.id.theircollection);
+                yourCollection.setAdapter(loggeduserAdapter);
+                theircollection.setAdapter(tradeduserAdapter);
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    tmpInventory.clear();
-                    theirUsername.setText("");
-                    tradeduserAdapter.notifyDataSetChanged();
-                }
+                dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        tradedUser = (User)parentView.getItemAtPosition(position);
+                        tmpInventory.clear();
+                        tmpInventory.addAll(tradedUser.getInventory().getList());
+                        theirUsername.setText(tradedUser.getUsername());
+                        tradeduserAdapter.notifyDataSetChanged();
+                    }
 
-            });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+                        tmpInventory.clear();
+                        theirUsername.setText("");
+                        tradeduserAdapter.notifyDataSetChanged();
+                    }
+
+                });
+            }
         }
     }
 
