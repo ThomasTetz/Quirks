@@ -2,7 +2,6 @@ package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ public class CollectibleItemAdapter extends BaseAdapter implements ListAdapter {
     }
 
     /**
-     * Return the size of the News List
+     * Return the size of the Drop List
      * @return
      */
     @Override
@@ -69,11 +68,7 @@ public class CollectibleItemAdapter extends BaseAdapter implements ListAdapter {
         final Drop item = list.get(pos);
 
         // Handle checkboxes
-        CheckBox collectibleBox = view.findViewById(R.id.collectiblebox);
-        collectibleBox.setSelected(item.isSelected());
-        if (item.isSelected()) {
-            Log.d("wowfactortest", "Still selected");
-        }
+        final CheckBox collectibleBox = view.findViewById(R.id.collectiblebox);
         collectibleBox.setFocusable(false);
         collectibleBox.setFocusableInTouchMode(false);
 
@@ -81,9 +76,9 @@ public class CollectibleItemAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 item.setSelected(isChecked);
-                Log.d("wowfactortest", "Checked: " + item.getDropType().getName());
             }
         });
+        collectibleBox.setChecked(item.isSelected());
 
         //Handle TextView and display collectibles
         TextView collectibleName = view.findViewById(R.id.collectiblename);

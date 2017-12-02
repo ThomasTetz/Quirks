@@ -61,7 +61,7 @@ public class TradeActivity extends SocialActivity {
 
             ArrayList<User> allusers = HelperFunctions.getAllUsers(query);
 
-            if (allusers != null) {
+            if (allusers != null && allusers.size() > 0) {
                 ArrayAdapter<User> useradapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allusers);
                 dropdown.setAdapter(useradapter);
 
