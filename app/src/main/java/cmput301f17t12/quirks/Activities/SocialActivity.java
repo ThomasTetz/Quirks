@@ -66,7 +66,6 @@ public class SocialActivity extends BaseActivity {
                 startActivity(new Intent(this, NewEventActivity.class));
                 break;
             case R.id.action_social:
-                // TODO: Part 5
                 startActivity(new Intent(this, FriendActivity.class));
                 break;
         }

@@ -4,10 +4,6 @@ import android.os.Bundle;
 
 import cmput301f17t12.quirks.R;
 
-/**
- * Created by root on 12/1/17.
- */
-
 public class FeedActivity extends SocialActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
