@@ -75,9 +75,8 @@ public class User implements Serializable {
     }
     public ArrayList<User> getRequests(){return  requests;
     }
-    public void sendFriendRequest(User friend,User current){
-        Log.d(TAG, "sendFriendRequest: the friend is now " + this.getUsername());
-        friend.requests.add(current);
+    public void sendFriendRequest(User friend){
+        friend.requests.add(this);
     }
 
     public boolean hasRequests(User request){
