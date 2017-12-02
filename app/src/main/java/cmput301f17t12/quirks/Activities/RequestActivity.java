@@ -86,7 +86,9 @@ public class RequestActivity extends  SocialActivity{
         adapter.notifyDataSetChanged();
 
     }
-
+    public void DeleteFriend(int DeleteFriendPos){
+        User friend = requestlist.get(DeleteFriendPos);
+    }
 
     @Override
     int getContentViewId() {
