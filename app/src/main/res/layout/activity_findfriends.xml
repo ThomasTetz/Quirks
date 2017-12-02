@@ -49,15 +49,6 @@
         android:onClick="findFriendSearchBut"
         app:srcCompat="@drawable/ic_search_black_24dp" />
 
-    <Button
-        android:id="@+id/buttonAddFriend"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_navigation"
-        android:layout_alignStart="@+id/editTextFindFriend"
-        android:onClick="addFriendsBut"
-        android:text="Add Friend" />
-
     <ListView
         android:id="@+id/findfriend_listview"
         android:layout_width="match_parent"

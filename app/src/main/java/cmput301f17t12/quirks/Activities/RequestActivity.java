@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Adapters.FriendListItemAdapter;
 import cmput301f17t12.quirks.Adapters.RequestListItemAdapter;
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
@@ -74,8 +75,20 @@ public class RequestActivity extends  SocialActivity{
     }
 
 
+    public void AcceptFriend(int AcceptFriendPos){
+        User friend = requestlist.get(AcceptFriendPos);
+        Log.d(TAG, "AcceptFriend: the currentlylog before is " + currentlylogged.getFriends().size());
+        currentlylogged.addFriend(friend);
+       // currentlylogged.deleteRequest(friend);
+        Log.d(TAG, "AcceptFriend: the currentlylog now has " + currentlylogged.getFriends().size());
+        ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(currentlylogged);
+        adapter.notifyDataSetChanged();
 
-
+    }
+    public void DeleteFriend(int DeleteFriendPos){
+        User friend = requestlist.get(DeleteFriendPos);
+    }
 
     @Override
     int getContentViewId() {

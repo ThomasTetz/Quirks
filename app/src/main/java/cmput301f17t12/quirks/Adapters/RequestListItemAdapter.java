@@ -1,6 +1,7 @@
 package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import cmput301f17t12.quirks.Activities.RequestActivity;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
@@ -59,6 +61,15 @@ public class RequestListItemAdapter extends BaseAdapter implements ListAdapter {
         Button Acceptfriendbut = (Button) view.findViewById(R.id.buttonAccept);
         Button Declinefriendbut = (Button) view.findViewById(R.id.buttonDeclineFriend);
 
+        Acceptfriendbut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(context instanceof RequestActivity){
+                    ((RequestActivity)context).AcceptFriend(i);
+
+                }
+            }
+        });
 
         return view;
     }

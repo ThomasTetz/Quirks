@@ -27,6 +27,8 @@ public class FriendActivity extends SocialActivity {
     public User currentlylogged;
     private FriendListItemAdapter adapter;
     private ArrayList<User> friendlist;
+    private static final String TAG = "FriendActivity" ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,13 @@ public class FriendActivity extends SocialActivity {
         User dummy = new User("dummy",dummyInv,friends,requests, traderequests, quirks);
         User dummy2 = new User("dummy2",dummyInv,friends,requests, traderequests, quirks);
         User dummy3 = new User("Alex",dummyInv,friends,requests, traderequests, quirks);
+
+
         currentlylogged = HelperFunctions.getUserObject(jestID);
         super.onCreate(savedInstanceState);
         currentlylogged.addFriend(dummy);
-        currentlylogged.addFriend(dummy2);
         currentlylogged.addFriend(dummy3);
+        Log.d(TAG, "onCreate: the size of currentylog is " + currentlylogged.getFriends().size());
 
         friendlist = currentlylogged.getFriends();
         adapter = new FriendListItemAdapter(friendlist,this);
