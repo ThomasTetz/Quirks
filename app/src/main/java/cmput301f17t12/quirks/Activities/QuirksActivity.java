@@ -32,7 +32,7 @@ public class QuirksActivity extends BaseActivity {
     private QuirkList quirkList = new QuirkList();
     private Date dateFilter;
     private QuirkListItemAdapter adapter;
-    private String jestID; //TODO: Change this with shared preferences
+    private String jestID;
     private Spinner spinner;
     private Button applyButton;
     private HashMap filterHashMap;
