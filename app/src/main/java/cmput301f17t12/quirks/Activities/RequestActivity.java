@@ -29,6 +29,7 @@ public class RequestActivity extends  SocialActivity{
     public User currentlylogged;
     private RequestListItemAdapter adapter;
     private ArrayList<User> requestlist;
+    private ArrayList<UserRequest> requestsUser;
     private static final String TAG = "RequestActivity" ;
 
 
@@ -45,7 +46,9 @@ public class RequestActivity extends  SocialActivity{
         }
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
-
+        requestsUser = currentlylogged.getUserRequests();
+        Log.d(TAG, "onCreate: the user request is " + requestsUser.size());
+        Log.d(TAG, "onCreate: the user request is " + requestsUser.get(0).getFromUser());
         Inventory dummyInv = new Inventory();
         ArrayList<User> friends = new ArrayList<>();
         QuirkList quirks = new QuirkList();

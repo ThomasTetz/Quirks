@@ -126,7 +126,13 @@ public class FindFriendActivity extends SocialActivity {
         Toast.makeText(FindFriendActivity.this,"Sending Friend Request",Toast.LENGTH_SHORT).show();
         String username = userList.get(selectFriendIndex).getUsername();
         Log.d(TAG, "addFriend: the index is this " + username);
-       // currentlylogged.sendFriendRequest(userList.get(selectFriendIndex));
+        UserRequest user = new UserRequest(currentlylogged.getUsername());
+        userList.get(selectFriendIndex).addUserRequest(user);
+        ElasticSearchUserController.UpdateUserTask updateUserTask
+                = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(userList.get(selectFriendIndex));
+
+        Toast.makeText(FindFriendActivity.this,"Sent Friend Request",Toast.LENGTH_SHORT).show();
     }
 
         @Override
