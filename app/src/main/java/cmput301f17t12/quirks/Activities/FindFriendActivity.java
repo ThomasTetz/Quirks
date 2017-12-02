@@ -35,6 +35,7 @@ public class FindFriendActivity extends SocialActivity {
     public User currentlylogged;
     private FindFriendListItemAdapter adapter;
     private ArrayList<User> userList;
+    ArrayList<User> allusers;
     private static final String TAG = "FindFriendActivity" ;
 
     EditText searchFriendUser;
@@ -43,7 +44,7 @@ public class FindFriendActivity extends SocialActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userList = new ArrayList<>();
-        searchFriendUser = (EditText)findViewById(R.id.editTextFindFriend);
+        searchFriendUser = (EditText) findViewById(R.id.editTextFindFriend);
         ImageButton searchFriendButton = (ImageButton) findViewById(R.id.imageButtonSearch);
 
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
@@ -59,21 +60,27 @@ public class FindFriendActivity extends SocialActivity {
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();
 
-        User dummy = new User("dummy",dummyInv,friends,requests, traderequests, quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,requests, traderequests, quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,requests, traderequests, quirks);
-
         currentlylogged = HelperFunctions.getUserObject(jestID);
 
-       /* userList.add(dummy);
-        userList.add(dummy2);
-        userList.add(dummy3);
-        */
+        if (currentlylogged != null) {
+            String query = "{" +
+                    "  \"from\": 0, \"size\": 5000, " +
+                    "  \"query\": {" +
+                    "    \"bool\": {" +
+                    "      \"must_not\": {" +
+                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}" +
+                    "      }" +
+                    "    }" +
+                    "  }" +
+                    "}";
 
-        ListView lView = (ListView)findViewById(R.id.findfriend_listview);
-        adapter = new FindFriendListItemAdapter(userList,this);
-        lView.setAdapter(adapter);
+            allusers = HelperFunctions.getAllUsers(query);
 
+            ListView lView = (ListView) findViewById(R.id.findfriend_listview);
+            adapter = new FindFriendListItemAdapter(allusers, this);
+            lView.setAdapter(adapter);
+
+        }
     }
 
     public void findFriendSearchBut(View view) {
@@ -124,13 +131,13 @@ public class FindFriendActivity extends SocialActivity {
 
     public void addFriend(int selectFriendIndex) {
         Toast.makeText(FindFriendActivity.this,"Sending Friend Request",Toast.LENGTH_SHORT).show();
-        String username = userList.get(selectFriendIndex).getUsername();
+        String username = allusers.get(selectFriendIndex).getUsername();
         Log.d(TAG, "addFriend: the index is this " + username);
         UserRequest user = new UserRequest(currentlylogged.getUsername());
-        userList.get(selectFriendIndex).addUserRequest(user);
+        allusers.get(selectFriendIndex).addUserRequest(user);
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
-        updateUserTask.execute(userList.get(selectFriendIndex));
+        updateUserTask.execute(allusers.get(selectFriendIndex));
 
         Toast.makeText(FindFriendActivity.this,"Sent Friend Request",Toast.LENGTH_SHORT).show();
     }
