@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-         settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
 
 
         // get the user
@@ -109,7 +109,7 @@ public class MainActivity extends BaseActivity {
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
                 else{
-//                    applyFilter(query);
+                    //applyFilter(query);
                     offlineFilter(query, extraString, currentlylogged);
                 }
 

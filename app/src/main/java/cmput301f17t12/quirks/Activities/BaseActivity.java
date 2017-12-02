@@ -42,9 +42,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_geomap:
-                // TODO: Part 5
-//                startActivity(new Intent(this, GeomapActivity.class));
-//                break;
+                startActivity(new Intent(this, MapActivity.class));
+                break;
             case R.id.action_social:
                 // TODO: Part 5
                startActivity(new Intent(this, FriendActivity.class));
