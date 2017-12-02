@@ -19,7 +19,6 @@ public class SocialActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(getContentViewId());
 
         navigationView = (BottomNavigationView) findViewById(R.id.top_navigation);
         navigationView.setOnNavigationItemSelectedListener(this);

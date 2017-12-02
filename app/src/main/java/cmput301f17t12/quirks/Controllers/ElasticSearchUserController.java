@@ -171,15 +171,7 @@ public class ElasticSearchUserController {
         protected User doInBackground(String... username) {
             verifySettings();
 
-
-            // Build the query
-
-            System.out.print("search_parameters[0]: ");
-            System.out.println(username[0]);
-
             Get get = new Get.Builder(indexString, username[0]).type(typeString).build();
-
-
 
             try {
                 JestResult result = client.execute(get);
