@@ -10,6 +10,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Adapters.FriendListItemAdapter;
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
@@ -64,11 +65,28 @@ public class FriendActivity extends SocialActivity {
 
     }
 
+    public void deleteFriend(int deletingFriendIndex) {
+
+       /* String userdeleting = friendlist.get(deletingFriendIndex).getUsername();
+        Log.d(TAG, "deleteFriend: the strng is " + userdeleting);
+        User dumuse = friendlist.get(deletingFriendIndex);
+        Log.d(TAG, "deleteFriend: does it contain " + friendlist.contains(friendlist.get(deletingFriendIndex)));
+        friendlist.remove(friendlist.get(deletingFriendIndex));
+
+        Log.d(TAG, "deleteFriend: does it contain"+ friendlist.contains(dumuse));
+=       */
+        currentlylogged.deleteFriend(friendlist.get(deletingFriendIndex));
+        //   friendlist.remove(deletingFriendIndex);
+        ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(currentlylogged);
+     //   friendlist.clear();
+      //  friendlist.addAll(currentlylogged.getFriends());
+        adapter.notifyDataSetChanged();
+    }
 
 
 
-
-    @Override
+        @Override
     int getContentViewId() {
         return R.layout.activity_friends;
     }

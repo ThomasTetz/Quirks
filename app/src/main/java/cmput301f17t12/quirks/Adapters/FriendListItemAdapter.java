@@ -1,6 +1,7 @@
 package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import cmput301f17t12.quirks.Activities.FriendActivity;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
@@ -21,6 +23,7 @@ import cmput301f17t12.quirks.R;
 public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<User> friends = new ArrayList<>();
     private Context context;
+    private static final String TAG = "FriendListItemAdapter" ;
 
     public FriendListItemAdapter(ArrayList<User>friends, Context context) {
         this.friends = friends;
@@ -42,7 +45,7 @@ public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,7 +55,18 @@ public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
             TextView friendHeader = (TextView) view.findViewById(R.id.Friendtext);
             friendHeader.setText(friend.getUsername());
 
+
             ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_friend_but);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(context instanceof FriendActivity){
+                        ((FriendActivity)context).deleteFriend(i);
+
+                    }
+                }
+            });
         }
 
         return view;
