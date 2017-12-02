@@ -2,6 +2,7 @@ package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import cmput301f17t12.quirks.Models.EventList;
 import cmput301f17t12.quirks.R;
 
 public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
+    private static final String TAG = "Eventlistitemadapter" ;
     private EventList eventList = new EventList();
     private Context context;
 
@@ -53,7 +55,7 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
      * @param viewGroup The parent ListView
      * @return A View representing the data at the corresponding position
      */
-    @Override //TODO:
+
     public View getView(final int pos, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
@@ -74,6 +76,7 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
             @Override
             public void onClick(View v) {
                 if (context instanceof EventListActivity) {
+                    Log.d(TAG, "onClick: the thing im in here is " + pos);
                     ((EventListActivity)context).launchEditEvent(pos);
                 }
             }

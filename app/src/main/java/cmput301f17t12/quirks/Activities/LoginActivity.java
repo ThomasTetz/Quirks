@@ -18,9 +18,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -91,8 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                             registerUser(username);
                         }
                     }
-                    else{
-                        Log.i("Error", "Offline behaviour here");
+                    else{ // offline behaviour: reject logins -> change to last user?
                         String text = "Failed to login: no connection to database";
                         int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(context, text, duration);
@@ -104,10 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
-
-    
 
     private void loginUser(User user){
         // after elasticsearch, go to main as that user
@@ -115,18 +114,13 @@ public class LoginActivity extends AppCompatActivity {
         System.out.println("JestId: " + user.getId());
         editor.putString("jestID", user.getId());
         editor.commit();
+        HelperFunctions.clearFile(getApplicationContext(), "currentUserFile.txt");
+        HelperFunctions.saveCurrentUser(getApplicationContext(), user);
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }
-
-
-//    //Need to check, is signing up new users in the spec??
-//    private void signUpUser(){
-//    }
-
-
 
     public void emptyUsernameDialog() {
 
@@ -142,16 +136,34 @@ public class LoginActivity extends AppCompatActivity {
         builder.show();
     }
 
-    //Need to check, is signing up new users in the spec??
     private void registerUser(String username){
         // create new user
-        User user = new User(username, new Inventory(), new ArrayList<User>(), new QuirkList());
+        User user = new User(username, new Inventory(), new ArrayList<User>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
 
         ElasticSearchUserController.AddUsersTask addUsersTask
                 = new ElasticSearchUserController.AddUsersTask();
-        addUsersTask.execute(user);
-        System.out.println("Successfully added new user");
-        loginUser(user);
 
+        System.out.println("user id before execute: " + user.getId());
+
+        addUsersTask.execute(user);
+
+        try{
+            String jestID = addUsersTask.get();
+            if (jestID != null){
+                editor.putString("jestID", jestID);
+                System.out.println("user id after execute: " + user.getId());
+                System.out.println("Successfully added new user");
+                loginUser(user);
+            }
+            else{
+                String text = "Failed to register new user";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Failed to register user from the async object\n" + e.toString() +"\n.");
+        }
     }
 }

@@ -12,6 +12,7 @@
         android:layout_height="30dp"
         android:textColor="@color/white"
         android:text="X"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="end"
         android:gravity="center"/>
@@ -24,17 +25,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="You received the following for completing an event: "
+            android:text="You received the following trading card for completing an event: "
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"/>
 
         <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_starnews"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_card"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"/>
 
         <TextView
             android:id="@+id/dropname"
@@ -50,7 +51,7 @@
             android:id="@+id/tradecard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="trading card"
+            android:text="basketball card"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
