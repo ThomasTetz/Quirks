@@ -13,19 +13,19 @@
             android:id="@+id/nearby_map_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text 1" />
+            android:text="Nearby" />
 
         <Button
             android:id="@+id/following_map_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text 2" />
+            android:text="Following" />
 
         <Button
             android:id="@+id/my_events_map_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text 3" />
+            android:text="My Events" />
 
     </LinearLayout>
 

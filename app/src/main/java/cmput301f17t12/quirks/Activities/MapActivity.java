@@ -61,6 +61,8 @@ public class MapActivity extends BaseActivity
 
         Log.d("DEBUG", "Stage 1");
 
+        //TODO: Maybe assign a flag based on the permission and then either show the users location or not
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             Log.d("DEBUG", "Requesting Permission");
@@ -74,7 +76,7 @@ public class MapActivity extends BaseActivity
         }
         else{
             Log.d("DEBUG", "Not Requesting Permission");
-            
+
             userLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
@@ -139,8 +141,10 @@ public class MapActivity extends BaseActivity
         mMap.setOnCameraIdleListener(this);
 
         //Ualberta location - for testing
-        userLoc.setLatitude(53.5232);
-        userLoc.setLongitude(-113.5263);
+        //userLoc.setLatitude(53.5232);
+        //userLoc.setLongitude(-113.5263);
+
+        //TODO: Default location is based on Users Location -> Is default location calculated or just hardcoded??
 
         LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(userLatLon)
@@ -148,6 +152,16 @@ public class MapActivity extends BaseActivity
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLon));
     }
 
+    /**
+     * This is called during the User Permission Request. This function checks if the user gave the
+     * app permission and gets the user's location.
+     * If the services utility returns null (or no permission is given). The user's location is
+     * assigned to University of Alberta as the default TODO: CHANGE THIS
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -180,7 +194,8 @@ public class MapActivity extends BaseActivity
                             });
 
                 } else {
-
+                    userLoc.setLatitude(53.5232);
+                    userLoc.setLongitude(-113.5263);
                     // permission denied, boo!
                     // TODO: Handle this case
                 }
