@@ -1,5 +1,7 @@
 package cmput301f17t12.quirks.Models;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,17 +10,20 @@ import io.searchbox.annotations.JestId;
 public class User implements Serializable {
     private String username;
     private Inventory inventory;
+    private static final String TAG = "User" ;
     private ArrayList<User> friends;
+    private ArrayList<User> requests;
     private QuirkList quirks;
 
     @JestId
     private String uid;
 
-    public User(String username, Inventory inventory, ArrayList<User> friends, QuirkList quirks){
+    public User(String username, Inventory inventory, ArrayList<User> friends,ArrayList<User> requests, QuirkList quirks){
         this.username = username;
         this.inventory = inventory;
         this.friends = friends;
         this.quirks = quirks;
+        this.requests = requests;
     }
 
     /**
@@ -68,11 +73,24 @@ public class User implements Serializable {
     public ArrayList<User> getFriends(){
         return friends;
     }
+    public ArrayList<User> getRequests(){return  requests;
+    }
+    public void sendFriendRequest(User friend){
+        friend.requests.add(this);
+    }
 
+    public boolean hasRequests(User request){
+        return requests.contains(request);
+    }
+
+    public void deleteRequest(User request){
+        requests.remove(request);
+    }
     /**
      * Add a friend to the User's friend-list
      * @param friend
      */
+
     public void addFriend(User friend){
         friends.add(friend);
     }

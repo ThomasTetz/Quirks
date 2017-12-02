@@ -51,6 +51,8 @@ public class NewEventActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myDialog = new Dialog(this);
+        myDialog.setCancelable(false);
+        myDialog.setCanceledOnTouchOutside(false);
 
         Spinner dropdown = (Spinner) findViewById(R.id.quirk_dropdown);
 
@@ -159,7 +161,6 @@ public class NewEventActivity extends BaseActivity {
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
 
-        //startActivity(new Intent(this, MainActivity.class));
     }
 
     public void cancelCommand(View view) {
