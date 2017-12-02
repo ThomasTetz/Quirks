@@ -2,7 +2,6 @@ package cmput301f17t12.quirks.Adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +76,6 @@ public class CollectibleItemAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 item.setSelected(isChecked);
-                if (isChecked) {
-                    Log.d("wowfactortest", "pos: " + String.valueOf(pos) + "Checked: " + item.getDropType().getName());
-                }
             }
         });
         collectibleBox.setChecked(item.isSelected());
