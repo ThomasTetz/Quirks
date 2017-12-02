@@ -1,36 +1,33 @@
 package cmput301f17t12.quirks.Activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import cmput301f17t12.quirks.Adapters.FriendListItemAdapter;
 import cmput301f17t12.quirks.Adapters.RequestListItemAdapter;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
-import cmput301f17t12.quirks.Models.Inventory;
-import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Drop;
+
 import cmput301f17t12.quirks.Models.Request;
 import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
-import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
-
-/**
- * Created by root on 11/30/17.
- */
 
 public class RequestActivity extends  SocialActivity{
 
     public User currentlylogged;
     private RequestListItemAdapter adapter;
     private ArrayList<User> requestlist;
-    private static final String TAG = "RequestActivity" ;
-
+    private SparseArray<ArrayList<Drop>> giveMap;
+    private SparseArray<ArrayList<Drop>> receiveMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,48 +42,56 @@ public class RequestActivity extends  SocialActivity{
         }
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
+        ArrayList<Request> requests = new ArrayList<>();
 
-        Inventory dummyInv = new Inventory();
-        ArrayList<User> friends = new ArrayList<>();
-        QuirkList quirks = new QuirkList();
-        ArrayList<TradeRequest> traderequests = new ArrayList<>();
-        ArrayList<UserRequest> requests = new ArrayList<>();
+        // Must add trade requests first or getGiveInfo & getReceiveInfo breaks.
+        // Indexing of the adapter relies on the order of addition
+        requests.addAll(currentlylogged.getTradeRequests());
+        requests.addAll(currentlylogged.getUserRequests());
 
-        User dummy = new User("dummy",dummyInv,friends,requests, traderequests, quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,requests, traderequests, quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,requests, traderequests, quirks);
+        giveMap = new SparseArray<>();
+        receiveMap = new SparseArray<>();
+        buildMaps(currentlylogged.getTradeRequests());
 
-//        dummy.sendFriendRequest(currentlylogged);
-//        dummy2.sendFriendRequest(currentlylogged);
-//        dummy3.sendFriendRequest(currentlylogged);
-
-//        requestlist = currentlylogged.getRequests();
-       /* requestlist.add(dummy);
-        requestlist.add(dummy2);
-        requestlist.add(dummy3);
-        */
-        Log.d(TAG, "onCreate: the requestlist is " + requestlist.size());
         ListView lView = (ListView)findViewById(R.id.listviewRequest);
 
-        adapter = new RequestListItemAdapter(requestlist,this);
+        adapter = new RequestListItemAdapter(requests,this);
         lView.setAdapter(adapter);
+    }
+
+    void buildMaps(ArrayList<TradeRequest> tradeRequests) {
+        for (TradeRequest item : tradeRequests) {
+            giveMap.put(tradeRequests.indexOf(item), item.getMyDrop());
+            receiveMap.put(tradeRequests.indexOf(item), item.getFromUserDrop());
+        }
+    }
+
+    public ArrayList<Drop> getGiveInfo(int index) {
+        return giveMap.get(index);
+    }
+
+    public ArrayList<Drop> getReceiveInfo(int index) {
+        return receiveMap.get(index);
+    }
+
+    public void acceptRequest(int AcceptFriendPos){
 
 
     }
+    public void declineRequest(int DeleteFriendPos){
 
+    }
 
-    public void AcceptFriend(int AcceptFriendPos){
+    public void acceptFriend(int AcceptFriendPos){
         User friend = requestlist.get(AcceptFriendPos);
-        Log.d(TAG, "AcceptFriend: the currentlylog before is " + currentlylogged.getFriends().size());
         currentlylogged.addFriend(friend);
-       // currentlylogged.deleteRequest(friend);
-        Log.d(TAG, "AcceptFriend: the currentlylog now has " + currentlylogged.getFriends().size());
+
         ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(currentlylogged);
         adapter.notifyDataSetChanged();
 
     }
-    public void DeleteFriend(int DeleteFriendPos){
+    public void declineFriend(int DeleteFriendPos){
         User friend = requestlist.get(DeleteFriendPos);
     }
 

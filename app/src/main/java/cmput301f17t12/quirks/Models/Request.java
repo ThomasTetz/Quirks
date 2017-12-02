@@ -13,5 +13,7 @@ public abstract class Request implements Serializable {
        return this.fromUser;
    }
 
-   abstract String getDetails();
+   public abstract String getHeader();
+
+   public abstract String getDetails();
 }

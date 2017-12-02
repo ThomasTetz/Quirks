@@ -9,7 +9,12 @@ public class UserRequest extends Request implements Serializable {
     }
 
     @Override
-    String getDetails() {
-        return "You have a friend request from " + getFromUser();
+    public String getHeader() {
+        return "Friend request!";
+    }
+
+    @Override
+    public String getDetails() {
+        return "Would you like to add " + getFromUser() + "?";
     }
 }

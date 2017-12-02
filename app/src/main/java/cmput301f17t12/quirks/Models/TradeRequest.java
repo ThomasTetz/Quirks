@@ -15,8 +15,13 @@ public class TradeRequest extends Request implements Serializable {
     }
 
     @Override
-    String getDetails() {
-        return "You have a trade request from " + getFromUser();
+    public String getHeader() {
+        return "Trade request from " + getFromUser();
+    }
+
+    @Override
+    public String getDetails() {
+        return null;
     }
 
     public ArrayList<Drop> getFromUserDrop() {
