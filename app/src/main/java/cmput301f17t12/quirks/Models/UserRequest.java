@@ -1,15 +1,15 @@
 package cmput301f17t12.quirks.Models;
 
-public class UserRequest extends Request {
+import java.io.Serializable;
 
-    private User fromUser;
+public class UserRequest extends Request implements Serializable {
 
-    public UserRequest(User fromUser){
+    public UserRequest(String fromUser){
         super(fromUser);
     }
 
     @Override
     String getDetails() {
-        return "You have a friend request from " + getFromUser().getUsername();
+        return "You have a friend request from " + getFromUser();
     }
 }

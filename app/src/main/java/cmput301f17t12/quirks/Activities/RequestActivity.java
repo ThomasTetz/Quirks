@@ -13,7 +13,10 @@ import cmput301f17t12.quirks.Adapters.RequestListItemAdapter;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Request;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
 
 /**
@@ -44,18 +47,19 @@ public class RequestActivity extends  SocialActivity{
 
         Inventory dummyInv = new Inventory();
         ArrayList<User> friends = new ArrayList<>();
-        ArrayList<User> requests = new ArrayList<>();
         QuirkList quirks = new QuirkList();
+        ArrayList<TradeRequest> traderequests = new ArrayList<>();
+        ArrayList<UserRequest> requests = new ArrayList<>();
 
-        User dummy = new User("dummy",dummyInv,friends,requests,quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,requests,quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,requests,quirks);
+        User dummy = new User("dummy",dummyInv,friends,requests, traderequests, quirks);
+        User dummy2 = new User("dummy2",dummyInv,friends,requests, traderequests, quirks);
+        User dummy3 = new User("Alex",dummyInv,friends,requests, traderequests, quirks);
 
-        dummy.sendFriendRequest(currentlylogged);
-        dummy2.sendFriendRequest(currentlylogged);
-        dummy3.sendFriendRequest(currentlylogged);
+//        dummy.sendFriendRequest(currentlylogged);
+//        dummy2.sendFriendRequest(currentlylogged);
+//        dummy3.sendFriendRequest(currentlylogged);
 
-        requestlist = currentlylogged.getRequests();
+//        requestlist = currentlylogged.getRequests();
        /* requestlist.add(dummy);
         requestlist.add(dummy2);
         requestlist.add(dummy3);

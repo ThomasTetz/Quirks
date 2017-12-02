@@ -1,13 +1,15 @@
 package cmput301f17t12.quirks.Models;
 
-public abstract class Request {
-   private User fromUser;
+import java.io.Serializable;
 
-   public Request(User fromUser){
+public abstract class Request implements Serializable {
+   private String fromUser;
+
+   public Request(String fromUser){
        this.fromUser = fromUser;
    }
 
-   public User getFromUser(){
+   public String getFromUser(){
        return this.fromUser;
    }
 

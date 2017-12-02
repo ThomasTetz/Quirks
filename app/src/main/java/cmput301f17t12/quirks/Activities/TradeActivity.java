@@ -12,12 +12,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Adapters.CollectibleItemAdapter;
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Drop;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
@@ -25,7 +29,7 @@ public class TradeActivity extends SocialActivity {
 
     private User currentlylogged;
     private User tradedUser;
-    private CollectibleItemAdapter loggeduserAdapter;
+    private CollectibleItemAdapter curruserAdapter;
     private CollectibleItemAdapter tradeduserAdapter;
 
     @Override
@@ -44,23 +48,6 @@ public class TradeActivity extends SocialActivity {
         currentlylogged = HelperFunctions.getUserObject(jestID);
 
         if (currentlylogged != null) {
-//            String query = "{" +
-//                    "  \"from\": 0, \"size\": 5000, " +
-//                    "  \"query\": {" +
-//                    "    \"match_all\": {}" +
-//                    "  }" +
-//                    "}";
-
-//            String query = "{" +
-//                    "  \"from\": 0, \"size\": 5000, " +
-//                    "  \"query\": {" +
-//                    "    \"bool\": {" +
-//                    "      \"must_not\": {" +
-//                    "        \"username\": \"" + currentlylogged.getUsername() + "\"" +
-//                    "      }" +
-//                    "    }" +
-//                    "  }" +
-//                    "}";
             String query = "{" +
                     "  \"from\": 0, \"size\": 5000, " +
                     "  \"query\": {" +
@@ -88,34 +75,60 @@ public class TradeActivity extends SocialActivity {
                 theirUsername.setText(tradedUser.getUsername());
 
                 // instantiate custom adapter for both inventories
-                loggeduserAdapter = new CollectibleItemAdapter(currentlylogged.getInventory().getList(), this);
+                final ArrayList<Drop> currInventory = currentlylogged.getInventory().getList();
+                curruserAdapter = new CollectibleItemAdapter(currInventory, this);
 
-                final ArrayList<Drop> tmpInventory = tradedUser.getInventory().getList();
-                tradeduserAdapter = new CollectibleItemAdapter(tmpInventory, this);
+                final ArrayList<Drop> theirInventory = tradedUser.getInventory().getList();
+                tradeduserAdapter = new CollectibleItemAdapter(theirInventory, this);
 
                 // handle listview and assign adapter
                 ListView yourCollection = (ListView) findViewById(R.id.yourcollection);
                 ListView theircollection = (ListView) findViewById(R.id.theircollection);
-                yourCollection.setAdapter(loggeduserAdapter);
+                yourCollection.setAdapter(curruserAdapter);
                 theircollection.setAdapter(tradeduserAdapter);
 
                 dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         tradedUser = (User)parentView.getItemAtPosition(position);
-                        tmpInventory.clear();
-                        tmpInventory.addAll(tradedUser.getInventory().getList());
+                        ArrayList<Drop> tmp = new ArrayList<>();
+                        tmp.addAll(tradedUser.getInventory().getList());
+                        theirInventory.clear();
+                        theirInventory.addAll(tmp);
                         theirUsername.setText(tradedUser.getUsername());
                         tradeduserAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parentView) {
-                        tmpInventory.clear();
+                        theirInventory.clear();
                         theirUsername.setText("");
                         tradeduserAdapter.notifyDataSetChanged();
                     }
+                });
 
+                // Set listener for the trade button
+                tradebutton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<Drop> curr_receive = getSelectedDrops(theirInventory);
+                        ArrayList<Drop> curr_give = getSelectedDrops(currInventory);
+                        TradeRequest trade = new TradeRequest(currentlylogged.getUsername(), curr_give, curr_receive);
+                        tradedUser.addTradeRequest(trade);
+
+                        ElasticSearchUserController.UpdateUserTask updateUserTask
+                                = new ElasticSearchUserController.UpdateUserTask();
+                        updateUserTask.execute(tradedUser);
+
+                        String text = "Trade request sent!";
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(v.getContext(), text, duration);
+                        toast.show();
+
+                        tradeduserAdapter.notifyDataSetChanged();
+                        curruserAdapter.notifyDataSetChanged();
+                    }
                 });
             }
         }
@@ -129,5 +142,20 @@ public class TradeActivity extends SocialActivity {
     @Override
     int getNavigationMenuItemId() {
         return R.id.action_trade;
+    }
+
+    /**
+     * Clear the isSelected boolean value of each Drop in the list and clears it
+     * @param list ArrayList<Drop> list of drops
+     */
+    ArrayList<Drop> getSelectedDrops(ArrayList<Drop> list) {
+        ArrayList<Drop> tmp = new ArrayList<>();
+        for (Drop item : list) {
+            if (item.isSelected()) {
+                tmp.add(item);
+                item.setSelected(false);
+            }
+        }
+        return tmp;
     }
 }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -64,8 +66,24 @@ public class CollectibleItemAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.collectible_item, null);
         }
 
-        Drop item = list.get(pos);
-        Log.d("droptest", item.getDropType().getName());
+        final Drop item = list.get(pos);
+
+        // Handle checkboxes
+        CheckBox collectibleBox = view.findViewById(R.id.collectiblebox);
+        collectibleBox.setSelected(item.isSelected());
+        if (item.isSelected()) {
+            Log.d("wowfactortest", "Still selected");
+        }
+        collectibleBox.setFocusable(false);
+        collectibleBox.setFocusableInTouchMode(false);
+
+        collectibleBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                item.setSelected(isChecked);
+                Log.d("wowfactortest", "Checked: " + item.getDropType().getName());
+            }
+        });
 
         //Handle TextView and display collectibles
         TextView collectibleName = view.findViewById(R.id.collectiblename);

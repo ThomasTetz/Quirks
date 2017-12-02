@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Request;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -145,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
     //Need to check, is signing up new users in the spec??
     private void registerUser(String username){
         // create new user
-        User user = new User(username, new Inventory(), new ArrayList<User>(),new ArrayList<User>() ,new QuirkList());
+        User user = new User(username, new Inventory(), new ArrayList<User>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
 
         ElasticSearchUserController.AddUsersTask addUsersTask
                 = new ElasticSearchUserController.AddUsersTask();
