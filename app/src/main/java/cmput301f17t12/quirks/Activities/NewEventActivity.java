@@ -20,6 +20,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -40,7 +44,8 @@ import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
-public class NewEventActivity extends BaseActivity {
+public class NewEventActivity extends BaseActivity
+        implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     Dialog myDialog;
     private static final int SELECTED_PICTURE = 0;
@@ -249,4 +254,12 @@ public class NewEventActivity extends BaseActivity {
     int getNavigationMenuItemId() {
         return R.id.action_newevent;
     }
+
+    @Override
+    public void onMapClick(LatLng latLng){
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) { }
 }
