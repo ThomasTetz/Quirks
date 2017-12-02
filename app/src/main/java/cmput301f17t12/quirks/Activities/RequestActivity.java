@@ -24,9 +24,11 @@ public class RequestActivity extends  SocialActivity{
 
     public User currentlylogged;
     private RequestListItemAdapter adapter;
+
     private ArrayList<TradeRequest> tradeRequests;
     private ArrayList<UserRequest> userRequests;
     private ArrayList<Request> requests;
+
 
     private SparseArray<ArrayList<Drop>> giveMap;
     private SparseArray<ArrayList<Drop>> receiveMap;

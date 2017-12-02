@@ -18,4 +18,6 @@
     <string name="errormsg_newevent">You have no Quirks to log an event to.</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps2">Map</string>
+    <string name="searchlab">Search</string>
+    <string name="search_hint">searchme</string>
 </resources>
