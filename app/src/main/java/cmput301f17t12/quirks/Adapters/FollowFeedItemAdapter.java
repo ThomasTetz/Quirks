@@ -1,28 +1,41 @@
 package cmput301f17t12.quirks.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import cmput301f17t12.quirks.Activities.EditEventActivity;
 import cmput301f17t12.quirks.Activities.EventListActivity;
 import cmput301f17t12.quirks.Activities.FeedActivity;
 import cmput301f17t12.quirks.Activities.QuirksActivity;
+import cmput301f17t12.quirks.Interfaces.Newsable;
+import cmput301f17t12.quirks.Models.Event;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.R;
 
 public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
+    Dialog myDialog;
     private ArrayList<String> userlist;
     private ArrayList<Quirk> quirkList;
     private Context context;
@@ -93,10 +106,51 @@ public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
 
             @Override
             public void onClick(View v) {
-                if (context instanceof FeedActivity) {
-                    //Integer serializableInt = ((FeedActivity)context).getFilteredIndex(pos);
-                    // open popup most recent event
+                ArrayList<Event> eventList = quirkItem.getEventList().getList();
+                Collections.sort(eventList, new Comparator<Newsable>() {
+                    public int compare(Newsable m1, Newsable m2) {
+                        return m2.getDate().compareTo(m1.getDate());
+                    }
+                });
+
+                myDialog = new Dialog(v.getContext());
+                myDialog.setContentView(R.layout.recent_event);
+
+                TextView txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+                TextView listItemHeader = (TextView) myDialog.findViewById(R.id.headerTxt);
+                TextView listItemDescription = (TextView) myDialog.findViewById(R.id.captionTxt);
+                TextView listItemTimeSpan = (TextView) myDialog.findViewById(R.id.timeTxt);
+                ImageView imageView = (ImageView) myDialog.findViewById(R.id.imageView);
+                TextView recent = (TextView) myDialog.findViewById(R.id.recent);
+
+                if (eventList.size() > 0) {
+                    Event mostrecent = eventList.get(0);
+
+                    listItemHeader.setText(mostrecent.buildNewsHeader());
+                    listItemDescription.setText(mostrecent.buildNewsDescription());
+                    listItemTimeSpan.setText(mostrecent.buildDate());
+                    recent.setText(R.string.mostrecent);
+
+                    byte[] photoByte = mostrecent.getPhotoByte();
+                    if (photoByte.length != 0) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(photoByte, 0, photoByte.length);
+                        imageView.setImageBitmap(bitmap);
+                    }
+                } else {
+                    listItemHeader.setText("");
+                    listItemDescription.setText("");
+                    listItemTimeSpan.setText("");
+                    recent.setText(String.format("%s has not logged to this quirk", userlist.get(pos)));
                 }
+
+                txtclose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myDialog.dismiss();
+                    }
+                });
+                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myDialog.show();
             }
         });
 
