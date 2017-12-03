@@ -22,7 +22,7 @@ public class UserTest {
     //Test GetID
     @Test
     public void testGetID(){
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(),
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(),
                 new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),
                 new QuirkList());
         user1.setId("123123123");
@@ -32,7 +32,7 @@ public class UserTest {
     //TestGetUsername
     @Test
     public void testGetUsername(){
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(),
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(),
                 new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),
                 new QuirkList());
 
@@ -44,7 +44,7 @@ public class UserTest {
     @Test
     public void testGetInventory(){
         Inventory testInv = new Inventory();
-        User user1 = new User("username1", testInv, new ArrayList<User>(),
+        User user1 = new User("username1", testInv, new ArrayList<String>(),
                 new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),
                 new QuirkList());
 
@@ -54,13 +54,13 @@ public class UserTest {
     //TestGetFriends
     @Test
     public void testGetFriendsList() {
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
-        user1.addFriend(user2);
+        user1.addFriend(user2.getUsername());
 
-        ArrayList<User> list = new ArrayList<User>();
-        list.add(user2);
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(user2.getUsername());
 
         assertEquals(user1.getFriends(), list);
     }
@@ -68,7 +68,7 @@ public class UserTest {
     @Test
     public void testGetUserRequests() {
         ArrayList<UserRequest> testUserReq = new ArrayList<UserRequest>();
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), testUserReq, new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), testUserReq, new ArrayList<TradeRequest>(),new QuirkList());
 
 
         assertEquals(user1.getUserRequests(), testUserReq);
@@ -77,7 +77,7 @@ public class UserTest {
     @Test
     public void testGetTradeRequests() {
         ArrayList<TradeRequest> testTradeReq = new ArrayList<TradeRequest>();
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), testTradeReq,new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), testTradeReq,new QuirkList());
 
 
         assertEquals(user1.getUserRequests(), testTradeReq);
@@ -86,8 +86,8 @@ public class UserTest {
     @Test
     public void testHasAddTradeRequests() {
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
         assertFalse(user1.hasRequests());
         TradeRequest testReq= new TradeRequest(user2.getUsername(), user2.getInventory().getList(), user1.getInventory().getList());
         user1.addTradeRequest(testReq);
@@ -96,8 +96,8 @@ public class UserTest {
     @Test
     public void testHasDeleteTradeRequests() {
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
         TradeRequest testReq= new TradeRequest(user2.getUsername(), user2.getInventory().getList(), user1.getInventory().getList());
         user1.addTradeRequest(testReq);
@@ -107,8 +107,8 @@ public class UserTest {
     @Test
     public void testHasAddUserRequest() {
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
         assertFalse(user1.hasRequests());
         UserRequest testReq= new UserRequest(user2.getUsername());
         user1.addUserRequest(testReq);
@@ -117,8 +117,8 @@ public class UserTest {
     @Test
     public void testHasDeleteUserRequest() {
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
         UserRequest testReq= new UserRequest(user2.getUsername());
         user1.addUserRequest(testReq);
@@ -131,22 +131,22 @@ public class UserTest {
     @Test
     public void testAddFriend() {
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
 
-        user1.addFriend(user2);
-        assertTrue(user1.hasFriend(user2));
+        user1.addFriend(user2.getUsername());
+        assertTrue(user1.hasFriend(user2.getUsername()));
     }
     @Test
     public void testDeleteFriend() {
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username2", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username2", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
-        user1.addFriend(user2);
-        user1.deleteFriend(user2);
-        assertFalse(user1.hasFriend(user2));
+        user1.addFriend(user2.getUsername());
+        user1.deleteFriend(user2.getUsername());
+        assertFalse(user1.hasFriend(user2.getUsername()));
     }
     @Test
     public void testGetQuirkList() {
@@ -155,7 +155,7 @@ public class UserTest {
         QuirkList quirks = new QuirkList();
         quirks.addQuirk(quirk);
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(),
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(),
                 new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),quirks);
 
 
@@ -170,7 +170,7 @@ public class UserTest {
                 new Date(), new ArrayList<Day>(), 2, "unittester", "reason" );
 
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(),
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(),
                 new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
 
@@ -186,7 +186,7 @@ public class UserTest {
                 new Date(), new ArrayList<Day>(), 2, "unittester", "reason" );
 
 
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(),
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(),
                 new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
 
         user1.addQuirk(quirk);

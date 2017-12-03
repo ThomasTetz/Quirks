@@ -40,12 +40,20 @@ import cmput301f17t12.quirks.Models.UserRequest;
 import static org.junit.Assert.*;
 
 public class UserRequestTest {
-    //GetDetails
+    //GetDetails and getHeader
+    @Test
+    public void testGetHeader(){
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        UserRequest testUserReq = new UserRequest(user1.getUsername());
+        String actual = "Friend request!";
+
+        assertEquals(testUserReq.getHeader(),actual);
+    }
     @Test
     public void testGetDetails(){
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
         UserRequest testUserReq = new UserRequest(user1.getUsername());
-        String actual = "You have a friend request from username1";
+        String actual = "Would you like to add username1?";
 
         assertEquals(testUserReq.getDetails(),actual);
     }

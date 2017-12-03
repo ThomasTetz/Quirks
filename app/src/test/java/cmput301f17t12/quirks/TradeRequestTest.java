@@ -40,23 +40,34 @@ import static org.junit.Assert.*;
 
 public class TradeRequestTest {
 
+    //GetDetails and getHeader
+    @Test
+    public void testGetHeader(){
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        TradeRequest testTradeRequest = new TradeRequest(user1.getUsername(),
+                user1.getInventory().getList(), user2.getInventory().getList());
+        String actual = "Trade request from username1";
+
+        assertEquals(testTradeRequest.getHeader(),actual);
+    }
+
     //GetDetails
     @Test
     public void testGetDetails(){
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
-        User user2 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
+        User user2 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(),new QuirkList());
         TradeRequest testTradeRequest = new TradeRequest(user1.getUsername(),
                 user1.getInventory().getList(), user2.getInventory().getList());
-        String actual = "You have a trade request from username1";
+        String actual = null;
 
         assertEquals(testTradeRequest.getDetails(),actual);
     }
-
     //test getFromUserDrop()
     @Test
     public void testGetFromUserDrop() {
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
-        User user2 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
+        User user2 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
         TradeRequest testTradeRequest = new TradeRequest(user1.getUsername(),
                 user1.getInventory().getList(), user2.getInventory().getList());
         assertEquals(testTradeRequest.getFromUserDrop(), user1.getInventory().getList());
@@ -64,8 +75,8 @@ public class TradeRequestTest {
     //test getMyDrop
     @Test
     public void testGetMyDrop() {
-        User user1 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
-        User user2 = new User("username1", new Inventory(), new ArrayList<User>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
+        User user1 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
+        User user2 = new User("username1", new Inventory(), new ArrayList<String>(), new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
         TradeRequest testTradeRequest = new TradeRequest(user1.getUsername(),
                 user1.getInventory().getList(), user2.getInventory().getList());
         assertEquals(testTradeRequest.getMyDrop(), user2.getInventory().getList());
