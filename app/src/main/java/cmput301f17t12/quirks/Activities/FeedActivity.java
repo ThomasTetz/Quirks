@@ -20,6 +20,7 @@ import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class FeedActivity extends SocialActivity {
+
     private String jestID;
     private FollowFeedItemAdapter adapter;
     private ArrayList<Quirk> quirkList = new ArrayList<>();

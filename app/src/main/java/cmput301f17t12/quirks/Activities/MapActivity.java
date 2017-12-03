@@ -1,21 +1,17 @@
 package cmput301f17t12.quirks.Activities;
 
 import android.Manifest;
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,15 +19,23 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
+
+import cmput301f17t12.quirks.Helpers.HelperFunctions;
+import cmput301f17t12.quirks.Models.Event;
+import cmput301f17t12.quirks.Models.EventList;
+import cmput301f17t12.quirks.Models.Geolocation;
+import cmput301f17t12.quirks.Models.Quirk;
+import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 import static cmput301f17t12.quirks.R.id.map;
@@ -41,12 +45,16 @@ public class MapActivity extends BaseActivity
 
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
+    private FusedLocationProviderClient userLocationClient;
+    private Geolocation userLoc;
+    private String jestID;
+    private User currentlylogged;
+    SharedPreferences settings;
+
     private TextView mTapTextView;
     private GoogleMap mMap;
-    protected BottomNavigationView navigationView;
 
-    private FusedLocationProviderClient userLocationClient;
-    private Location userLoc;
+    private Marker userMarker;
 
 
     // [MAP]
@@ -54,13 +62,20 @@ public class MapActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
+        jestID = settings.getString("jestID", "defaultvalue");
+
+        if (jestID.equals("defaultvalue")) {
+            Log.i("Error", "Did not find correct jestID");
+        }
+
+        currentlylogged = HelperFunctions.getUserObject(jestID);
+
         mTapTextView = (TextView) findViewById(R.id.tap_text);
         userLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Default Location for the User
-        userLoc = new Location("");
-        userLoc.setLatitude(53.5232);
-        userLoc.setLongitude(-113.5263);
+        userLoc = new Geolocation(53.5232,-113.5263);
 
         Log.d("DEBUG", "Stage 1");
 
@@ -85,14 +100,16 @@ public class MapActivity extends BaseActivity
                         @Override
                         public void onSuccess(Location location) {
                             Log.d("DEBUG", "Got location");
-                            userLoc = location;
+
+                            userLoc.setLatitude(53.5232);
+                            userLoc.setLongitude(-113.5263);
 
                             if (location != null) {
 
                                 Log.d("DEBUG", "Default Location");
                                 // Default Position -> University of Alberta
-                                userLoc.setLatitude(53.5232);
-                                userLoc.setLongitude(-113.5263);
+                                userLoc.setLatitude(location.getLatitude());
+                                userLoc.setLongitude(location.getLongitude());
                             }
                         }
 
@@ -108,7 +125,8 @@ public class MapActivity extends BaseActivity
         NearbyMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                EventList eventLocations = getEventLoc("Nearby");
+                displayEventListLoc(eventLocations);
             }
         });
 
@@ -124,10 +142,84 @@ public class MapActivity extends BaseActivity
         MyEventsMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                EventList eventLocations = getEventLoc("MyEvents");
+                displayEventListLoc(eventLocations);
             }
         });
 
+    }
+
+    public EventList getEventLoc(String filterType){
+        EventList events = new EventList();
+        QuirkList quirkList;
+
+        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        quirkList = currentlylogged.getQuirks();
+
+
+        if(filterType.equals("Nearby")){
+            for (Quirk currQuirk: quirkList.getList()) {
+                for(Event currEvent: currQuirk.getEventList().getList()){
+                    if(currEvent.getGeolocation() != null) {
+                        if (haversine(currEvent.getGeolocation().getLatitude(), currEvent.getGeolocation().getLongitude(),
+                                userLoc.getLatitude(), userLoc.getLongitude()) < 5){
+                            events.addEvent(currEvent);
+                        }
+
+                        //TODO: Need to check all friends events and add the valid ones
+                    }
+                }
+            }
+        }
+
+        else if(filterType.equals("Following")){
+
+        }
+
+        else if(filterType.equals("MyEvents")){
+            for (Quirk currQuirk: quirkList.getList()) {
+                for (Event currEvent : currQuirk.getEventList().getList()) {
+                    if (currEvent.getGeolocation() != null) {
+                        events.addEvent(currEvent);
+                    }
+                }
+            }
+        }
+
+        return events;
+
+    }
+
+    public double haversine(double lat1, double lon1, double lat2, double lon2) {
+
+        final int R = 6371; // Radious of the earth
+        Double latDistance = toRad(lat2-lat1);
+        Double lonDistance = toRad(lon2-lon1);
+        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                        Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return(R * c);
+    }
+
+
+    private static Double toRad(Double value) {
+        return value * Math.PI / 180;
+    }
+
+
+    public void displayEventListLoc(EventList events){
+
+        mMap.clear();
+        LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+        userMarker = mMap.addMarker(new MarkerOptions().position(userLatLon)
+                .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+        for(Event event : events.getList()){
+            LatLng currLatLng = new LatLng(event.getGeolocation().getLatitude(), event.getGeolocation().getLongitude());
+            String currComment = event.getComment();
+            mMap.addMarker(new MarkerOptions().position(currLatLng).title(currComment));
+        }
     }
 
     // [MAP]
@@ -143,14 +235,25 @@ public class MapActivity extends BaseActivity
         mMap.setOnCameraIdleListener(this);
 
         LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(userLatLon)
-                .title("University of Alberta"));
+        userMarker = googleMap.addMarker(new MarkerOptions().position(userLatLon)
+                .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLon));
     }
 
+
     @Override
     public void onMapClick(LatLng point) {
-        mTapTextView.setText("tapped, point=" + point);
+
+        userLoc.setLatitude(point.latitude);
+        userLoc.setLongitude(point.longitude);
+
+        // Remove the user location Marker and add it in the new location clicked
+        userMarker.remove();
+
+        LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+        userMarker = mMap.addMarker(new MarkerOptions().position(userLatLon)
+                .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
     }
 
 
@@ -165,8 +268,7 @@ public class MapActivity extends BaseActivity
      * @param grantResults
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -182,24 +284,25 @@ public class MapActivity extends BaseActivity
                             .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                                 @Override
                                 public void onSuccess(Location location) {
+                                    Log.d("DEBUG", "Got location");
 
-                                    userLoc = location;
+                                    userLoc.setLatitude(53.5232);
+                                    userLoc.setLongitude(-113.5263);
 
                                     if (location != null) {
 
                                         Log.d("DEBUG", "Default Location");
                                         // Default Position -> University of Alberta
-                                        userLoc.setLatitude(53.5232);
-                                        userLoc.setLongitude(-113.5263);
+                                        userLoc.setLatitude(location.getLatitude());
+                                        userLoc.setLongitude(location.getLongitude());
                                     }
                                 }
                             });
-
                 } else {
+
+                    // Permission Denied -> Set to default location
                     userLoc.setLatitude(53.5232);
                     userLoc.setLongitude(-113.5263);
-                    // permission denied, boo!
-                    // TODO: Handle this case
                 }
                 return;
             }
@@ -211,10 +314,12 @@ public class MapActivity extends BaseActivity
     @Override
     public void onCameraIdle() { mTapTextView.setText(mMap.getCameraPosition().toString());}
 
+
     // [Navigation Bar]
     int getContentViewId() {
         return R.layout.activity_map;
     }
+
 
     // [Navigation Bar]
     int getNavigationMenuItemId() {
