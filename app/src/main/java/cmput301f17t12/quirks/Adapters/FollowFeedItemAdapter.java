@@ -19,6 +19,8 @@ import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -120,9 +122,11 @@ public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
                 if (eventList.size() > 0) {
                     Event mostrecent = eventList.get(0);
 
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+
                     listItemHeader.setText(mostrecent.buildNewsHeader());
                     listItemDescription.setText(mostrecent.buildNewsDescription());
-                    listItemTimeSpan.setText(mostrecent.buildDate());
+                    listItemTimeSpan.setText(df.format(mostrecent.getDate()));
                     recent.setText(R.string.mostrecent);
 
                     byte[] photoByte = mostrecent.getPhotoByte();
