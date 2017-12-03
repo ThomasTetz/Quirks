@@ -21,7 +21,9 @@ import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -51,6 +53,8 @@ public class MapActivity extends BaseActivity
 
     private TextView mTapTextView;
     private GoogleMap mMap;
+
+    private Marker userMarker;
 
 
     // [MAP]
@@ -96,15 +100,16 @@ public class MapActivity extends BaseActivity
                         @Override
                         public void onSuccess(Location location) {
                             Log.d("DEBUG", "Got location");
-                            userLoc.setLatitude(location.getLatitude());
-                            userLoc.setLongitude(location.getLongitude());
+
+                            userLoc.setLatitude(53.5232);
+                            userLoc.setLongitude(-113.5263);
 
                             if (location != null) {
 
                                 Log.d("DEBUG", "Default Location");
                                 // Default Position -> University of Alberta
-                                userLoc.setLatitude(53.5232);
-                                userLoc.setLongitude(-113.5263);
+                                userLoc.setLatitude(location.getLatitude());
+                                userLoc.setLongitude(location.getLongitude());
                             }
                         }
 
@@ -137,7 +142,8 @@ public class MapActivity extends BaseActivity
         MyEventsMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                EventList eventLocations = getEventLoc("MyEvents");
+                displayEventListLoc(eventLocations);
             }
         });
 
@@ -205,6 +211,10 @@ public class MapActivity extends BaseActivity
     public void displayEventListLoc(EventList events){
 
         mMap.clear();
+        LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+        userMarker = mMap.addMarker(new MarkerOptions().position(userLatLon)
+                .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
         for(Event event : events.getList()){
             LatLng currLatLng = new LatLng(event.getGeolocation().getLatitude(), event.getGeolocation().getLongitude());
             String currComment = event.getComment();
@@ -225,15 +235,25 @@ public class MapActivity extends BaseActivity
         mMap.setOnCameraIdleListener(this);
 
         LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(userLatLon)
-                .title("University of Alberta"));
+        userMarker = googleMap.addMarker(new MarkerOptions().position(userLatLon)
+                .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLon));
     }
 
 
     @Override
     public void onMapClick(LatLng point) {
-        mTapTextView.setText("tapped, point=" + point);
+
+        userLoc.setLatitude(point.latitude);
+        userLoc.setLongitude(point.longitude);
+
+        // Remove the user location Marker and add it in the new location clicked
+        userMarker.remove();
+
+        LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+        userMarker = mMap.addMarker(new MarkerOptions().position(userLatLon)
+                .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
     }
 
 
@@ -264,19 +284,20 @@ public class MapActivity extends BaseActivity
                             .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                                 @Override
                                 public void onSuccess(Location location) {
+                                    Log.d("DEBUG", "Got location");
 
-                                    userLoc.setLatitude(location.getLatitude());
-                                    userLoc.setLongitude(location.getLongitude());
+                                    userLoc.setLatitude(53.5232);
+                                    userLoc.setLongitude(-113.5263);
 
                                     if (location != null) {
 
+                                        Log.d("DEBUG", "Default Location");
                                         // Default Position -> University of Alberta
-                                        userLoc.setLatitude(53.5232);
-                                        userLoc.setLongitude(-113.5263);
+                                        userLoc.setLatitude(location.getLatitude());
+                                        userLoc.setLongitude(location.getLongitude());
                                     }
                                 }
                             });
-
                 } else {
 
                     // Permission Denied -> Set to default location
