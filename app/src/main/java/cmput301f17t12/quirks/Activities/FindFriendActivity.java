@@ -35,7 +35,9 @@ public class FindFriendActivity extends SocialActivity {
     public User currentlylogged;
     private FindFriendListItemAdapter adapter;
     private ArrayList<String> userList;
+    private ArrayList<String> friendslist;
     ArrayList<User> allusers;
+    private StringBuilder query;
     private static final String TAG = "FindFriendActivity" ;
 
     EditText searchFriendUser;
@@ -59,32 +61,44 @@ public class FindFriendActivity extends SocialActivity {
         QuirkList quirks = new QuirkList();
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();
-
         currentlylogged = HelperFunctions.getUserObject(jestID);
+        friendslist = currentlylogged.getFriends();
+
+        if (friendslist == null) {
+            friendslist = new ArrayList<>();
+        }
 
         if (currentlylogged != null) {
-            String query = "{" +
-                    "  \"from\": 0, \"size\": 5000, " +
+            query = new StringBuilder("{" +
                     "  \"query\": {" +
                     "    \"bool\": {" +
-                    "      \"must_not\": {" +
-                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}" +
-                    "      }" +
-                    "    }" +
-                    "  }" +
-                    "}";
+                    "      \"must_not\":  {" +
+                    "        \"terms\": {" +
+                    "          \"username\": [");
+            query.append("\"").append(currentlylogged.getUsername()).append("\"");
+            if (friendslist.size() > 0) query.append(", ");
 
-            allusers = HelperFunctions.getAllUsers(query);
+            for (int i = 0; i < friendslist.size(); i++) {
+                query.append("\"").append(friendslist.get(i)).append("\"");
+                if (i != friendslist.size() - 1) {
+                    query.append(", ");
+                }
+            }
 
-            ListView lView = (ListView) findViewById(R.id.findfriend_listview);
-            adapter = new FindFriendListItemAdapter(allusers, this);
-            lView.setAdapter(adapter);
-
+            query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
         }
+
+        allusers = HelperFunctions.getAllUsers(query.toString());
+        ListView lView = (ListView) findViewById(R.id.findfriend_listview);
+        adapter = new FindFriendListItemAdapter(allusers, this);
+        lView.setAdapter(adapter);
+
     }
+
 
     public void findFriendSearchBut(View view) {
         String stringSearchUser = searchFriendUser.getText().toString();
+
         if(stringSearchUser.equals(currentlylogged.getUsername())){
             Toast.makeText(FindFriendActivity.this,"Cannot input yourself",Toast.LENGTH_SHORT).show();
             return;
@@ -93,8 +107,12 @@ public class FindFriendActivity extends SocialActivity {
             Toast.makeText(FindFriendActivity.this,"Please input a username",Toast.LENGTH_SHORT).show();
             return;
         }
+        if ( friendslist.contains(stringSearchUser)) {
+            Toast.makeText(FindFriendActivity.this, "You're already friends with them", Toast.LENGTH_SHORT).show();
+
+        }
         else {
-            Toast.makeText(FindFriendActivity.this,"Searching for user",Toast.LENGTH_SHORT).show();
+            Toast.makeText(FindFriendActivity.this, "Searching for user", Toast.LENGTH_SHORT).show();
             String query = "{" +
                     "  \"query\": {" +
                     "    \"match\": {" +
@@ -111,21 +129,20 @@ public class FindFriendActivity extends SocialActivity {
             try {
                 UserfromQueries = getUsersTask.get();
             } catch (InterruptedException e) {
-                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindFriendActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (ExecutionException e) {
-                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindFriendActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             allusers.clear();
             allusers.addAll(UserfromQueries);
-            if(allusers.size() == 0){
-                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
-            }
-            else {
+            if (allusers.size() == 0) {
+                Toast.makeText(FindFriendActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
+            } else {
                 adapter.notifyDataSetChanged();
-                }
             }
+        }
     }
 
 

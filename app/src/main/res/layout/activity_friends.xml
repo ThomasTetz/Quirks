@@ -42,8 +42,11 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/friendlistView"
         android:layout_below="@+id/top_navigation"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
         android:text="My Friends"
-        android:textSize="20sp" />
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp"
+        />
 
 </RelativeLayout>
