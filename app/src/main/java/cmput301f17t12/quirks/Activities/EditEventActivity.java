@@ -91,8 +91,11 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
         }
 
         commentEdit.setText(referenced_event.getComment());
+        Geolocation eventGeo = referenced_event.getGeolocation();
+        if (eventGeo != null) {
+            userLoc = new Geolocation(referenced_event.getGeolocation().getLatitude(),referenced_event.getGeolocation().getLongitude());
+        }
 
-        userLoc = new Geolocation(referenced_event.getGeolocation().getLatitude(),referenced_event.getGeolocation().getLongitude());
         editEventMapTextView = (TextView) findViewById(R.id.event_tap_text);
 
         SupportMapFragment mapFragment =
