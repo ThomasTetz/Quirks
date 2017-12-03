@@ -37,6 +37,7 @@ public class FindFriendActivity extends SocialActivity {
     private ArrayList<String> userList;
     private ArrayList<String> friendslist;
     ArrayList<User> allusers;
+    private StringBuilder query;
     private static final String TAG = "FindFriendActivity" ;
 
     EditText searchFriendUser;
@@ -60,17 +61,23 @@ public class FindFriendActivity extends SocialActivity {
         QuirkList quirks = new QuirkList();
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();
-
         currentlylogged = HelperFunctions.getUserObject(jestID);
         friendslist = currentlylogged.getFriends();
+
+        if (friendslist == null) {
+            friendslist = new ArrayList<>();
+        }
+
         if (currentlylogged != null) {
-            StringBuilder query = new StringBuilder("{" +
+            query = new StringBuilder("{" +
                     "  \"query\": {" +
                     "    \"bool\": {" +
                     "      \"must_not\":  {" +
                     "        \"terms\": {" +
                     "          \"username\": [");
-            query.append("\"").append(currentlylogged.getUsername()).append("\", ");
+            query.append("\"").append(currentlylogged.getUsername()).append("\"");
+            if (friendslist.size() > 0) query.append(", ");
+
             for (int i = 0; i < friendslist.size(); i++) {
                 query.append("\"").append(friendslist.get(i)).append("\"");
                 if (i != friendslist.size() - 1) {
@@ -79,16 +86,15 @@ public class FindFriendActivity extends SocialActivity {
             }
 
             query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
-
-
-            allusers = HelperFunctions.getAllUsers(query.toString());
-
-            ListView lView = (ListView) findViewById(R.id.findfriend_listview);
-            adapter = new FindFriendListItemAdapter(allusers, this);
-            lView.setAdapter(adapter);
-
         }
+
+        allusers = HelperFunctions.getAllUsers(query.toString());
+        ListView lView = (ListView) findViewById(R.id.findfriend_listview);
+        adapter = new FindFriendListItemAdapter(allusers, this);
+        lView.setAdapter(adapter);
+
     }
+
 
     public void findFriendSearchBut(View view) {
         String stringSearchUser = searchFriendUser.getText().toString();
