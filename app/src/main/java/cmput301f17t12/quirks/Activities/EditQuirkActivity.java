@@ -89,13 +89,16 @@ public class EditQuirkActivity extends AppCompatActivity {
         ReasonEdit.setText(incomingQuirk.getReason());
         GoalEdit.setText(String.valueOf(incomingQuirk.getGoalValue()));
         final Date incomingDate = incomingQuirk.getDate();
-        Log.d(TAG, "onCreate: the incoming date is " + incomingDate);
+        startDate = incomingQuirk.getDate();
+
+      /*  Log.d(TAG, "onCreate: the incoming date is " + incomingDate);
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getDate());
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getYear());
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getDay());
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getMonth());
+       */
         String dateFormat = "MM/dd/yyyy ";
-        Log.d(TAG, "onCreate: the incoming date year is " + incomingDate.getYear());
+      //  Log.d(TAG, "onCreate: the incoming date year is " + incomingDate.getYear());
         SimpleDateFormat datePat = new SimpleDateFormat(dateFormat);
         String dateToSet = datePat.format(incomingDate);
         Log.d(TAG, "onCreate: the date is  " +  incomingDate.toString());
