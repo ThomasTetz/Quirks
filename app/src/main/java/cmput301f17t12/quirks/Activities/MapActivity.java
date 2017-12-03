@@ -134,7 +134,8 @@ public class MapActivity extends BaseActivity
         FollowingMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                EventList eventLocations = getEventLoc("Following");
+                displayEventListLoc(eventLocations);
             }
         });
 
@@ -151,33 +152,57 @@ public class MapActivity extends BaseActivity
 
     public EventList getEventLoc(String filterType){
         EventList events = new EventList();
-        QuirkList quirkList;
+        QuirkList userQuirkList;
+        QuirkList friendsQuirkList;
 
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
-        quirkList = currentlylogged.getQuirks();
+        // Get users quirks
+        userQuirkList = currentlylogged.getQuirks();
+
+        //
+        friendsQuirkList = getFriendsQuirks();
+
 
 
         if(filterType.equals("Nearby")){
-            for (Quirk currQuirk: quirkList.getList()) {
+            for (Quirk currQuirk: userQuirkList.getList()) {
                 for(Event currEvent: currQuirk.getEventList().getList()){
                     if(currEvent.getGeolocation() != null) {
                         if (haversine(currEvent.getGeolocation().getLatitude(), currEvent.getGeolocation().getLongitude(),
                                 userLoc.getLatitude(), userLoc.getLongitude()) < 5){
                             events.addEvent(currEvent);
                         }
+                    }
+                }
+            }
 
-                        //TODO: Need to check all friends events and add the valid ones
+            for (Quirk currQuirk: friendsQuirkList.getList()) {
+                for(Event currEvent: currQuirk.getEventList().getList()){
+                    if(currEvent.getGeolocation() != null) {
+                        if (haversine(currEvent.getGeolocation().getLatitude(), currEvent.getGeolocation().getLongitude(),
+                                userLoc.getLatitude(), userLoc.getLongitude()) < 5){
+                            events.addEvent(currEvent);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        else if(filterType.equals("Following")){
+            for (Quirk currQuirk: friendsQuirkList.getList()) {
+                for(Event currEvent: currQuirk.getEventList().getList()){
+                    if(currEvent.getGeolocation() != null) {
+                        if (haversine(currEvent.getGeolocation().getLatitude(), currEvent.getGeolocation().getLongitude(),
+                                userLoc.getLatitude(), userLoc.getLongitude()) < 5){
+                            events.addEvent(currEvent);
+                        }
                     }
                 }
             }
         }
 
-        else if(filterType.equals("Following")){
-
-        }
-
         else if(filterType.equals("MyEvents")){
-            for (Quirk currQuirk: quirkList.getList()) {
+            for (Quirk currQuirk: userQuirkList.getList()) {
                 for (Event currEvent : currQuirk.getEventList().getList()) {
                     if (currEvent.getGeolocation() != null) {
                         events.addEvent(currEvent);
@@ -208,6 +233,33 @@ public class MapActivity extends BaseActivity
     }
 
 
+    public QuirkList getFriendsQuirks(){
+        QuirkList quirkList = new QuirkList();
+
+        ArrayList<String> friendslist = currentlylogged.getFriends();
+        StringBuilder query = new StringBuilder("{" +
+                "  \"query\": {" +
+                "    \"filtered\": {" +
+                "      \"filter\":  {" +
+                "        \"terms\": {" +
+                "          \"username\": [");
+        for (int i = 0; i < friendslist.size(); i++) {
+            query.append("\"").append(friendslist.get(i)).append("\"");
+            if (i != friendslist.size() - 1) {
+                query.append(", ");
+            }
+        }
+        query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
+        ArrayList<User> followingUsers = HelperFunctions.getAllUsers(query.toString());
+
+        if (!followingUsers.isEmpty()) {
+            for (User user : followingUsers) {
+                quirkList.addAllQuirks(user.getQuirks());
+            }
+        }
+        return quirkList;
+    }
+
     public void displayEventListLoc(EventList events){
 
         mMap.clear();
@@ -218,7 +270,8 @@ public class MapActivity extends BaseActivity
         for(Event event : events.getList()){
             LatLng currLatLng = new LatLng(event.getGeolocation().getLatitude(), event.getGeolocation().getLongitude());
             String currComment = event.getComment();
-            mMap.addMarker(new MarkerOptions().position(currLatLng).title(currComment));
+            String userName = event.getUser();
+            mMap.addMarker(new MarkerOptions().position(currLatLng).title("[ " + userName + " ]: " + currComment));
         }
     }
 
