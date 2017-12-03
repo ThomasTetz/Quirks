@@ -161,10 +161,10 @@ public class NewEventActivity extends BaseActivity
         if(userLoc == null){
             userLoc = new Geolocation(point.latitude, point.longitude);
         }
-        else {
-            userLoc.setLatitude(point.latitude);
-            userLoc.setLongitude(point.longitude);
-        }
+
+        userLoc.setLatitude(point.latitude);
+        userLoc.setLongitude(point.longitude);
+
     }
 
 

@@ -200,13 +200,15 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
 
         eventMap.setOnMapClickListener(this);
 
+        LatLng cameraLatLng = new LatLng(53.5232, -113.5263);
+
         if(userLoc != null) {
             LatLng userLatLon = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+            cameraLatLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
             googleMap.addMarker(new MarkerOptions().position(userLatLon)
                     .title(referenced_event.getComment()));
         }
 
-        LatLng cameraLatLng = new LatLng(53.5232, -113.5263);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(cameraLatLng));
     }
 
