@@ -288,6 +288,13 @@ public class MapActivity extends BaseActivity
         userMarker = googleMap.addMarker(new MarkerOptions().position(userLatLon)
                 .title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLon));
+
+        // If there is a filtered event list from the intent, show it
+        Object tmp = getIntent().getSerializableExtra("FILTERED_LIST");
+        if (tmp != null) {
+            EventList filteredEventList = (EventList) tmp;
+            displayEventListLoc(filteredEventList);
+        }
     }
 
 
