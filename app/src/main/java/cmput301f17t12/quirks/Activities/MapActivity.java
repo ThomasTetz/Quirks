@@ -191,11 +191,8 @@ public class MapActivity extends BaseActivity
         else if(filterType.equals("Following")){
             for (Quirk currQuirk: friendsQuirkList.getList()) {
                 for(Event currEvent: currQuirk.getEventList().getList()){
-                    if(currEvent.getGeolocation() != null) {
-                        if (haversine(currEvent.getGeolocation().getLatitude(), currEvent.getGeolocation().getLongitude(),
-                                userLoc.getLatitude(), userLoc.getLongitude()) < 5){
-                            events.addEvent(currEvent);
-                        }
+                    if (currEvent.getGeolocation() != null) {
+                        events.addEvent(currEvent);
                     }
                 }
             }
