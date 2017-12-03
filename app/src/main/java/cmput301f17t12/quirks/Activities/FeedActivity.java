@@ -7,10 +7,13 @@ import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import cmput301f17t12.quirks.Adapters.FollowFeedItemAdapter;
 import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
+import cmput301f17t12.quirks.Interfaces.Newsable;
 import cmput301f17t12.quirks.Models.Quirk;
 import cmput301f17t12.quirks.Models.QuirkList;
 import cmput301f17t12.quirks.Models.User;
@@ -48,27 +51,25 @@ public class FeedActivity extends SocialActivity {
         query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
         ArrayList<User> followingUsers = HelperFunctions.getAllUsers(query.toString());
 
-        ArrayList<String> userlist = getQuirks(followingUsers);
+        if (!followingUsers.isEmpty()) {
+            for (User user : followingUsers) {
+                quirkList.addAll(user.getQuirks().getList());
+            }
+        }
+
+        // -1 to reverse the order
+        Collections.sort(quirkList, new Comparator<Quirk>() {
+            public int compare(Quirk m1, Quirk m2) {
+                return -1 * m2.getFollowingString().compareTo(m1.getFollowingString());
+            }
+        });
 
         // create instance of custom adapter
-        adapter = new FollowFeedItemAdapter(userlist, quirkList, this);
+        adapter = new FollowFeedItemAdapter(quirkList, this);
 
         // create listView and assign custom adapter
         ListView lView = (ListView) findViewById(R.id.listViewFeed);
         lView.setAdapter(adapter);
-
-
-    }
-
-    public ArrayList<String> getQuirks(ArrayList<User> followingUsers) {
-        ArrayList<String> out = new ArrayList<>();
-        for (User user : followingUsers) {
-            for (Quirk quirk : user.getQuirks().getList()) {
-                quirkList.add(quirk);
-                out.add(user.getUsername());
-            }
-        }
-        return out;
     }
 
     @Override

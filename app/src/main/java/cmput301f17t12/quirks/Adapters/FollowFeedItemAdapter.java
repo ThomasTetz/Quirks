@@ -36,7 +36,6 @@ import cmput301f17t12.quirks.R;
 
 public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
     Dialog myDialog;
-    private ArrayList<String> userlist;
     private ArrayList<Quirk> quirkList;
     private Context context;
 
@@ -45,8 +44,7 @@ public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
      * @param quirkList QuirkList to shown in the ListView
      * @param context Current state of the application
      */
-    public FollowFeedItemAdapter(ArrayList<String> userlist, ArrayList<Quirk> quirkList, Context context) {
-        this.userlist = userlist;
+    public FollowFeedItemAdapter(ArrayList<Quirk> quirkList, Context context) {
         this.quirkList = quirkList;
         this.context = context;
     }
@@ -85,12 +83,8 @@ public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
         }
         final Quirk quirkItem = quirkList.get(pos);
 
-        // Set item title to quirk title
-        TextView habititle = (TextView) view.findViewById(R.id.followQuirkTitle);
-        habititle.setText(String.format("- %s", quirkItem.getTitle()));
-
-        TextView username = (TextView) view.findViewById(R.id.username);
-        username.setText(userlist.get(pos));
+        TextView followQuirkTitle = (TextView) view.findViewById(R.id.followQuirkTitle);
+        followQuirkTitle.setText(quirkItem.getFollowingString());
 
         // Initialize and update progress bar
         ProgressBar followBar = (ProgressBar) view.findViewById(R.id.followBar);
@@ -140,7 +134,7 @@ public class FollowFeedItemAdapter extends BaseAdapter implements ListAdapter {
                     listItemHeader.setText("");
                     listItemDescription.setText("");
                     listItemTimeSpan.setText("");
-                    recent.setText(String.format("%s has not logged to this quirk", userlist.get(pos)));
+                    recent.setText(String.format("%s has not logged to this quirk", quirkItem.getUser()));
                 }
 
                 txtclose.setOnClickListener(new View.OnClickListener() {

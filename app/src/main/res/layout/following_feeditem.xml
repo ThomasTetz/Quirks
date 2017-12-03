@@ -29,22 +29,14 @@
             android:layout_marginStart="5dp">
 
             <TextView
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:focusable="false"
-                android:textSize="16sp"
-                android:text="username"/>
-
-            <TextView
                 android:id="@+id/followQuirkTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toEndOf="@+id/username"
+
                 android:focusable="false"
                 android:textSize="16sp"
                 android:layout_marginStart="5dp"
-                android:text="- habit title"/>
+                android:text="habit string here"/>
 
         </RelativeLayout>
 
