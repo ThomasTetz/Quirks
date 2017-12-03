@@ -19,6 +19,7 @@ public class QuirkList implements Serializable {
         quirks.add(quirk);
     }
 
+    public void addAllQuirks(QuirkList quirkList) {quirks.addAll(quirkList.getList()); }
     /**
      * Copy contents of inputted QuirkList. Called clearAndAdd because it clears the original
      * QuirkList and then adds all Quirks from the QuirkList that the class is copying from
