@@ -10,10 +10,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cmput301f17t12.quirks.Adapters.FriendListItemAdapter;
+import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Request;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
 
 /**
@@ -23,7 +27,9 @@ import cmput301f17t12.quirks.R;
 public class FriendActivity extends SocialActivity {
     public User currentlylogged;
     private FriendListItemAdapter adapter;
-    private ArrayList<User> friendlist;
+    private ArrayList<String> friendlist;
+    private static final String TAG = "FriendActivity" ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +41,21 @@ public class FriendActivity extends SocialActivity {
         }
 
         Inventory dummyInv = new Inventory();
-        ArrayList<User> friends = new ArrayList<>();
-        ArrayList<User> requests = new ArrayList<>();
+        ArrayList<String> friends = new ArrayList<>();
         QuirkList quirks = new QuirkList();
-        User dummy = new User("dummy",dummyInv,friends,requests,quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,requests,quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,requests,quirks);
+        ArrayList<TradeRequest> traderequests = new ArrayList<>();
+        ArrayList<UserRequest> requests = new ArrayList<>();
+
+        User dummy = new User("dummy",dummyInv,friends,requests, traderequests, quirks);
+        User dummy2 = new User("dummy2",dummyInv,friends,requests, traderequests, quirks);
+        User dummy3 = new User("Alex",dummyInv,friends,requests, traderequests, quirks);
+
+
         currentlylogged = HelperFunctions.getUserObject(jestID);
         super.onCreate(savedInstanceState);
-        currentlylogged.addFriend(dummy);
-        currentlylogged.addFriend(dummy2);
-        currentlylogged.addFriend(dummy3);
+        currentlylogged.addFriend(dummy.getUsername());
+        currentlylogged.addFriend(dummy3.getUsername());
+        Log.d(TAG, "onCreate: the size of currentylog is " + currentlylogged.getFriends().size());
 
         friendlist = currentlylogged.getFriends();
         adapter = new FriendListItemAdapter(friendlist,this);
@@ -55,11 +65,28 @@ public class FriendActivity extends SocialActivity {
 
     }
 
+    public void deleteFriend(int deletingFriendIndex) {
+
+       /* String userdeleting = friendlist.get(deletingFriendIndex).getUsername();
+        Log.d(TAG, "deleteFriend: the strng is " + userdeleting);
+        User dumuse = friendlist.get(deletingFriendIndex);
+        Log.d(TAG, "deleteFriend: does it contain " + friendlist.contains(friendlist.get(deletingFriendIndex)));
+        friendlist.remove(friendlist.get(deletingFriendIndex));
+
+        Log.d(TAG, "deleteFriend: does it contain"+ friendlist.contains(dumuse));
+=       */
+        currentlylogged.deleteFriend(friendlist.get(deletingFriendIndex));
+        //   friendlist.remove(deletingFriendIndex);
+        ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(currentlylogged);
+     //   friendlist.clear();
+      //  friendlist.addAll(currentlylogged.getFriends());
+        adapter.notifyDataSetChanged();
+    }
 
 
 
-
-    @Override
+        @Override
     int getContentViewId() {
         return R.layout.activity_friends;
     }

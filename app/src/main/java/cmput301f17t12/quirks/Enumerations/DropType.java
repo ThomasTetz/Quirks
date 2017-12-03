@@ -25,52 +25,52 @@ public enum DropType {
     deaaronfox(20, "De'Aaron Fox"),
 
     // Rare items
-    jordanclarkson(10, "Jordan Clarkson"),
-    kcp(10, "Kentavious Caldwell-Pope"),
-    buddyhield(10, "Buddy Hield"),
-    lonzoball(10, "Lonzo Ball"),
-    tarikblack(10, "Tarik Black"),
-    bismackbiyombo(10, "Bismack Biyombo"),
-    tysonchandler(10, "Tyson Chandler"),
-    tyrekeevans(10, "Tyreke Evans"),
-    ekpeudoh(10, "Ekpe Udoh"),
-    larrynance(10, "Larry Nance Jr."),
+    jordanclarkson(15, "Jordan Clarkson"),
+    kcp(15, "Kentavious Caldwell-Pope"),
+    buddyhield(15, "Buddy Hield"),
+    lonzoball(15, "Lonzo Ball"),
+    tarikblack(15, "Tarik Black"),
+    bismackbiyombo(15, "Bismack Biyombo"),
+    tysonchandler(15, "Tyson Chandler"),
+    tyrekeevans(15, "Tyreke Evans"),
+    ekpeudoh(15, "Ekpe Udoh"),
+    larrynance(15, "Larry Nance Jr."),
 
     // Mythical items
-    giannis(5, "Giannis Antetokounmpo"),
-    draymond(5, "Draymond Green"),
-    ingram(5, "Brandon Ingram"),
-    dangelo(5, "D'Angelo Russell"),
-    paugasol(5, "Pau Gasol"),
-    averybradley(5, "Avery Bradley"),
-    bradleybeal(5, "Bradley Beal"),
-    markkanen(5, "Lauri Markkanen"),
-    kylekuzma(5, "Kyle Kuzma"),
+    giannis(10, "Giannis Antetokounmpo"),
+    draymond(10, "Draymond Green"),
+    ingram(10, "Brandon Ingram"),
+    dangelo(10, "D'Angelo Russell"),
+    paugasol(10, "Pau Gasol"),
+    averybradley(10, "Avery Bradley"),
+    bradleybeal(10, "Bradley Beal"),
+    markkanen(10, "Lauri Markkanen"),
+    kylekuzma(10, "Kyle Kuzma"),
 
 
     // Legendary items
-    durant(1, "Kevin Durant"),
-    curry(1, "Steph Curry"),
-    harden(1, "James Harden"),
-    cousins(1, "DeMarcus Cousins"),
-    davis(1, "Anthony Davis"),
-    westbrook(1, "Russell Westbrook"),
-    kawhi(1, "Kawhi Leonard"),
-    derozan(1, "Demar Derozan"),
-    carmelo(1, "Carmelo Anthony"),
-    paulgeorge(1, "Paul George"),
+    durant(5, "Kevin Durant"),
+    curry(5, "Steph Curry"),
+    harden(5, "James Harden"),
+    cousins(5, "DeMarcus Cousins"),
+    davis(5, "Anthony Davis"),
+    westbrook(5, "Russell Westbrook"),
+    kawhi(5, "Kawhi Leonard"),
+    derozan(5, "Demar Derozan"),
+    carmelo(5, "Carmelo Anthony"),
+    paulgeorge(5, "Paul George"),
 
     // Ancient items
-    kobe(0.5, "Kobe Bryant"),
-    jordan(0.5, "Michael Jordan"),
-    lebron(0.5, "Lebron James"),
-    magic(0.5, "Magic Johnson"),
-    kareem(0.5, "Kareem Abdul-Jabar"),
-    wilt(0.5, "Wilt Chamberlain"),
-    larrybird(0.5, "Larry Bird"),
-    duncan(0.5, "Tim Duncan"),
-    hakeem(0.5, "Hakeem Olajuwon"),
-    shaq(0.5, "Shaquille O'neal");
+    kobe(1, "Kobe Bryant"),
+    jordan(1, "Michael Jordan"),
+    lebron(1, "Lebron James"),
+    magic(1, "Magic Johnson"),
+    kareem(1, "Kareem Abdul-Jabar"),
+    wilt(1, "Wilt Chamberlain"),
+    larrybird(1, "Larry Bird"),
+    duncan(1, "Tim Duncan"),
+    hakeem(1, "Hakeem Olajuwon"),
+    shaq(1, "Shaquille O'neal");
 
     private final double randomWeight;
     private final String name;
@@ -89,13 +89,13 @@ public enum DropType {
             return "COMMON";
         } else if (this.randomWeight == 20) {
             return "UNCOMMON";
-        } else if (this.randomWeight == 10) {
+        } else if (this.randomWeight == 15) {
             return "RARE";
-        } else if (this.randomWeight == 5) {
+        } else if (this.randomWeight == 10) {
             return "MYTHICAL";
-        } else if (this.randomWeight == 1) {
+        } else if (this.randomWeight == 5) {
             return "LEGENDARY";
-        } else if (this.randomWeight == 0.5) {
+        } else if (this.randomWeight == 1) {
             return "ANCIENT";
         } else {
             return "";

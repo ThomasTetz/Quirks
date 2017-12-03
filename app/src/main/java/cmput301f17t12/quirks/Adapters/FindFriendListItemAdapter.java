@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import cmput301f17t12.quirks.Activities.FindFriendActivity;
 import cmput301f17t12.quirks.Activities.RequestActivity;
 import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
@@ -62,14 +63,15 @@ public class FindFriendListItemAdapter extends BaseAdapter implements ListAdapte
 
             ImageButton addfriendbut = (ImageButton) view.findViewById(R.id.imageButtonAddFriend);
 
-            addfriendbut.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (context instanceof RequestActivity) {
-                  Log.d(TAG, "onClick: the postioin is " + i);
+            addfriendbut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(context instanceof FindFriendActivity){
+                        Log.d(TAG, "onClick: the position i clicked at is " + i);
+                        ((FindFriendActivity)context).addFriend(i);
+                    }
                 }
-            }
-        });
+            });
 
         return view;
     }

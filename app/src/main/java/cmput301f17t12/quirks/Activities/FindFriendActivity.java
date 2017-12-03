@@ -21,7 +21,10 @@ import cmput301f17t12.quirks.Controllers.ElasticSearchUserController;
 import cmput301f17t12.quirks.Helpers.HelperFunctions;
 import cmput301f17t12.quirks.Models.Inventory;
 import cmput301f17t12.quirks.Models.QuirkList;
+import cmput301f17t12.quirks.Models.Request;
+import cmput301f17t12.quirks.Models.TradeRequest;
 import cmput301f17t12.quirks.Models.User;
+import cmput301f17t12.quirks.Models.UserRequest;
 import cmput301f17t12.quirks.R;
 
 /**
@@ -31,7 +34,8 @@ import cmput301f17t12.quirks.R;
 public class FindFriendActivity extends SocialActivity {
     public User currentlylogged;
     private FindFriendListItemAdapter adapter;
-    private ArrayList<User> userList;
+    private ArrayList<String> userList;
+    ArrayList<User> allusers;
     private static final String TAG = "FindFriendActivity" ;
 
     EditText searchFriendUser;
@@ -40,8 +44,7 @@ public class FindFriendActivity extends SocialActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userList = new ArrayList<>();
-        Button addFriendButton = (Button) findViewById(R.id.buttonAddFriend);
-        searchFriendUser = (EditText)findViewById(R.id.editTextFindFriend);
+        searchFriendUser = (EditText) findViewById(R.id.editTextFindFriend);
         ImageButton searchFriendButton = (ImageButton) findViewById(R.id.imageButtonSearch);
 
         SharedPreferences settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
@@ -52,82 +55,94 @@ public class FindFriendActivity extends SocialActivity {
         }
 
         Inventory dummyInv = new Inventory();
-        ArrayList<User> friends = new ArrayList<>();
+        ArrayList<String> friends = new ArrayList<>();
         QuirkList quirks = new QuirkList();
-        ArrayList<User> requests = new ArrayList<>();
-
-        User dummy = new User("dummy",dummyInv,friends,requests,quirks);
-        User dummy2 = new User("dummy2",dummyInv,friends,requests,quirks);
-        User dummy3 = new User("Alex",dummyInv,friends,requests,quirks);
+        ArrayList<TradeRequest> traderequests = new ArrayList<>();
+        ArrayList<UserRequest> requests = new ArrayList<>();
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
 
-       /* userList.add(dummy);
-        userList.add(dummy2);
-        userList.add(dummy3);
-        */
+        if (currentlylogged != null) {
+            String query = "{" +
+                    "  \"from\": 0, \"size\": 5000, " +
+                    "  \"query\": {" +
+                    "    \"bool\": {" +
+                    "      \"must_not\": {" +
+                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}" +
+                    "      }" +
+                    "    }" +
+                    "  }" +
+                    "}";
 
-        ListView lView = (ListView)findViewById(R.id.findfriend_listview);
-        adapter = new FindFriendListItemAdapter(userList,this);
-        lView.setAdapter(adapter);
+            allusers = HelperFunctions.getAllUsers(query);
 
-    }
+            ListView lView = (ListView) findViewById(R.id.findfriend_listview);
+            adapter = new FindFriendListItemAdapter(allusers, this);
+            lView.setAdapter(adapter);
 
-    public void findFriendSearchBut(View view){
-        String stringSearchUser = searchFriendUser.getText().toString();
-        String query = "{" +
-                "  \"query\": {" +
-                "    \"match\": {" +
-                "      \"username\": \"" + stringSearchUser + "\"" +
-                "    }" +
-                "  }" +
-                "}";
-
-        ElasticSearchUserController.GetUsersTask getUsersTask = new ElasticSearchUserController.GetUsersTask();
-        getUsersTask.execute(query);
-        ArrayList<User> UserfromQueries = new ArrayList<>();
-        UserfromQueries.clear();
-        Log.d(TAG, "findFriendSearchBut: the userfromqueries is " + UserfromQueries.size());
-        try {
-            UserfromQueries =getUsersTask.get();
-            Log.d(TAG, "findFriendSearchBut: " + UserfromQueries.get(0).getUsername());
-            Log.d(TAG, "findFriendSearchBut: " + UserfromQueries.size());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         }
-
-        userList.clear();
-        userList.addAll(UserfromQueries);
-        Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.size());
-        Log.d(TAG, "findFriendSearchBut: the userlist now with the userlist i found  is " + userList.get(0).getUsername());
-        adapter.notifyDataSetChanged();
-    }
-    
-    
-
-    public void addFriendsBut(View view){
-        LinearLayout vwParentRow = (LinearLayout) view.getParent();
-        Log.d(TAG, "addFriendsBut: im pressing the button");
-
-
     }
 
-    public String getQueryFilterUser(){
-        String query = "user";
-        // for the user
-        // look in quirklist
-        // match where type is type
-        return query;
+    public void findFriendSearchBut(View view) {
+        String stringSearchUser = searchFriendUser.getText().toString();
+        if(stringSearchUser.equals(currentlylogged.getUsername())){
+            Toast.makeText(FindFriendActivity.this,"Cannot input yourself",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (stringSearchUser.equals("")) {
+            Toast.makeText(FindFriendActivity.this,"Please input a username",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else {
+            Toast.makeText(FindFriendActivity.this,"Searching for user",Toast.LENGTH_SHORT).show();
+            String query = "{" +
+                    "  \"query\": {" +
+                    "    \"match\": {" +
+                    "      \"username\": \"" + stringSearchUser + "\"" +
+                    "    }" +
+                    "  }" +
+                    "}";
+
+            ElasticSearchUserController.GetUsersTask getUsersTask = new ElasticSearchUserController.GetUsersTask();
+            getUsersTask.execute(query);
+            ArrayList<User> UserfromQueries = new ArrayList<>();
+            UserfromQueries.clear();
+            Log.d(TAG, "findFriendSearchBut: the userfromqueries is " + UserfromQueries.size());
+            try {
+                UserfromQueries = getUsersTask.get();
+            } catch (InterruptedException e) {
+                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            allusers.clear();
+            allusers.addAll(UserfromQueries);
+            if(allusers.size() == 0){
+                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                adapter.notifyDataSetChanged();
+                }
+            }
     }
 
-    public void addFriend(View view){
-        Toast.makeText(FindFriendActivity.this,"Sending Friend Request", Toast.LENGTH_SHORT).show();
 
+    public void addFriend(int selectFriendIndex) {
+        Toast.makeText(FindFriendActivity.this,"Sending Friend Request",Toast.LENGTH_SHORT).show();
+        String username = allusers.get(selectFriendIndex).getUsername();
+        Log.d(TAG, "addFriend: the index is this " + username);
+        UserRequest user = new UserRequest(currentlylogged.getUsername());
+        allusers.get(selectFriendIndex).addUserRequest(user);
+        ElasticSearchUserController.UpdateUserTask updateUserTask
+                = new ElasticSearchUserController.UpdateUserTask();
+        updateUserTask.execute(allusers.get(selectFriendIndex));
+
+        Toast.makeText(FindFriendActivity.this,"Sent Friend Request",Toast.LENGTH_SHORT).show();
     }
 
-    @Override
+        @Override
     int getContentViewId() {
         return R.layout.activity_findfriends;
     }

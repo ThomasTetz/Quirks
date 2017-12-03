@@ -1,21 +1,20 @@
 package cmput301f17t12.quirks.Models;
 
-/**
- * Created by root on 12/1/17.
- */
+import java.io.Serializable;
 
-public class UserRequest extends Request {
+public class UserRequest extends Request implements Serializable {
 
-    User fromUser;
-    User toUser;
-    public UserRequest(User fromUser , User toUser){
+    public UserRequest(String fromUser){
         super(fromUser);
-        this.fromUser = fromUser;
-        this.toUser = toUser;
     }
 
     @Override
-    String getDetails() {
-        return null;
+    public String getHeader() {
+        return "Friend request!";
+    }
+
+    @Override
+    public String getDetails() {
+        return "Would you like to add " + getFromUser() + "?";
     }
 }

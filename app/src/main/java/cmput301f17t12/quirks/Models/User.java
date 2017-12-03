@@ -10,20 +10,21 @@ import io.searchbox.annotations.JestId;
 public class User implements Serializable {
     private String username;
     private Inventory inventory;
-    private static final String TAG = "User" ;
-    private ArrayList<User> friends;
-    private ArrayList<User> requests;
+    private ArrayList<String> friends;
+    private ArrayList<TradeRequest> tradeRequests;
+    private ArrayList<UserRequest> userRequests;
     private QuirkList quirks;
 
     @JestId
     private String uid;
 
-    public User(String username, Inventory inventory, ArrayList<User> friends,ArrayList<User> requests, QuirkList quirks){
+    public User(String username, Inventory inventory, ArrayList<String> friends, ArrayList<UserRequest> userRequests, ArrayList<TradeRequest> tradeRequests, QuirkList quirks){
         this.username = username;
         this.inventory = inventory;
         this.friends = friends;
         this.quirks = quirks;
-        this.requests = requests;
+        this.tradeRequests = tradeRequests;
+        this.userRequests = userRequests;
     }
 
     /**
@@ -40,14 +41,6 @@ public class User implements Serializable {
      */
     public String getId(){
         return uid;
-    }
-
-    /**
-     * Set the username of the User
-     * @param username Username string
-     */
-    public void setUsername(String username){
-        this.username = username;
     }
 
     /**
@@ -68,30 +61,70 @@ public class User implements Serializable {
 
     /**
      * Get the friends of the User
-     * @return
+     * @return ArrayList<User> friends
      */
-    public ArrayList<User> getFriends(){
+    public ArrayList<String> getFriends(){
         return friends;
     }
-    public ArrayList<User> getRequests(){return  requests;
-    }
-    public void sendFriendRequest(User friend){
-        friend.requests.add(this);
+
+    /**
+     * Get the available user requests for the User
+     * @return ArrayList<UserRequest> requests
+     */
+    public ArrayList<UserRequest> getUserRequests(){return userRequests;}
+
+    /**
+     * Get the available trade requests for the User
+     * @return ArrayList<TradeRequest> requests
+     */
+    public ArrayList<TradeRequest> getTradeRequests(){return tradeRequests;}
+
+
+    /**
+     * Checks if the user has any requests
+     * @return boolean if the user has requests
+     */
+    public boolean hasRequests(){
+        return (tradeRequests.size() > 0 || userRequests.size() > 0);
     }
 
-    public boolean hasRequests(User request){
-        return requests.contains(request);
+    /**
+     * Deletes a given user request from the user's list
+     * @param request The request to be deleted
+     */
+    public void deleteUserRequest(UserRequest request){
+        userRequests.remove(request);
     }
 
-    public void deleteRequest(User request){
-        requests.remove(request);
+    /**
+     * Deletes a given trade request from the user's list
+     * @param request The request to be deleted
+     */
+    public void deleteTradeRequest(TradeRequest request){
+        tradeRequests.remove(request);
     }
+
+    /**
+     * Adds a user request to the users list
+     * @param request The request to be added
+     */
+    public void addUserRequest(UserRequest request){
+        userRequests.add(request);
+    }
+
+    /**
+     * Adds a trade request to the users list
+     * @param request The request to be added
+     */
+    public void addTradeRequest(TradeRequest request){
+        tradeRequests.add(request);
+    }
+
     /**
      * Add a friend to the User's friend-list
-     * @param friend
+     * @param friend The friend to be added
      */
-
-    public void addFriend(User friend){
+    public void addFriend(String friend){
         friends.add(friend);
     }
 
@@ -100,15 +133,15 @@ public class User implements Serializable {
      * @param friend Friend to check
      * @return Boolean value based on result
      */
-    public boolean hasFriend(User friend){
+    public boolean hasFriend(String friend){
         return friends.contains(friend);
     }
 
     /**
      * Delete friend from User's friend-list
-     * @param friend
+     * @param friend The friend to be deleted
      */
-    public void deleteFriend(User friend){
+    public void deleteFriend(String friend){
         friends.remove(friend);
     }
 
@@ -137,18 +170,22 @@ public class User implements Serializable {
     }
 
     /**
-     * Trade drops between two users
-     * @param otherDrop Drop of the other user
-     * @param myDrop The User's drop
-     * @return Boolean value based on if the trade was successful
+     * Gives a given drop to the receiver User
+     * and removes the given drop from this.User
+     * @param myDrop Drop to be traded
+     * @param receiver User that gets the drop.
      */
-    public boolean trade(Drop otherDrop, Drop myDrop){
-        // @TODO needs work
-        if (inventory.hasDrop(myDrop)){
-            inventory.removeDrop(myDrop);
-            inventory.addDrop(otherDrop);
-            return true;
-        }
-        return false;
+    public void trade(Drop myDrop, User receiver) {
+        getInventory().removeDrop(myDrop);
+        receiver.getInventory().addDrop(myDrop);
+    }
+
+    /**
+     * Returns the User as a string (its username)
+     * @return its Username
+     */
+    @Override
+    public String toString() {
+        return username;
     }
 }
