@@ -170,6 +170,17 @@ public class User implements Serializable {
     }
 
     /**
+     * Gives a given drop to the receiver User
+     * and removes the given drop from this.User
+     * @param myDrop Drop to be traded
+     * @param receiver User that gets the drop.
+     */
+    public void trade(Drop myDrop, User receiver) {
+        getInventory().removeDrop(myDrop);
+        receiver.getInventory().addDrop(myDrop);
+    }
+
+    /**
      * Returns the User as a string (its username)
      * @return its Username
      */

@@ -41,4 +41,14 @@ public class Drop implements Serializable {
     public boolean isSelected() {
         return this.isSelected;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Drop))return false;
+        Drop otherDrop = (Drop)other;
+
+        return (this.dropType == otherDrop.dropType && this.isSelected == otherDrop.isSelected);
+    }
 }
