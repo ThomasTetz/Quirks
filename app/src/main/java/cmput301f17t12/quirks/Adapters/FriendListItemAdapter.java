@@ -50,7 +50,7 @@ public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.friend_item, null);
-
+        }
             String friend = friends.get(i);
             TextView friendHeader = (TextView) view.findViewById(R.id.Friendtext);
             friendHeader.setText(friend);
@@ -67,7 +67,7 @@ public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
                     }
                 }
             });
-        }
+
 
         return view;
     }
