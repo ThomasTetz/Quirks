@@ -20,4 +20,5 @@
     <string name="title_activity_maps2">Map</string>
     <string name="searchlab">Search</string>
     <string name="search_hint">searchme</string>
+    <string name="mostrecent">Most recent event:</string>
 </resources>
