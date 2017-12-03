@@ -34,7 +34,7 @@ import cmput301f17t12.quirks.R;
 public class FindFriendActivity extends SocialActivity {
     public User currentlylogged;
     private FindFriendListItemAdapter adapter;
-    private ArrayList<User> userList;
+    private ArrayList<String> userList;
     ArrayList<User> allusers;
     private static final String TAG = "FindFriendActivity" ;
 
@@ -55,7 +55,7 @@ public class FindFriendActivity extends SocialActivity {
         }
 
         Inventory dummyInv = new Inventory();
-        ArrayList<User> friends = new ArrayList<>();
+        ArrayList<String> friends = new ArrayList<>();
         QuirkList quirks = new QuirkList();
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();

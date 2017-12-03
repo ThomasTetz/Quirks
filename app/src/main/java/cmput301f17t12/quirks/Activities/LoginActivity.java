@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void registerUser(String username){
         // create new user
-        User user = new User(username, new Inventory(), new ArrayList<User>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
+        User user = new User(username, new Inventory(), new ArrayList<String>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
 
         ElasticSearchUserController.AddUsersTask addUsersTask
                 = new ElasticSearchUserController.AddUsersTask();

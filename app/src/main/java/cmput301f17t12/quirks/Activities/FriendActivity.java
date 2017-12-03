@@ -27,7 +27,7 @@ import cmput301f17t12.quirks.R;
 public class FriendActivity extends SocialActivity {
     public User currentlylogged;
     private FriendListItemAdapter adapter;
-    private ArrayList<User> friendlist;
+    private ArrayList<String> friendlist;
     private static final String TAG = "FriendActivity" ;
 
 
@@ -41,7 +41,7 @@ public class FriendActivity extends SocialActivity {
         }
 
         Inventory dummyInv = new Inventory();
-        ArrayList<User> friends = new ArrayList<>();
+        ArrayList<String> friends = new ArrayList<>();
         QuirkList quirks = new QuirkList();
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();
@@ -53,8 +53,8 @@ public class FriendActivity extends SocialActivity {
 
         currentlylogged = HelperFunctions.getUserObject(jestID);
         super.onCreate(savedInstanceState);
-        currentlylogged.addFriend(dummy);
-        currentlylogged.addFriend(dummy3);
+        currentlylogged.addFriend(dummy.getUsername());
+        currentlylogged.addFriend(dummy3.getUsername());
         Log.d(TAG, "onCreate: the size of currentylog is " + currentlylogged.getFriends().size());
 
         friendlist = currentlylogged.getFriends();

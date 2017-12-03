@@ -258,6 +258,29 @@ public class HelperFunctions {
         return null;
     }
 
+    public static User getSingleUser(String username) {
+        String query = "{" +
+                "  \"query\": {" +
+                "    \"match\": {" +
+                "      \"username\": \"" + username + "\"" +
+                "    }" +
+                "  }" +
+                "}";
+
+        ElasticSearchUserController.GetUsersTask getUsersTask
+                = new ElasticSearchUserController.GetUsersTask();
+        getUsersTask.execute(query);
+
+        try {
+            return getUsersTask.get().get(0);
+        }
+        catch (Exception e) {
+            Log.i("Error", "Failed to get the users from the async object");
+            Log.i("Error", e.toString());
+        }
+        return null;
+    }
+
 }
 
 
