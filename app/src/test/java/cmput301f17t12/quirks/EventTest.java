@@ -1,5 +1,7 @@
 package cmput301f17t12.quirks;
 
+import android.text.format.DateUtils;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -12,6 +14,14 @@ public class EventTest {
     String user = "testuser123";
     private Geolocation geolocation = new Geolocation(1,1);
 
+    //Test eventID
+    @Test
+    public void testgetID(){
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        event.setId("123123123");
+        String actual = "123123123";
+        assertEquals(event.getId(),actual);
+    }
     // Test user
     @Test
     public void testGetUser() {
@@ -46,10 +56,10 @@ public class EventTest {
     // Test geolocation
     @Test
     public void testGetGeolocation() {
-        Geolocation geolocation = new Geolocation(53.544389, -113.490927);
-        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        Geolocation geolocation1 = new Geolocation(53.544389, -113.490927);
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation1, "Test");
         Geolocation returnedGeolocation = event.getGeolocation();
-        assertEquals(geolocation, returnedGeolocation);
+        assertEquals(geolocation1, returnedGeolocation);
     }
 
     @Test
@@ -96,13 +106,35 @@ public class EventTest {
         assertEquals(event.getPhotoByte(), someArray);
     }
 
+    //isEquals
+    @Test
+    public void testIsEquals(){
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        Event event1 = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        boolean actual = event.isEquals(event1);
+        assertTrue(actual);
+    }
+    //Type
+    @Test
+    public void testGetType(){
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        event.setType("TestTest");
+        String actual = "TestTest";
+        assertEquals(event.getType(), actual);
+    }
+    //buildNewsHeader
+    @Test
+    public void testBuildNewsHeader(){
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        String actual = "testuser123 logged to Test!";
+        assertEquals(event.buildNewsHeader(), actual);
+    }
     @Test
     public void testGetDate() {
         Date date = new Date();
         Event event = new Event(user, "ate lettuce", null, date, geolocation, "Test");
         assertEquals(event.getDate(), date);
     }
-
     @Test
     public void testSetDate() {
         Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
@@ -110,6 +142,26 @@ public class EventTest {
         event.setDate(date);
         assertEquals(event.getDate(), date);
     }
+    //buildDate and buildNewsDescription
+//    @Test
+//    public void testBuildDate(){
+//        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+////        CharSequence actualCS = DateUtils.getRelativeTimeSpanString(
+////                event.getDate().getTime(),
+////                System.currentTimeMillis(),
+////                DateUtils.SECOND_IN_MILLIS,
+////                DateUtils.FORMAT_ABBREV_RELATIVE);
+//        String actual = "";
+//        assertEquals(event.buildDate(), actual);
+//    }
+
+    @Test
+    public void testBuildNewsDescription() {
+        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
+        String actual = "ate lettuce";
+        assertEquals(event.buildNewsDescription(), actual);
+    }
+
 
 }
 
