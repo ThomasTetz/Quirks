@@ -249,11 +249,15 @@ public class MapActivity extends BaseActivity
         query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
         ArrayList<User> followingUsers = HelperFunctions.getAllUsers(query.toString());
 
-        if (!followingUsers.isEmpty()) {
-            for (User user : followingUsers) {
-                quirkList.addAllQuirks(user.getQuirks());
+        if (followingUsers != null){
+            if (!followingUsers.isEmpty()) {
+                for (User user : followingUsers) {
+                    quirkList.addAllQuirks(user.getQuirks());
+                }
             }
         }
+        
+
         return quirkList;
     }
 
