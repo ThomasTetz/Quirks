@@ -64,7 +64,7 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
             Log.i("Error", "Did not find correct jestID");
         }
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
 
         final EditText commentEdit = (EditText) findViewById(R.id.comment_edittext);
 
@@ -133,9 +133,10 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
         referenced_event.setDate(new Date());
         referenced_event.setGeolocation(userLoc);
 
-        ElasticSearchUserController.UpdateUserTask updateUserTask
-                = new ElasticSearchUserController.UpdateUserTask();
-        updateUserTask.execute(currentlylogged);
+//        ElasticSearchUserController.UpdateUserTask updateUserTask
+//                = new ElasticSearchUserController.UpdateUserTask();
+//        updateUserTask.execute(currentlylogged);
+        HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
 
         startActivity(new Intent(this, MainActivity.class));
     }
@@ -148,9 +149,10 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
         referenced_quirk.removeEvent(referenced_event);
         referenced_quirk.decCurrValue();
 
-        ElasticSearchUserController.UpdateUserTask updateUserTask
-                = new ElasticSearchUserController.UpdateUserTask();
-        updateUserTask.execute(currentlylogged);
+//        ElasticSearchUserController.UpdateUserTask updateUserTask
+//                = new ElasticSearchUserController.UpdateUserTask();
+//        updateUserTask.execute(currentlylogged);
+        HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -162,7 +164,6 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
             Uri photouri = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photouri);
-                bitmap = Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*0.5), (int)(bitmap.getHeight()*0.5), true);
                 setImage(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

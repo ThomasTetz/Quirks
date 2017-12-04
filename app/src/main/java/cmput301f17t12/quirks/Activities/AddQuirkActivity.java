@@ -82,7 +82,7 @@ public class AddQuirkActivity extends AppCompatActivity {
             Log.i("Error", "Did not find correct jestID");
         }
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
 
         SelectDate.setOnClickListener(new View.OnClickListener() {
 
@@ -155,8 +155,9 @@ public class AddQuirkActivity extends AppCompatActivity {
             Log.d(TAG, "saveButtonClicked: The QuirkCreated is the Goal is  " + QuirkCreated.getGoalValue());
 
             currentlylogged.addQuirk(QuirkCreated);
-            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
-            updateUserTask.execute(currentlylogged);
+//            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+//            updateUserTask.execute(currentlylogged);
+            HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
 
             finish();
         }

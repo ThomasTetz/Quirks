@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,25 +53,35 @@ public class FeedActivity extends SocialActivity {
         query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
         ArrayList<User> followingUsers = HelperFunctions.getAllUsers(query.toString());
 
-        if (!followingUsers.isEmpty()) {
-            for (User user : followingUsers) {
-                quirkList.addAll(user.getQuirks().getList());
+        if (followingUsers != null){
+            if (!followingUsers.isEmpty()) {
+                for (User user : followingUsers) {
+                    quirkList.addAll(user.getQuirks().getList());
+                }
             }
+
+            // -1 to reverse the order
+            Collections.sort(quirkList, new Comparator<Quirk>() {
+                public int compare(Quirk m1, Quirk m2) {
+                    return -1 * m2.getFollowingString().compareTo(m1.getFollowingString());
+                }
+            });
+
+            // create instance of custom adapter
+            adapter = new FollowFeedItemAdapter(quirkList, this);
+
+            // create listView and assign custom adapter
+            ListView lView = (ListView) findViewById(R.id.listViewFeed);
+            lView.setAdapter(adapter);
+        }
+        else{
+            String text = "Social activities are disabled when offline";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
         }
 
-        // -1 to reverse the order
-        Collections.sort(quirkList, new Comparator<Quirk>() {
-            public int compare(Quirk m1, Quirk m2) {
-                return -1 * m2.getFollowingString().compareTo(m1.getFollowingString());
-            }
-        });
 
-        // create instance of custom adapter
-        adapter = new FollowFeedItemAdapter(quirkList, this);
-
-        // create listView and assign custom adapter
-        ListView lView = (ListView) findViewById(R.id.listViewFeed);
-        lView.setAdapter(adapter);
     }
 
     @Override

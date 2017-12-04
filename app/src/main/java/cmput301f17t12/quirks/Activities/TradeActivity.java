@@ -53,7 +53,7 @@ public class TradeActivity extends SocialActivity {
                     "  \"query\": {" +
                     "    \"bool\": {" +
                     "      \"must_not\": {" +
-                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}"+
+                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}" +
                     "      }" +
                     "    }" +
                     "  }" +
@@ -61,75 +61,92 @@ public class TradeActivity extends SocialActivity {
 
             ArrayList<User> allusers = HelperFunctions.getAllUsers(query);
 
-            if (allusers != null && allusers.size() > 0) {
-                ArrayAdapter<User> useradapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allusers);
-                dropdown.setAdapter(useradapter);
+            if (allusers != null) {
+                if (allusers.size() > 0) {
 
-                final TextView myUsername = (TextView) findViewById(R.id.usernametext);
-                final TextView theirUsername = (TextView) findViewById(R.id.theirusername);
-                Button tradebutton = (Button) findViewById(R.id.tradebtn);
 
-                tradedUser = (User)dropdown.getSelectedItem();
+                    ArrayAdapter<User> useradapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allusers);
+                    dropdown.setAdapter(useradapter);
 
-                myUsername.setText(currentlylogged.getUsername());
-                theirUsername.setText(tradedUser.getUsername());
+                    final TextView myUsername = (TextView) findViewById(R.id.usernametext);
+                    final TextView theirUsername = (TextView) findViewById(R.id.theirusername);
+                    Button tradebutton = (Button) findViewById(R.id.tradebtn);
 
-                // instantiate custom adapter for both inventories
-                final ArrayList<Drop> currInventory = currentlylogged.getInventory().getList();
-                curruserAdapter = new CollectibleItemAdapter(currInventory, this);
+                    tradedUser = (User) dropdown.getSelectedItem();
 
-                final ArrayList<Drop> theirInventory = tradedUser.getInventory().getList();
-                tradeduserAdapter = new CollectibleItemAdapter(theirInventory, this);
+                    myUsername.setText(currentlylogged.getUsername());
+                    theirUsername.setText(tradedUser.getUsername());
 
-                // handle listview and assign adapter
-                ListView yourCollection = (ListView) findViewById(R.id.yourcollection);
-                ListView theircollection = (ListView) findViewById(R.id.theircollection);
-                yourCollection.setAdapter(curruserAdapter);
-                theircollection.setAdapter(tradeduserAdapter);
+                    // instantiate custom adapter for both inventories
+                    final ArrayList<Drop> currInventory = currentlylogged.getInventory().getList();
+                    curruserAdapter = new CollectibleItemAdapter(currInventory, this);
 
-                dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        tradedUser = (User)parentView.getItemAtPosition(position);
-                        ArrayList<Drop> tmp = new ArrayList<>();
-                        tmp.addAll(tradedUser.getInventory().getList());
-                        theirInventory.clear();
-                        theirInventory.addAll(tmp);
-                        theirUsername.setText(tradedUser.getUsername());
-                        tradeduserAdapter.notifyDataSetChanged();
-                    }
+                    final ArrayList<Drop> theirInventory = tradedUser.getInventory().getList();
+                    tradeduserAdapter = new CollectibleItemAdapter(theirInventory, this);
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parentView) {
-                        theirInventory.clear();
-                        theirUsername.setText("");
-                        tradeduserAdapter.notifyDataSetChanged();
-                    }
-                });
+                    // handle listview and assign adapter
+                    ListView yourCollection = (ListView) findViewById(R.id.yourcollection);
+                    ListView theircollection = (ListView) findViewById(R.id.theircollection);
+                    yourCollection.setAdapter(curruserAdapter);
+                    theircollection.setAdapter(tradeduserAdapter);
 
-                // Set listener for the trade button
-                tradebutton.setOnClickListener(new View.OnClickListener() {
+                    dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            tradedUser = (User) parentView.getItemAtPosition(position);
+                            ArrayList<Drop> tmp = new ArrayList<>();
+                            tmp.addAll(tradedUser.getInventory().getList());
+                            theirInventory.clear();
+                            theirInventory.addAll(tmp);
+                            theirUsername.setText(tradedUser.getUsername());
+                            tradeduserAdapter.notifyDataSetChanged();
+                        }
 
-                    @Override
-                    public void onClick(View v) {
-                        ArrayList<Drop> curr_receive = getSelectedDrops(theirInventory);
-                        ArrayList<Drop> curr_give = getSelectedDrops(currInventory);
-                        TradeRequest trade = new TradeRequest(currentlylogged.getUsername(), curr_give, curr_receive);
-                        tradedUser.addTradeRequest(trade);
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parentView) {
+                            theirInventory.clear();
+                            theirUsername.setText("");
+                            tradeduserAdapter.notifyDataSetChanged();
+                        }
+                    });
 
-                        ElasticSearchUserController.UpdateUserTask updateUserTask
-                                = new ElasticSearchUserController.UpdateUserTask();
-                        updateUserTask.execute(tradedUser);
+                    // Set listener for the trade button
+                    tradebutton.setOnClickListener(new View.OnClickListener() {
 
-                        String text = "Trade request sent!";
-                        int duration = Toast.LENGTH_LONG;
-                        Toast toast = Toast.makeText(v.getContext(), text, duration);
-                        toast.show();
+                        @Override
+                        public void onClick(View v) {
+                            ArrayList<Drop> curr_receive = getSelectedDrops(theirInventory);
+                            ArrayList<Drop> curr_give = getSelectedDrops(currInventory);
+                            TradeRequest trade = new TradeRequest(currentlylogged.getUsername(), curr_give, curr_receive);
+                            tradedUser.addTradeRequest(trade);
 
-                        tradeduserAdapter.notifyDataSetChanged();
-                        curruserAdapter.notifyDataSetChanged();
-                    }
-                });
+                            ElasticSearchUserController.UpdateUserTask updateUserTask
+                                    = new ElasticSearchUserController.UpdateUserTask();
+                            updateUserTask.execute(tradedUser);
+
+                            String text = "Trade request sent!";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(v.getContext(), text, duration);
+                            toast.show();
+
+                            tradeduserAdapter.notifyDataSetChanged();
+                            curruserAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+                else{
+                    String text = "No friends to trade with";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                    toast.show();
+                }
+
+            }
+            else{
+                String text = "Social activities are disabled when offline";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
             }
         }
     }

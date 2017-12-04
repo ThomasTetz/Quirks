@@ -48,7 +48,8 @@ public class FriendActivity extends SocialActivity {
 
 
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+//        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: the size of currentylog is " + currentlylogged.getFriends().size());
 
@@ -77,7 +78,7 @@ public class FriendActivity extends SocialActivity {
 
 
 
-        @Override
+    @Override
     int getContentViewId() {
         return R.layout.activity_friends;
     }
