@@ -15,6 +15,7 @@ import cmput301f17t12.quirks.Activities.EventListActivity;
 import cmput301f17t12.quirks.Activities.LoginActivity;
 import cmput301f17t12.quirks.Activities.MainActivity;
 import cmput301f17t12.quirks.Activities.QuirksActivity;
+import cmput301f17t12.quirks.Activities.TradeActivity;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -30,7 +31,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 
 /**
@@ -41,7 +45,7 @@ import static org.hamcrest.Matchers.anything;
 @RunWith(AndroidJUnit4.class)
 public class TradeActivityTest {
 
-    String comment;
+
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -49,17 +53,13 @@ public class TradeActivityTest {
 
     @Before
     public void initialize() {
-        // Specify a valid comment
-        comment = "Testing change";
+
         loginActivity = mActivityRule.getActivity();
 
 
     }
-
-    //Test Cancel button
-    //Go from login activity to Edit Event activvity
     @Test
-    public void cancelButton(){
+    public void selectYourItem(){
 
         Intents.init();
 
@@ -70,98 +70,107 @@ public class TradeActivityTest {
         onView(withId(R.id.loginBtn))
                 .perform(click());
 
-
-
-        //go to edit event
-        onView(withId(R.id.action_quirklist))
+        //go to Trade
+        onView(withId(R.id.action_social))
                 .perform(click());
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-        //Cancel button in add Events
-        onView(withId(R.id.cancel_button))
-                .perform(click());
-        intended(hasComponent(MainActivity.class.getName()), times(2));
-        intended(hasComponent(QuirksActivity.class.getName()), times(1));
-        intended(hasComponent(EventListActivity.class.getName()), times(1));
-        intended(hasComponent(EditEventActivity.class.getName()), times(1));
-
-        Intents.release();
-
-    }
-
-    //make changes to evvent and save
-
-    @Test
-    public void saveButton(){
-        //Will need to go createa quirk then save
-        Intents.init();
-
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
-        onView(withId(R.id.loginUser))
-                .perform(typeText("intest3"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn))
-                .perform(click());
-        onView(withId(R.id.action_quirklist))
-                .perform(click());
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-
-        //insert comment and save event
-        onView(withId(R.id.comment_edittext))
-                .perform(replaceText(comment), closeSoftKeyboard());
-
-        onView(withId(R.id.save_button))
-                .perform(click());
-        onView(withId(R.id.action_quirklist))
+        onView(withId(R.id.action_trade))
                 .perform(click());
 
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-
-        //click on view/edit/delete button for latest event
-
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-        //Check that comment was updated
-        onView(withId(R.id.comment_edittext)).check(matches(withText(comment)));
-        Intents.release();
-
-    }
-
-    //Testing that the map is clickable
-    @Test
-    public void map(){
-        loginActivity = mActivityRule.getActivity();
+        onData(anything()).inAdapterView(withId(R.id.yourcollection)).atPosition(0).perform(click());
         SystemClock.sleep(1000);
-        Intents.init();
-        mActivityRule.launchActivity(new Intent());
+        intended(hasComponent(TradeActivity.class.getName()), times(1));
 
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
-        onView(withId(R.id.loginUser))
-                .perform(typeText("intest3"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn))
-                .perform(click());
-        onView(withId(R.id.action_quirklist))
-                .perform(click());
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-
-        onView(withContentDescription("Google Map")).perform(click());
-
-        //Test that the text has changed to a lat and lon description after being tapped.
-        onView(withId(R.id.event_tap_text))
-                .check(matches(withText(not("Tap on the map"))));
         Intents.release();
 
     }
+//    @Test
+//    public void selectTheirItem(){
+//
+//        Intents.init();
+//
+//        //Login with user testing 123 and go to NewEvent ACtivity to have
+//        //quirks to log
+//        onView(withId(R.id.loginUser))
+//                .perform(typeText("intest3"), closeSoftKeyboard());
+//        onView(withId(R.id.loginBtn))
+//                .perform(click());
+//
+//        //go to Trade
+//        onView(withId(R.id.action_social))
+//                .perform(click());
+//        onView(withId(R.id.action_trade))
+//                .perform(click());
+//        onView(withId(R.id.collectionspinner)).perform(click());
+//        onData(anything()).atPosition(1).perform(click());
+////
+////        onData(anything()).inAdapterView(withId(R.id.theircollection)).atPosition(0).perform(click());
+//        SystemClock.sleep(1000);
+//
+//
+//        intended(hasComponent(TradeActivity.class.getName()), times(1));
+//
+//        Intents.release();
+//
+//    }
+//    @Test
+//    public void Filter(){
+//
+//        Intents.init();
+//
+//        //Login with user testing 123 and go to NewEvent ACtivity to have
+//        //quirks to log
+//        onView(withId(R.id.loginUser))
+//                .perform(typeText("intest3"), closeSoftKeyboard());
+//        onView(withId(R.id.loginBtn))
+//                .perform(click());
+//
+//        //go to Trade
+//        onView(withId(R.id.action_social))
+//                .perform(click());
+//        onView(withId(R.id.action_trade))
+//                .perform(click());
+//
+//
+//        onView(withId(R.id.collectionspinner)).perform(click());
+//        onData(allOf(is(instanceOf(String.class)), is("intest2"))).perform(click());
+//        intended(hasComponent(TradeActivity.class.getName()), times(1));
+//
+//        Intents.release();
+//
+//    }
+//
+//
+//    //Trade an item
+//    @Test
+//    public void TradeRequest(){
+//
+//        Intents.init();
+//
+//        //Login with user testing 123 and go to NewEvent ACtivity to have
+//        //quirks to log
+//        onView(withId(R.id.loginUser))
+//                .perform(typeText("intest3"), closeSoftKeyboard());
+//        onView(withId(R.id.loginBtn))
+//                .perform(click());
+//
+//        //go to Trade
+//        onView(withId(R.id.action_social))
+//                .perform(click());
+//        onView(withId(R.id.action_trade))
+//                .perform(click());
+//        onData(anything()).inAdapterView(withId(R.id.yourcollection)).atPosition(0).
+//                onChildView(withId(R.id.quirk_button)).perform(click());
+//        onView(withId(R.id.collectionspinner)).perform(click());
+//        onData(allOf(is(instanceOf(String.class)), is("intest2"))).perform(click());
+//        onData(anything()).inAdapterView(withId(R.id.theircollection)).atPosition(0).
+//                onChildView(withId(R.id.quirk_button)).perform(click());
+//
+//        onView(withId(R.id.tradebtn)).perform(click());
+//        intended(hasComponent(TradeActivity.class.getName()), times(1));
+//
+//        Intents.release();
+//
+//    }
 
 
 

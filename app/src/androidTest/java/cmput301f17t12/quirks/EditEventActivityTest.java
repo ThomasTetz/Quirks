@@ -175,7 +175,12 @@ public class EditEventActivityTest {
         onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
                 onChildView(withId(R.id.el_eventview)).perform(click());
 
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Google Maps"));
+
         onView(withContentDescription("Google Map")).perform(click());
+
+
 
         //Test that the text has changed to a lat and lon description after being tapped.
         onView(withId(R.id.event_tap_text))

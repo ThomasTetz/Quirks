@@ -149,14 +149,7 @@ public class QuirkTest {
 
         assertEquals(quirk.buildNewsHeader(), "unittester added a new Quirk!");
     }
-    //buildDate
-    @Test
-    public void testBuildDate(){
-        Quirk quirk = new Quirk ("title", "type",
-                new Date(), new ArrayList<Day>(), 2, "unittester", "reason" );
 
-        assertEquals(quirk.buildDate(), "unittester added a new Quirk!");
-    }
     //buildNewsDescription
     @Test
     public void testBuildNewsDesription(){
