@@ -43,6 +43,7 @@ public class EventListActivityTest {
         loginActivity = mActivityRule.getActivity();
     }
 
+    //Test the button to view/Edit Event to change activity
     @Test
     public void viewButton() {
         // Type username and go to quirk list then event list of first quirk

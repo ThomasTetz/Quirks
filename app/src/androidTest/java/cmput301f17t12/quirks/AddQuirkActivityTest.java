@@ -72,6 +72,7 @@ public class AddQuirkActivityTest {
 
     }
 
+    //Test able to input Title
     @Test
     public void addQuirkTitleTest(){
         Intents.init();
@@ -84,7 +85,7 @@ public class AddQuirkActivityTest {
         onView(withId(R.id.QuirkeditTextTitle)).check(matches(withText(title)));
         Intents.release();
     }
-
+    //Test able to input Type
     @Test
     public void addQuirkTypeTest(){
         Intents.init();
@@ -97,7 +98,7 @@ public class AddQuirkActivityTest {
         onView(withId(R.id.QuirkeditTextType)).check(matches(withText(type)));
         Intents.release();
     }
-
+    //Test able to input Reason
     @Test
     public void addQuirkReasonTest(){
         Intents.init();
@@ -125,6 +126,8 @@ public class AddQuirkActivityTest {
         Intents.release();
 
     }
+
+    //Test able to select occurence radio bttons
     @Test
     public void addQuirkOccTest(){
         Intents.init();
@@ -156,7 +159,8 @@ public class AddQuirkActivityTest {
         Intents.release();
 
     }
-
+    //Test able to input save Quirk and view it to ensure proper data is stored
+    //Then delete the Quirk for testing maintenance
     @Test
     public void addQuirkSaveButton(){
         Intents.init();
@@ -196,6 +200,7 @@ public class AddQuirkActivityTest {
         Intents.release();
 
     }
+    //Test Cancel button
     @Test
     public void addQuirkCancelButton(){
         Intents.init();

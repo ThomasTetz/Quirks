@@ -60,6 +60,8 @@ public class EditQuirkActivityTest {
     public void initQuirk()
     {
         loginActivity = mActivityRule.getActivity();
+
+        //Variables to test changes
         title = "New Title";
         type = "New Type";
         reason = "New Reason";
@@ -68,7 +70,7 @@ public class EditQuirkActivityTest {
         monthOfYear = 12;
         dayOfMonth = 01;
 
-
+        //Dates for date string
         if (monthOfYear < 10){
             month = "0" + Integer.toString(monthOfYear);
         }
@@ -83,8 +85,9 @@ public class EditQuirkActivityTest {
         }
     }
 
-//
+
     @Test
+    //test that Title an be inputted and saved
     public void EditQuirkTitleTest(){
         Intents.init();
         onView(withId(R.id.loginUser)).perform(typeText("intest3"), closeSoftKeyboard());
@@ -101,6 +104,8 @@ public class EditQuirkActivityTest {
         Intents.release();
 
     }
+
+    //test that Type an be edited and saved
     @Test
     public void EditQuirkType(){
         Intents.init();
@@ -116,7 +121,7 @@ public class EditQuirkActivityTest {
         intended(hasComponent(EditQuirkActivity.class.getName()),times(2));
         Intents.release();
     }
-
+    //test that Reason  can be edited and saved
     @Test
     public void EditQuirkReason(){
         Intents.init();
@@ -133,7 +138,7 @@ public class EditQuirkActivityTest {
         Intents.release();
 
     }
-
+    //test that Date an be edited and saved
     @Test
     public void EditQuirkDate(){
         Intents.init();
@@ -156,7 +161,7 @@ public class EditQuirkActivityTest {
 //        intended(hasComponent(EditQuirkActivity.class.getName()),times(2));
         Intents.release();
     }
-
+    //test that Goal an be edited and saved
     @Test
     public void EditQuirkGoal(){
         Intents.init();
@@ -173,6 +178,7 @@ public class EditQuirkActivityTest {
         Intents.release();
     }
 
+    //Test Cancel button
     @Test
     public void EditQuirkCancel(){
         Intents.init();
@@ -186,6 +192,7 @@ public class EditQuirkActivityTest {
         Intents.release();
     }
 
+    //Test delet Quirk
     @Test
     public void EditQuirkDelete(){
         Intents.init();

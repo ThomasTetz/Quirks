@@ -54,6 +54,7 @@ public class QuirksActivityTest {
         loginActivity = mActivityRule.getActivity();
     }
 
+    //Test New Quirk Button
     @Test
     public void newQuirkButton(){
         Intents.init();
@@ -66,6 +67,7 @@ public class QuirksActivityTest {
 
     }
 
+    //Test Filter by Today is correct
     @Test
     public void QuirkActivityFilterToday(){
         Intents.init();
@@ -105,31 +107,5 @@ public class QuirksActivityTest {
         }
         Intents.release();
     }
-
-
-//
-//    @Test
-//    public void QuirkActivityFilterall(){
-//        Intents.init();
-//        onView(withId(R.id.loginUser)).perform(typeText("intest2"), closeSoftKeyboard());
-//        onView(withId(R.id.loginBtn)).perform(click());
-//        onView(withId(R.id.action_quirklist)).perform(click());
-//        onView(withId(R.id.filter_type)).perform(click());
-//        onData(allOf(is(instanceOf(String.class)), is("All Habits"))).perform(click());
-//        onView(withId(R.id.applyFilterButton)).perform(click());
-//        Intents.release();
-//    }
-//
-//    @Test
-//    public void QuirkActivityShowDelete(){
-//        Intents.init();
-//        onView(withId(R.id.loginUser)).perform(typeText("intest2"), closeSoftKeyboard());
-//        onView(withId(R.id.loginBtn)).perform(click());
-//        onView(withId(R.id.action_quirklist)).perform(click());
-//        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).perform(click());
-//        onView(withId(R.id.DeleteBut)).perform(click());
-//        Intents.release();
-//    }
-
 
 }
