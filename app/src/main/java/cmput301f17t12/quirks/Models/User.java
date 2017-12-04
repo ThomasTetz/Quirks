@@ -18,6 +18,17 @@ public class User implements Serializable {
     @JestId
     private String uid;
 
+
+    /**
+     * User constructor
+     * @param username User string
+     * @param inventory Inventory Inventory
+     * @param friends ArrayList<String> String
+     * @param userRequests ArrayList<UserRequest> UserRequest
+     * @param tradeRequests ArrayLiost<TradeRequest>  TradeRequest
+     * @param quirks QuirkList QuirkList
+     */
+
     public User(String username, Inventory inventory, ArrayList<String> friends, ArrayList<UserRequest> userRequests, ArrayList<TradeRequest> tradeRequests, QuirkList quirks){
         this.username = username;
         this.inventory = inventory;
