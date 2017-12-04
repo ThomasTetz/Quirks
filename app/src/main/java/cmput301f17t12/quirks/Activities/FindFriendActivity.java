@@ -70,6 +70,7 @@ public class FindFriendActivity extends SocialActivity {
 
         if (currentlylogged != null) {
             query = new StringBuilder("{" +
+                    "  \"from\": 0, \"size\": 5000, " +
                     "  \"query\": {" +
                     "    \"bool\": {" +
                     "      \"must_not\":  {" +
