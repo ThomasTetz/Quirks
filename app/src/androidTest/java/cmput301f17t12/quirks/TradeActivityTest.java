@@ -77,6 +77,7 @@ public class TradeActivityTest {
                 .perform(click());
 
         onData(anything()).inAdapterView(withId(R.id.yourcollection)).atPosition(0).perform(click());
+        SystemClock.sleep(1000);
         intended(hasComponent(TradeActivity.class.getName()), times(1));
 
         Intents.release();

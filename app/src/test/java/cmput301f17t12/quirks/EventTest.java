@@ -142,18 +142,7 @@ public class EventTest {
         event.setDate(date);
         assertEquals(event.getDate(), date);
     }
-    //buildDate and buildNewsDescription
-//    @Test
-//    public void testBuildDate(){
-//        Event event = new Event(user, "ate lettuce", null, new Date(), geolocation, "Test");
-////        CharSequence actualCS = DateUtils.getRelativeTimeSpanString(
-////                event.getDate().getTime(),
-////                System.currentTimeMillis(),
-////                DateUtils.SECOND_IN_MILLIS,
-////                DateUtils.FORMAT_ABBREV_RELATIVE);
-//        String actual = "";
-//        assertEquals(event.buildDate(), actual);
-//    }
+
 
     @Test
     public void testBuildNewsDescription() {
