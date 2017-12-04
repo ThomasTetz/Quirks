@@ -5,25 +5,26 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/nearby_map_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Nearby" />
-
         <Button
             android:id="@+id/following_map_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Following" />
-
         <Button
             android:id="@+id/my_events_map_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="My Events" />
 
@@ -48,8 +49,8 @@
     </RelativeLayout>
     <!-- A set of test buttons. -->
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_width="wrap_content"
+        android:layout_height="64dp">
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"

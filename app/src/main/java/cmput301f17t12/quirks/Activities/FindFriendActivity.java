@@ -34,8 +34,10 @@ import cmput301f17t12.quirks.R;
 public class FindFriendActivity extends SocialActivity {
     public User currentlylogged;
     private FindFriendListItemAdapter adapter;
-    private ArrayList<User> userList;
+    private ArrayList<String> userList;
+    private ArrayList<String> friendslist;
     ArrayList<User> allusers;
+    private StringBuilder query;
     private static final String TAG = "FindFriendActivity" ;
 
     EditText searchFriendUser;
@@ -55,36 +57,60 @@ public class FindFriendActivity extends SocialActivity {
         }
 
         Inventory dummyInv = new Inventory();
-        ArrayList<User> friends = new ArrayList<>();
+        ArrayList<String> friends = new ArrayList<>();
         QuirkList quirks = new QuirkList();
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();
+//        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
+        friendslist = currentlylogged.getFriends();
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+        if (friendslist == null) {
+            friendslist = new ArrayList<>();
+        }
 
         if (currentlylogged != null) {
-            String query = "{" +
+            query = new StringBuilder("{" +
                     "  \"from\": 0, \"size\": 5000, " +
                     "  \"query\": {" +
                     "    \"bool\": {" +
-                    "      \"must_not\": {" +
-                    "        \"term\": { \"username\" : \"" + currentlylogged.getUsername() + "\"}" +
-                    "      }" +
-                    "    }" +
-                    "  }" +
-                    "}";
+                    "      \"must_not\":  {" +
+                    "        \"terms\": {" +
+                    "          \"username\": [");
+            query.append("\"").append(currentlylogged.getUsername()).append("\"");
+            if (friendslist.size() > 0) query.append(", ");
 
-            allusers = HelperFunctions.getAllUsers(query);
+            for (int i = 0; i < friendslist.size(); i++) {
+                query.append("\"").append(friendslist.get(i)).append("\"");
+                if (i != friendslist.size() - 1) {
+                    query.append(", ");
+                }
+            }
 
+            query.append("           ]" + "        }" + "      }" + "    }" + "  }" + "}");
+        }
+
+        allusers = HelperFunctions.getAllUsers(query.toString());
+        if (allusers != null){
             ListView lView = (ListView) findViewById(R.id.findfriend_listview);
             adapter = new FindFriendListItemAdapter(allusers, this);
             lView.setAdapter(adapter);
-
         }
+        else{
+            String text = "Social activities are disabled when offline";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
+//        allusers = HelperFunctions.getUsersGeneral(getApplicationContext());
+
+
     }
+
 
     public void findFriendSearchBut(View view) {
         String stringSearchUser = searchFriendUser.getText().toString();
+
         if(stringSearchUser.equals(currentlylogged.getUsername())){
             Toast.makeText(FindFriendActivity.this,"Cannot input yourself",Toast.LENGTH_SHORT).show();
             return;
@@ -93,8 +119,12 @@ public class FindFriendActivity extends SocialActivity {
             Toast.makeText(FindFriendActivity.this,"Please input a username",Toast.LENGTH_SHORT).show();
             return;
         }
+        if ( friendslist.contains(stringSearchUser)) {
+            Toast.makeText(FindFriendActivity.this, "You're already friends with them", Toast.LENGTH_SHORT).show();
+
+        }
         else {
-            Toast.makeText(FindFriendActivity.this,"Searching for user",Toast.LENGTH_SHORT).show();
+            Toast.makeText(FindFriendActivity.this, "Searching for user", Toast.LENGTH_SHORT).show();
             String query = "{" +
                     "  \"query\": {" +
                     "    \"match\": {" +
@@ -111,21 +141,20 @@ public class FindFriendActivity extends SocialActivity {
             try {
                 UserfromQueries = getUsersTask.get();
             } catch (InterruptedException e) {
-                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindFriendActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             } catch (ExecutionException e) {
-                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
+                Toast.makeText(FindFriendActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             allusers.clear();
             allusers.addAll(UserfromQueries);
-            if(allusers.size() == 0){
-                Toast.makeText(FindFriendActivity.this,"User does not exist",Toast.LENGTH_SHORT).show();
-            }
-            else {
+            if (allusers.size() == 0) {
+                Toast.makeText(FindFriendActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
+            } else {
                 adapter.notifyDataSetChanged();
-                }
             }
+        }
     }
 
 
@@ -138,11 +167,14 @@ public class FindFriendActivity extends SocialActivity {
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(allusers.get(selectFriendIndex));
+        HelperFunctions.clearFile(getApplicationContext(), "allUsers.txt");
+        HelperFunctions.saveInFile(allusers, getApplicationContext(), "allusers.txt");
+
 
         Toast.makeText(FindFriendActivity.this,"Sent Friend Request",Toast.LENGTH_SHORT).show();
     }
 
-        @Override
+    @Override
     int getContentViewId() {
         return R.layout.activity_findfriends;
     }

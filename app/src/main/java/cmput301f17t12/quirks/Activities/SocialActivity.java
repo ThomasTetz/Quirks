@@ -41,6 +41,9 @@ public class SocialActivity extends BaseActivity {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_geomap:
+                startActivity(new Intent(this, MapActivity.class));
+                break;
             case R.id.action_trade:
                 startActivity(new Intent(this, TradeActivity.class));
                 break;

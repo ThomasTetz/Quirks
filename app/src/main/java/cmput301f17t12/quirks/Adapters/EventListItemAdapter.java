@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import cmput301f17t12.quirks.Activities.EditQuirkActivity;
 import cmput301f17t12.quirks.Activities.EventListActivity;
 import cmput301f17t12.quirks.Activities.QuirksActivity;
@@ -68,6 +71,10 @@ public class EventListItemAdapter extends BaseAdapter implements ListAdapter{
         // Set item title to event comment
         TextView eventHeader = (TextView) view.findViewById(R.id.el_eventcomment);
         eventHeader.setText(eventItem.getComment());
+
+        TextView el_eventdate = (TextView) view.findViewById(R.id.el_eventdate);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        el_eventdate.setText(df.format(eventItem.getDate()));
 
         // Delete event button
         ImageButton eventView = (ImageButton) view.findViewById(R.id.el_eventview);

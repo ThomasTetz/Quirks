@@ -74,7 +74,8 @@ public class EditQuirkActivity extends AppCompatActivity {
             Log.i("Error", "Did not find correct jestID");
         }
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+//        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
 
         Integer incomingQuirkIndex = getIntent().getIntExtra("SELECTED_QUIRK_INDEX", -1);
 
@@ -89,13 +90,16 @@ public class EditQuirkActivity extends AppCompatActivity {
         ReasonEdit.setText(incomingQuirk.getReason());
         GoalEdit.setText(String.valueOf(incomingQuirk.getGoalValue()));
         final Date incomingDate = incomingQuirk.getDate();
-        Log.d(TAG, "onCreate: the incoming date is " + incomingDate);
+        startDate = incomingQuirk.getDate();
+
+      /*  Log.d(TAG, "onCreate: the incoming date is " + incomingDate);
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getDate());
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getYear());
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getDay());
         Log.d(TAG, "onCreate: the incoming date is " + incomingDate.getMonth());
+       */
         String dateFormat = "MM/dd/yyyy ";
-        Log.d(TAG, "onCreate: the incoming date year is " + incomingDate.getYear());
+        //  Log.d(TAG, "onCreate: the incoming date year is " + incomingDate.getYear());
         SimpleDateFormat datePat = new SimpleDateFormat(dateFormat);
         String dateToSet = datePat.format(incomingDate);
         Log.d(TAG, "onCreate: the date is  " +  incomingDate.toString());
@@ -156,8 +160,9 @@ public class EditQuirkActivity extends AppCompatActivity {
             incomingQuirk.setDate(startDate);
             Log.d(TAG, "saveButtonClicked:  the incoming Quirkdate is now " + incomingQuirk.getDate());
 
-            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
-            updateUserTask.execute(currentlylogged);
+//            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+//            updateUserTask.execute(currentlylogged);
+            HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
 
             finish();
         }
@@ -169,8 +174,9 @@ public class EditQuirkActivity extends AppCompatActivity {
 
     public void DeleteButtonClicked(View v) {
         currentlylogged.getQuirks().removeQuirk(incomingQuirk);
-        ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
-        updateUserTask.execute(currentlylogged);
+//        ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
+//        updateUserTask.execute(currentlylogged);
+        HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
         finish();
     }
 

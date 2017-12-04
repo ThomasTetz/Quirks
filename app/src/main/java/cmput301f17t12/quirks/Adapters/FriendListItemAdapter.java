@@ -21,11 +21,11 @@ import cmput301f17t12.quirks.R;
  */
 
 public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<User> friends = new ArrayList<>();
+    private ArrayList<String> friends = new ArrayList<>();
     private Context context;
     private static final String TAG = "FriendListItemAdapter" ;
 
-    public FriendListItemAdapter(ArrayList<User>friends, Context context) {
+    public FriendListItemAdapter(ArrayList<String>friends, Context context) {
         this.friends = friends;
         this.context = context;
     }
@@ -50,10 +50,10 @@ public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.friend_item, null);
-
-            User friend = friends.get(i);
+        }
+            String friend = friends.get(i);
             TextView friendHeader = (TextView) view.findViewById(R.id.Friendtext);
-            friendHeader.setText(friend.getUsername());
+            friendHeader.setText(friend);
 
 
             ImageButton deleteButton = (ImageButton) view.findViewById(R.id.delete_friend_but);
@@ -67,7 +67,7 @@ public class FriendListItemAdapter extends BaseAdapter implements ListAdapter {
                     }
                 }
             });
-        }
+
 
         return view;
     }

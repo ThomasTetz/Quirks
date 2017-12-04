@@ -107,6 +107,9 @@ public class ElasticSearchUserController {
 
             // Build the query
             Log.i("Error", "Building index on:" + indexString);
+            if (search_parameters.length < 1){
+                return null;
+            }
             Search search = new Search.Builder(search_parameters[0])
                     .addIndex(indexString)
                     .addType(typeString)
@@ -217,7 +220,7 @@ public class ElasticSearchUserController {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 Log.i("Error", e.toString());
             }
-            return new User("fake name", new Inventory(), new ArrayList<User>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
+            return new User("fake name", new Inventory(), new ArrayList<String>(),new ArrayList<UserRequest>(), new ArrayList<TradeRequest>(), new QuirkList());
         }
     }
 

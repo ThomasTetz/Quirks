@@ -37,11 +37,13 @@ import cmput301f17t12.quirks.Models.User;
 import cmput301f17t12.quirks.R;
 
 public class MainActivity extends BaseActivity {
+    EventList filteredEvents = new EventList();
     private ArrayList<Newsable> newsitems = new ArrayList<>();
     private NewsItemAdapter adapter;
     private User currentlylogged;
     private Spinner spinner;
     private Button applyButton;
+    private Button mapButton;
     private EditText filterValue;
     SharedPreferences settings;
 
@@ -51,32 +53,34 @@ public class MainActivity extends BaseActivity {
 
         settings = getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
 
-
         // get the user
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if (extras != null){
-            if (extras.containsKey("user")){
-                currentlylogged = (User) getIntent().getSerializableExtra("user");
-            }
-            else{
-                Log.i("Error", "Intent had extras but not user");
-            }
-        }
-        else{
+//        if (extras != null){
+//            if (extras.containsKey("user")){
+//                currentlylogged = (User) getIntent().getSerializableExtra("user");
+//            }
+//            else{
+//                Log.i("Error", "Intent had extras but not user");
+//            }
+//        }
+//        else{
+//
+//
+//            String jestID = settings.getString("jestID", "defaultvalue");
+//
+//            if (jestID.equals("defaultvalue")) {
+//                Log.i("Error", "Did not find correct jestID");
+//            }
+//
+//            currentlylogged = HelperFunctions.getUserObject(jestID);
+//        }
 
-
-            String jestID = settings.getString("jestID", "defaultvalue");
-
-            if (jestID.equals("defaultvalue")) {
-                Log.i("Error", "Did not find correct jestID");
-            }
-
-            currentlylogged = HelperFunctions.getUserObject(jestID);
-        }
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
 
         spinner = (Spinner) findViewById(R.id.spinner);
         applyButton = (Button) findViewById(R.id.applyFilterButton);
+        mapButton = (Button) findViewById(R.id.mapButton);
         filterValue = (EditText) findViewById(R.id.filterValue);
 
         // Spinner Drop down elements
@@ -109,7 +113,6 @@ public class MainActivity extends BaseActivity {
                     Log.i("Error", "Failed to get query based on spinner selection");
                 }
                 else{
-                    //applyFilter(query);
                     offlineFilter(query, extraString, currentlylogged);
                 }
 
@@ -121,6 +124,7 @@ public class MainActivity extends BaseActivity {
             ArrayList<Event> temp = quirks.get(i).getEventList().getList();
             for (int j = 0; j < temp.size(); j++) {
                 newsitems.add(temp.get(j));
+                filteredEvents.addEvent(temp.get(j));
             }
         }
 
@@ -136,6 +140,16 @@ public class MainActivity extends BaseActivity {
         // handle listview and assign adapter
         ListView lView = (ListView) findViewById(R.id.newsfeed_listview);
         lView.setAdapter(adapter);
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(v.getContext(), MapActivity.class);
+                mapIntent.putExtra("FILTERED_LIST", filteredEvents);
+                startActivity(mapIntent);
+            }
+        });
     }
 
     @Override
@@ -167,7 +181,7 @@ public class MainActivity extends BaseActivity {
 
     public void offlineFilter(String query, String arg, User user){
         QuirkList userQuirks = user.getQuirks();
-        EventList filteredEvents = new EventList();
+        filteredEvents.getList().clear();
         int size = user.getQuirks().size();
 
         if (arg.equals("")){ // no filter -> show all
@@ -214,10 +228,6 @@ public class MainActivity extends BaseActivity {
         else{
             Log.i("Error", "offline filter failed if/else statements");
         }
-    }
-
-    public void showAll(){
-
     }
 
     public void applyOfflineTypeFilter(EventList events){

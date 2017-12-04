@@ -52,7 +52,8 @@ public class QuirksActivity extends BaseActivity {
         }
 
         applyButton = (Button) findViewById(R.id.applyFilterButton);
-        final User currentlylogged = HelperFunctions.getUserObject(jestID);
+//        final User currentlylogged = HelperFunctions.getUserObject(jestID);
+        final User currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
         quirkList = currentlylogged.getQuirks();
 
         // Filter Hash Map: Filter position: Old Position
@@ -160,7 +161,8 @@ public class QuirksActivity extends BaseActivity {
      * @param jestID
      */
     public void updateQuirkList(String jestID){
-        User currentlylogged = HelperFunctions.getUserObject(jestID);
+//        User currentlylogged = HelperFunctions.getUserObject(jestID);
+        User currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
         QuirkList tempList = currentlylogged.getQuirks();
         quirkList.clearAndAddQuirks(tempList);
     }
