@@ -293,7 +293,13 @@ public class MapActivity extends BaseActivity
         Object tmp = getIntent().getSerializableExtra("FILTERED_LIST");
         if (tmp != null) {
             EventList filteredEventList = (EventList) tmp;
-            displayEventListLoc(filteredEventList);
+            EventList toPlot = new EventList();
+            for (Event currEvent : filteredEventList.getList()) {
+                if (currEvent.getGeolocation() != null) {
+                    toPlot.addEvent(currEvent);
+                }
+            }
+            displayEventListLoc(toPlot);
         }
     }
 
