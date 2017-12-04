@@ -23,6 +23,11 @@ import cmput301f17t12.quirks.Models.User;
 
 public class HelperFunctions {
 
+    /**
+     * Gets the current user. Works online and offline
+     * @param context
+     * @return User or null
+     */
     public static User getSingleUserGeneral(Context context){
         int offlineQueueExists = getOfflineChangesQueued(context);
         if (offlineQueueExists == 1){
@@ -61,16 +66,32 @@ public class HelperFunctions {
 
     }
 
+    /**
+     * Gets the JestID of the currently logged in user from SharedPreferences.
+     * @param context
+     * @return String
+     */
     public static String getJestID(Context context){
         SharedPreferences settings = context.getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         return settings.getString("jestID", "defaultvalue");
     }
 
+    /**
+     * Gets a user from the db by their JestID.
+     * @param context
+     * @param jestID
+     * @return User
+     */
     public static User getSingleUserByJestID(Context context, String jestID){
         User user = getSingleUserObject(jestID);
         return user;
     }
 
+    /**
+     * Gets a single user from the db.
+     * @param jestID
+     * @return User or null
+     */
     public static User getSingleUserObject(String jestID) {
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask
                 = new ElasticSearchUserController.GetSingleUserTask();
@@ -80,7 +101,6 @@ public class HelperFunctions {
             if (user != null){
                 Log.i("Error", "user is: " + user);
                 return !user.getUsername().equals("fake name") ? user : null;
-//                return user;
             }
             else{
                 throw new NullPointerException("null return from elasticsearch controller");
@@ -93,6 +113,11 @@ public class HelperFunctions {
         return null;
     }
 
+    /**
+     * Gets the current user if there is no connection.
+     * @param context
+     * @return User or null
+     */
     public static User getSingleUserOffline(Context context){
         ArrayList<User> users = loadFromFile(context, "currentUserFile.txt");
         if (users.size() > 0){
@@ -105,6 +130,11 @@ public class HelperFunctions {
         }
     }
 
+    /**
+     * Gets the list of all users last known.
+     * @param context
+     * @return ArrayList-User
+     */
     public static ArrayList<User> getUsersGeneral(Context context){
 
 
@@ -131,6 +161,10 @@ public class HelperFunctions {
         }
     }
 
+    /**
+     * Gets a list of users from the db.
+     * @return ArrayList-User
+     */
     public static ArrayList<User> getUsersObject() {
         ElasticSearchUserController.GetUsersTask getUsersTask
                 = new ElasticSearchUserController.GetUsersTask();
@@ -152,6 +186,11 @@ public class HelperFunctions {
         return null;
     }
 
+    /**
+     * Gets a list of users when there is no connection.
+     * @param context
+     * @return ArrayList-User or null
+     */
     public static ArrayList<User> getUsersOffline(Context context){
         ArrayList<User> users = loadFromFile(context, "allUsers.txt");
         if (users.size() > 0){
@@ -161,6 +200,11 @@ public class HelperFunctions {
             return null;
         }
     }
+
+    /**
+     * Sets flag to say that there are offline changes.
+     * @param context
+     */
     public static void triggerOfflineChangesQueued(Context context){
 //        SharedPreferences settings = context.getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = settings.edit();
@@ -169,6 +213,11 @@ public class HelperFunctions {
         setOfflineChangesQueued(context, 1);
     }
 
+    /**
+     * Sets the flag for offline changes existing. 0 for no, 1 for yes.
+     * @param context
+     * @param val
+     */
     public static void setOfflineChangesQueued(Context context, int val){
         SharedPreferences settings = context.getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -176,11 +225,23 @@ public class HelperFunctions {
         editor.commit();
     }
 
+    /**
+     * Gets the flag for offline changes existing.
+     * @param context
+     * @return int
+     */
     public static int getOfflineChangesQueued(Context context){
         SharedPreferences settings = context.getSharedPreferences("dbSettings", Context.MODE_PRIVATE);
         return settings.getInt("offlineChanges", -1);
     }
 
+    /**
+     * Syncs a list of users to reflect changes to a single one.
+     * @param context
+     * @param user
+     * @param users
+     * @return ArrayList-User
+     */
     public static ArrayList<User> syncCurrentToList(Context context, User user, ArrayList<User> users){
         if (users != null){
             String jid = user.getId(); // username also works
@@ -198,6 +259,11 @@ public class HelperFunctions {
         return users;
     }
 
+    /**
+     * Updates the current user online and offline.
+     * @param context
+     * @param user
+     */
     public static void updateSingleUser(Context context, User user){
         // update in db
 
@@ -223,6 +289,11 @@ public class HelperFunctions {
         saveCurrentUser(context, user);
     }
 
+    /**
+     * Updates a list of users.
+     * @param context
+     * @param users
+     */
     public static void updateUsers(Context context, ArrayList<User> users){
         // make sure to call whenever updating a single user too
         // update in db
@@ -256,6 +327,11 @@ public class HelperFunctions {
 
     }
 
+    /**
+     * Attempts to update the db with the offline changes.
+     * @param context
+     * @return int
+     */
     public static int tryToProcessOfflineQueue(Context context){
         // load from files
         // sync
@@ -299,6 +375,11 @@ public class HelperFunctions {
         return data;
     }
 
+    /**
+     * Saves the current user
+     * @param context
+     * @param user
+     */
     public static void saveCurrentUser(Context context, User user){
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(user);
@@ -336,6 +417,11 @@ public class HelperFunctions {
         }
     }
 
+    /**
+     * Gets a single user from the db.
+     * @param username
+     * @return User or null
+     */
     public static User getSingleUser(String username) {
         String query = "{" +
                 "  \"query\": {" +
@@ -369,6 +455,11 @@ public class HelperFunctions {
     }
 
 
+    /**
+     * Gets a list of users from the db.
+     * @param jestID
+     * @return User or null
+     */
     public static User getUserObject(String jestID) {
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask
                 = new ElasticSearchUserController.GetSingleUserTask();
@@ -384,6 +475,11 @@ public class HelperFunctions {
         return null;
     }
 
+    /**
+     * Gets all the users from the db.
+     * @param query
+     * @return ArrayList-User or null
+     */
     public static ArrayList<User> getAllUsers(String query) {
 
         ElasticSearchUserController.GetUsersTask getUsersTask
