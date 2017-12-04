@@ -46,8 +46,8 @@ public class RequestActivity extends  SocialActivity{
             Log.i("Error", "Did not find correct jestID");
         }
 
-//        currentlylogged = HelperFunctions.getUserObject(jestID);
-        User currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
+        //currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
         requests = new ArrayList<>();
 
         userRequests = currentlylogged.getUserRequests();
