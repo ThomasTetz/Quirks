@@ -56,25 +56,27 @@ public class MainActivity extends BaseActivity {
         // get the user
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if (extras != null){
-            if (extras.containsKey("user")){
-                currentlylogged = (User) getIntent().getSerializableExtra("user");
-            }
-            else{
-                Log.i("Error", "Intent had extras but not user");
-            }
-        }
-        else{
+//        if (extras != null){
+//            if (extras.containsKey("user")){
+//                currentlylogged = (User) getIntent().getSerializableExtra("user");
+//            }
+//            else{
+//                Log.i("Error", "Intent had extras but not user");
+//            }
+//        }
+//        else{
+//
+//
+//            String jestID = settings.getString("jestID", "defaultvalue");
+//
+//            if (jestID.equals("defaultvalue")) {
+//                Log.i("Error", "Did not find correct jestID");
+//            }
+//
+//            currentlylogged = HelperFunctions.getUserObject(jestID);
+//        }
 
-
-            String jestID = settings.getString("jestID", "defaultvalue");
-
-            if (jestID.equals("defaultvalue")) {
-                Log.i("Error", "Did not find correct jestID");
-            }
-
-            currentlylogged = HelperFunctions.getUserObject(jestID);
-        }
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
 
         spinner = (Spinner) findViewById(R.id.spinner);
         applyButton = (Button) findViewById(R.id.applyFilterButton);

@@ -69,8 +69,8 @@ public class MapActivity extends BaseActivity
             Log.i("Error", "Did not find correct jestID");
         }
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
-
+//        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
         mTapTextView = (TextView) findViewById(R.id.tap_text);
         userLocationClient = LocationServices.getFusedLocationProviderClient(this);
 

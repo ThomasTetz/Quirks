@@ -107,6 +107,9 @@ public class ElasticSearchUserController {
 
             // Build the query
             Log.i("Error", "Building index on:" + indexString);
+            if (search_parameters.length < 1){
+                return null;
+            }
             Search search = new Search.Builder(search_parameters[0])
                     .addIndex(indexString)
                     .addType(typeString)

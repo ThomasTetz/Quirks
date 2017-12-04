@@ -61,7 +61,8 @@ public class FindFriendActivity extends SocialActivity {
         QuirkList quirks = new QuirkList();
         ArrayList<TradeRequest> traderequests = new ArrayList<>();
         ArrayList<UserRequest> requests = new ArrayList<>();
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+//        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
         friendslist = currentlylogged.getFriends();
 
         if (friendslist == null) {
@@ -90,9 +91,19 @@ public class FindFriendActivity extends SocialActivity {
         }
 
         allusers = HelperFunctions.getAllUsers(query.toString());
-        ListView lView = (ListView) findViewById(R.id.findfriend_listview);
-        adapter = new FindFriendListItemAdapter(allusers, this);
-        lView.setAdapter(adapter);
+        if (allusers != null){
+            ListView lView = (ListView) findViewById(R.id.findfriend_listview);
+            adapter = new FindFriendListItemAdapter(allusers, this);
+            lView.setAdapter(adapter);
+        }
+        else{
+            String text = "Social activities are disabled when offline";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
+//        allusers = HelperFunctions.getUsersGeneral(getApplicationContext());
+
 
     }
 
@@ -156,11 +167,14 @@ public class FindFriendActivity extends SocialActivity {
         ElasticSearchUserController.UpdateUserTask updateUserTask
                 = new ElasticSearchUserController.UpdateUserTask();
         updateUserTask.execute(allusers.get(selectFriendIndex));
+        HelperFunctions.clearFile(getApplicationContext(), "allUsers.txt");
+        HelperFunctions.saveInFile(allusers, getApplicationContext(), "allusers.txt");
+
 
         Toast.makeText(FindFriendActivity.this,"Sent Friend Request",Toast.LENGTH_SHORT).show();
     }
 
-        @Override
+    @Override
     int getContentViewId() {
         return R.layout.activity_findfriends;
     }

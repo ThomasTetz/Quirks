@@ -89,7 +89,8 @@ public class NewEventActivity extends BaseActivity
             Log.i("Error", "Did not find correct jestID");
         }
 
-        currentlylogged = HelperFunctions.getUserObject(jestID);
+//        currentlylogged = HelperFunctions.getUserObject(jestID);
+        currentlylogged = HelperFunctions.getSingleUserGeneral(getApplicationContext());
 
         if (currentlylogged != null) {
             QuirkList quirks = currentlylogged.getQuirks();
@@ -164,7 +165,6 @@ public class NewEventActivity extends BaseActivity
 
         userLoc.setLatitude(point.latitude);
         userLoc.setLongitude(point.longitude);
-
     }
 
 
@@ -189,9 +189,10 @@ public class NewEventActivity extends BaseActivity
         DropType randomDrop = getDrop();
         inventory.addDrop(new Drop(randomDrop));
 
-        ElasticSearchUserController.UpdateUserTask updateUserTask
-                = new ElasticSearchUserController.UpdateUserTask();
-        updateUserTask.execute(currentlylogged);
+//        ElasticSearchUserController.UpdateUserTask updateUserTask
+//                = new ElasticSearchUserController.UpdateUserTask();
+//        updateUserTask.execute(currentlylogged);
+        HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
 
         TextView txtclose, dropname;
 
