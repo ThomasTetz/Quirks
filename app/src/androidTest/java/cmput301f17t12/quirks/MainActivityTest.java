@@ -63,36 +63,26 @@ public class MainActivityTest {
     }
 
     @Test
-    public void addNewEventTest() {
-        Intents.init();
-        onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn)).perform(click());
-        onView(withId(R.id.action_newevent)).perform(click());
-        onView(withId(R.id.comment_edittext)).perform(typeText("intenttesting"), closeSoftKeyboard());
-        onView(withId(R.id.save_button)).perform(click());
-        Intents.release();
-    }
-
-    @Test
     public void FilteringEventbyComment(){
         Intents.init();
-        onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
+        onView(withId(R.id.loginUser)).perform(typeText("intest2"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_home)).perform(click());
-        onView(withId(R.id.filterValue)).perform(replaceText("intenttesting"),closeSoftKeyboard());
+        onView(withId(R.id.filterValue)).perform(replaceText("Type1"),closeSoftKeyboard());
         onView(withId(R.id.spinner)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("By Comment"))).perform(click());
         onView(withId(R.id.applyFilterButton)).perform(click());
+
         Intents.release();
     }
 
     @Test
     public void FilteringEventbyType(){
         Intents.init();
-        onView(withId(R.id.loginUser)).perform(typeText("intenttesting"), closeSoftKeyboard());
+        onView(withId(R.id.loginUser)).perform(typeText("intest2"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_home)).perform(click());
-        onView(withId(R.id.filterValue)).perform(replaceText("Type"),closeSoftKeyboard());
+        onView(withId(R.id.filterValue)).perform(replaceText("Type2"),closeSoftKeyboard());
         onView(withId(R.id.spinner)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is("By Type"))).perform(click());
         onView(withId(R.id.applyFilterButton)).perform(click());
