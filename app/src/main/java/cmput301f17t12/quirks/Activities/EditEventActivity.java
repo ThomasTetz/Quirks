@@ -162,6 +162,7 @@ public class EditEventActivity extends AppCompatActivity implements OnMapReadyCa
             Uri photouri = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photouri);
+                bitmap = Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*0.5), (int)(bitmap.getHeight()*0.5), true);
                 setImage(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
