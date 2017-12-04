@@ -160,14 +160,18 @@ public class AddQuirkActivityTest {
     @Test
     public void addQuirkSaveButton(){
         Intents.init();
+
         onView(withId(R.id.loginUser)).perform(typeText("intest3"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
         onView(withId(R.id.action_quirklist)).perform(click());
         onView(withId(R.id.add_quirk_button)).perform(click());
+        onView(withId(R.id.QuirkEditradioButtonMon)).perform(click());
+        onView(withId(R.id.QuirkeditTextReason)).perform(typeText("Reason"),closeSoftKeyboard());
+
         onView(withId(R.id.QuirkeditTextTitle)).perform(typeText("Title"), closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextType)).perform(typeText("Type"),closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextGoal)).perform(typeText(String.valueOf("15")));
-        onView(withId(R.id.QuirkeditTextReason)).perform(typeText("Reason"),closeSoftKeyboard());
+        onView(withId(R.id.QuirkeditTextGoal)).perform(closeSoftKeyboard());
         int year  = 2017;
         int monthOfYear  = 11;
         int dayOfMonth =  25;
@@ -176,7 +180,6 @@ public class AddQuirkActivityTest {
                 perform(PickerActions.setDate(year, monthOfYear, dayOfMonth));
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withId(R.id.QuirkEditradioButtonMon)).perform(click());
         onView(withId(R.id.SaveBut)).perform(click());
         intended(hasComponent(QuirksActivity.class.getName()));
         onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(1).
