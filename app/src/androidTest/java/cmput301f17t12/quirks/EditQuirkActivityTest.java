@@ -158,7 +158,6 @@ public class EditQuirkActivityTest {
         String compare = month + "/"
                 + day + "/" + Integer.toString(year) + " ";
         onView(withId(R.id.textViewSelectStartingDateEdit)).check(matches(withText(compare)));
-//        intended(hasComponent(EditQuirkActivity.class.getName()),times(2));
         Intents.release();
     }
     //test that Goal an be edited and saved
@@ -205,17 +204,21 @@ public class EditQuirkActivityTest {
 
         onView(withId(R.id.add_quirk_button)).perform(click());
         intended(hasComponent(AddQuirkActivity.class.getName()),times(1));
+        onView(withId(R.id.QuirkEditradioButtonMon)).perform(click());
+        onView(withId(R.id.QuirkeditTextReason)).perform(typeText("Reason"),closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextTitle)).perform(typeText("Title"), closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextType)).perform(typeText("Type"),closeSoftKeyboard());
         onView(withId(R.id.QuirkeditTextGoal)).perform(typeText(String.valueOf("15")));
-        onView(withId(R.id.QuirkeditTextReason)).perform(typeText("Reason"),closeSoftKeyboard());
+
 
         onView( withId(R.id.textViewSelDate)).perform(click());
+        ;
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).
                 perform(PickerActions.setDate(year, monthOfYear, dayOfMonth));
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withId(R.id.QuirkEditradioButtonMon)).perform(click());
+        onView(withId(R.id.QuirkeditTextTitle)).perform(closeSoftKeyboard());
+
         onView(withId(R.id.SaveBut)).perform(click());
 
         //Delete the Quirk

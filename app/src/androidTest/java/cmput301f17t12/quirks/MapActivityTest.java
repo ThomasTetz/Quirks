@@ -4,6 +4,9 @@ import android.os.SystemClock;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiSelector;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,11 +19,16 @@ import cmput301f17t12.quirks.Activities.LoginActivity;
 import cmput301f17t12.quirks.Activities.MainActivity;
 import cmput301f17t12.quirks.Activities.QuirksActivity;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.swipeDown;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -40,8 +48,8 @@ import static org.hamcrest.Matchers.anything;
 
 @RunWith(AndroidJUnit4.class)
 public class MapActivityTest {
+    String tapOriginalText;
 
-    String comment;
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -50,86 +58,9 @@ public class MapActivityTest {
     @Before
     public void initialize() {
         // Specify a valid comment
-        comment = "Testing change";
+
         loginActivity = mActivityRule.getActivity();
-
-
-    }
-
-    //Test Cancel button
-    //Go from login activity to Edit Event activvity
-    @Test
-    public void cancelButton(){
-
-        Intents.init();
-
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
-        onView(withId(R.id.loginUser))
-                .perform(typeText("intest3"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn))
-                .perform(click());
-
-
-
-        //go to edit event
-        onView(withId(R.id.action_quirklist))
-                .perform(click());
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-        //Cancel button in add Events
-        onView(withId(R.id.cancel_button))
-                .perform(click());
-        intended(hasComponent(MainActivity.class.getName()), times(2));
-        intended(hasComponent(QuirksActivity.class.getName()), times(1));
-        intended(hasComponent(EventListActivity.class.getName()), times(1));
-        intended(hasComponent(EditEventActivity.class.getName()), times(1));
-
-        Intents.release();
-
-    }
-
-    //make changes to evvent and save
-
-    @Test
-    public void saveButton(){
-        //Will need to go createa quirk then save
-        Intents.init();
-
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
-        onView(withId(R.id.loginUser))
-                .perform(typeText("intest3"), closeSoftKeyboard());
-        onView(withId(R.id.loginBtn))
-                .perform(click());
-        onView(withId(R.id.action_quirklist))
-                .perform(click());
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-
-        //insert comment and save event
-        onView(withId(R.id.comment_edittext))
-                .perform(replaceText(comment), closeSoftKeyboard());
-
-        onView(withId(R.id.save_button))
-                .perform(click());
-        onView(withId(R.id.action_quirklist))
-                .perform(click());
-
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-
-        //click on view/edit/delete button for latest event
-
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
-        //Check that comment was updated
-        onView(withId(R.id.comment_edittext)).check(matches(withText(comment)));
-        Intents.release();
+        tapOriginalText = "CameraPosition{target=lat/lng: (0.0,53.523199930787094), zoom=2.0, tilt=0.0, bearing=0.0}";
 
     }
 
@@ -141,28 +72,105 @@ public class MapActivityTest {
         Intents.init();
         mActivityRule.launchActivity(new Intent());
 
-        //Login with user testing 123 and go to NewEvent ACtivity to have
-        //quirks to log
+
         onView(withId(R.id.loginUser))
                 .perform(typeText("intest3"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn))
                 .perform(click());
-        onView(withId(R.id.action_quirklist))
+        onView(withId(R.id.action_geomap))
                 .perform(click());
-        onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                onChildView(withId(R.id.quirk_button)).perform(click());
-        onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                onChildView(withId(R.id.el_eventview)).perform(click());
 
-        onView(withContentDescription("Google Map")).perform(click());
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Google Maps"));
 
-        //Test that the text has changed to a lat and lon description after being tapped.
-        onView(withId(R.id.event_tap_text))
-                .check(matches(withText(not("Tap on the map"))));
+        onView(withContentDescription("Google Map")).perform(swipeRight());
+        SystemClock.sleep(1000);
+        //Test that the text has changed to a lat and lon description after being swipe.
+        onView(withId(R.id.tap_text))
+                .check(matches(not(withText(tapOriginalText))));
+        Intents.release();
+
+    }
+    //Testing that the nearbyEvents
+    @Test
+    public void nearbyEvents(){
+        loginActivity = mActivityRule.getActivity();
+        SystemClock.sleep(1000);
+        Intents.init();
+        mActivityRule.launchActivity(new Intent());
+
+        onView(withId(R.id.loginUser))
+                .perform(typeText("intest3"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn))
+                .perform(click());
+        onView(withId(R.id.action_geomap))
+                .perform(click());
+        onView(withId(R.id.nearby_map_button));
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Google Maps"));
+
+        onView(withContentDescription("Google Map")).perform(swipeDown());
+        SystemClock.sleep(1000);
+        //Test that the text has changed to a lat and lon description after being swipe.
+        onView(withId(R.id.tap_text))
+                .check(matches(not(withText(tapOriginalText))));
         Intents.release();
 
     }
 
+    //Testing that the follow users events
+    @Test
+    public void followEvents(){
+        loginActivity = mActivityRule.getActivity();
+        SystemClock.sleep(1000);
+        Intents.init();
+        mActivityRule.launchActivity(new Intent());
+
+        onView(withId(R.id.loginUser))
+                .perform(typeText("intest3"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn))
+                .perform(click());
+        onView(withId(R.id.action_geomap))
+                .perform(click());
+        onView(withId(R.id.following_map_button));
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Google Maps"));
+
+        onView(withContentDescription("Google Map")).perform(swipeUp());
+        SystemClock.sleep(1000);
+        //Test that the text has changed to a lat and lon description after being swipe.
+        onView(withId(R.id.tap_text))
+                .check(matches(not(withText(tapOriginalText))));
+        Intents.release();
+
+    }
+
+    //Testing that the my Events
+    @Test
+    public void myEvents(){
+        loginActivity = mActivityRule.getActivity();
+        SystemClock.sleep(1000);
+        Intents.init();
+        mActivityRule.launchActivity(new Intent());
+
+        onView(withId(R.id.loginUser))
+                .perform(typeText("intest3"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn))
+                .perform(click());
+        onView(withId(R.id.action_geomap))
+                .perform(click());
+        onView(withId(R.id.my_events_map_button));
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Google Maps"));
+
+        onView(withContentDescription("Google Map")).perform(swipeLeft());
+        SystemClock.sleep(1000);
+        //Test that the text has changed to a lat and lon description after being swiped.
+        onView(withId(R.id.tap_text))
+                .check(matches(not(withText(tapOriginalText))));
+        Intents.release();
+
+    }
 
 
 }

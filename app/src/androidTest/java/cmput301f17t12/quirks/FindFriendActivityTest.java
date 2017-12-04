@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import cmput301f17t12.quirks.Activities.EditEventActivity;
 import cmput301f17t12.quirks.Activities.EventListActivity;
+import cmput301f17t12.quirks.Activities.FindFriendActivity;
 import cmput301f17t12.quirks.Activities.LoginActivity;
 import cmput301f17t12.quirks.Activities.MainActivity;
 import cmput301f17t12.quirks.Activities.QuirksActivity;
@@ -49,7 +50,6 @@ import static org.hamcrest.Matchers.anything;
 public class FindFriendActivityTest {
 
 
-        String comment;
         @Rule
         public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
                 LoginActivity.class);
@@ -57,17 +57,15 @@ public class FindFriendActivityTest {
 
         @Before
         public void initialize() {
-            // Specify a valid comment
-            comment = "Testing change";
+
             loginActivity = mActivityRule.getActivity();
 
 
         }
 
-        //Test Cancel button
-        //Go from login activity to Edit Event activvity
+        //Search for Friends
         @Test
-        public void cancelButton(){
+        public void searchFriend(){
 
             Intents.init();
 
@@ -81,97 +79,51 @@ public class FindFriendActivityTest {
 
 
             //go to edit event
-            onView(withId(R.id.action_quirklist))
+            onView(withId(R.id.action_social))
                     .perform(click());
-            onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                    onChildView(withId(R.id.quirk_button)).perform(click());
-            onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                    onChildView(withId(R.id.el_eventview)).perform(click());
-            //Cancel button in add Events
-            onView(withId(R.id.cancel_button))
+            onView(withId(R.id.action_findFriends))
                     .perform(click());
-            intended(hasComponent(MainActivity.class.getName()), times(2));
-            intended(hasComponent(QuirksActivity.class.getName()), times(1));
-            intended(hasComponent(EventListActivity.class.getName()), times(1));
-            intended(hasComponent(EditEventActivity.class.getName()), times(1));
-
+            onView(withId(R.id.editTextFindFriend))
+                    .perform(typeText("intest2"), closeSoftKeyboard());
+            onView(withId(R.id.imageButtonSearch))
+                    .perform(click());
+            onData(anything()).inAdapterView(withId(R.id.findfriend_listview)).atPosition(0).
+                    onChildView(withId(R.id.FindFriendtext)).check(matches(withText("intest2")));
+            intended(hasComponent(FindFriendActivity.class.getName()),times(1));
             Intents.release();
 
         }
 
-        //make changes to evvent and save
+    //Add Friends
+    @Test
+    public void addFriend(){
 
-        @Test
-        public void saveButton(){
-            //Will need to go createa quirk then save
-            Intents.init();
+        Intents.init();
 
-            //Login with user testing 123 and go to NewEvent ACtivity to have
-            //quirks to log
-            onView(withId(R.id.loginUser))
-                    .perform(typeText("intest3"), closeSoftKeyboard());
-            onView(withId(R.id.loginBtn))
-                    .perform(click());
-            onView(withId(R.id.action_quirklist))
-                    .perform(click());
-            onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                    onChildView(withId(R.id.quirk_button)).perform(click());
-            onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                    onChildView(withId(R.id.el_eventview)).perform(click());
-
-            //insert comment and save event
-            onView(withId(R.id.comment_edittext))
-                    .perform(replaceText(comment), closeSoftKeyboard());
-
-            onView(withId(R.id.save_button))
-                    .perform(click());
-            onView(withId(R.id.action_quirklist))
-                    .perform(click());
-
-            onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                    onChildView(withId(R.id.quirk_button)).perform(click());
-
-            //click on view/edit/delete button for latest event
-
-            onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                    onChildView(withId(R.id.el_eventview)).perform(click());
-            //Check that comment was updated
-            onView(withId(R.id.comment_edittext)).check(matches(withText(comment)));
-            Intents.release();
-
-        }
-
-        //Testing that the map is clickable
-        @Test
-        public void map(){
-            loginActivity = mActivityRule.getActivity();
-            SystemClock.sleep(1000);
-            Intents.init();
-            mActivityRule.launchActivity(new Intent());
-
-            //Login with user testing 123 and go to NewEvent ACtivity to have
-            //quirks to log
-            onView(withId(R.id.loginUser))
-                    .perform(typeText("intest3"), closeSoftKeyboard());
-            onView(withId(R.id.loginBtn))
-                    .perform(click());
-            onView(withId(R.id.action_quirklist))
-                    .perform(click());
-            onData(anything()).inAdapterView(withId(R.id.quirk_listview)).atPosition(0).
-                    onChildView(withId(R.id.quirk_button)).perform(click());
-            onData(anything()).inAdapterView(withId(R.id.el_eventslistview)).atPosition(0).
-                    onChildView(withId(R.id.el_eventview)).perform(click());
-
-            onView(withContentDescription("Google Map")).perform(click());
-
-            //Test that the text has changed to a lat and lon description after being tapped.
-            onView(withId(R.id.event_tap_text))
-                    .check(matches(withText(not("Tap on the map"))));
-            Intents.release();
-
-        }
+        //Login with user testing 123 and go to NewEvent ACtivity to have
+        //quirks to log
+        onView(withId(R.id.loginUser))
+                .perform(typeText("intest3"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn))
+                .perform(click());
 
 
+
+        //go to edit event
+        onView(withId(R.id.action_social))
+                .perform(click());
+        onView(withId(R.id.action_findFriends))
+                .perform(click());
+        onView(withId(R.id.editTextFindFriend))
+                .perform(typeText("intest2"), closeSoftKeyboard());
+        onView(withId(R.id.imageButtonSearch))
+                .perform(click());
+        onData(anything()).inAdapterView(withId(R.id.findfriend_listview)).atPosition(0).
+                onChildView(withId(R.id.FindFriendtext)).check(matches(withText("intest2")));
+        onData(anything()).inAdapterView(withId(R.id.findfriend_listview)).atPosition(0).
+                onChildView(withId(R.id.imageButtonAddFriend)).perform(click());
+        intended(hasComponent(FindFriendActivity.class.getName()),times(1));
+        Intents.release();
 
     }
 
