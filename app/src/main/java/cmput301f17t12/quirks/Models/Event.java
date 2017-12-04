@@ -209,6 +209,19 @@ public class Event implements Mappable, Newsable, Serializable {
         return getUser() + " logged to " + getType() + "!";
     }
 
+    /**
+     * Build TimeSpan for the Event
+     * @return Timespan
+     */
+    @Override
+    public String buildDate() {
+        CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(
+                getDate().getTime(),
+                System.currentTimeMillis(),
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE);
+        return relativeTimeSpan.toString();
+    }
 
 
     /**
