@@ -24,72 +24,39 @@ import cmput301f17t12.quirks.Models.User;
 public class HelperFunctions {
 
     public static User getSingleUserGeneral(Context context){
-        Log.i("Error", "A");
         int offlineQueueExists = getOfflineChangesQueued(context);
-        Log.i("Error", "B");
         if (offlineQueueExists == 1){
-            Log.i("Error", "C");
-            System.out.println("There are offline changes that need to be saved");
             offlineQueueExists = tryToProcessOfflineQueue(context);
-            System.out.println("status after trying to process: " + offlineQueueExists);
-            Log.i("Error", "D");
         }
-
 
         User user;
 
         if (offlineQueueExists == 0){ // nothing queued, can communicate with db
-            Log.i("Error", "E");
             String jestID = getJestID(context);
 
-            Log.i("Error", "F");
             if (jestID.equals("defaultvalue")) {
-                Log.i("Error", "G");
                 Log.i("Error", "Did not find correct jestID");
                 return null;
             }
-            Log.i("Error", "H");
             user = getSingleUserByJestID(context, jestID);
-            Log.i("Error", "I");
             if (user != null){
-                Log.i("Error", "J");
                 return user;
             }
             else{
-                System.out.println("could not get it online, user: " + user);
-                System.out.println("triggering offline");
                 triggerOfflineChangesQueued(context);
                 offlineQueueExists = getOfflineChangesQueued(context);
-//                Log.i("Error", "K");
-//                user = getSingleUserOffline(context);
-//                Log.i("Error", "L");
-//                if (user != null){
-//                    Log.i("Error", "M");
-//                    return user;
-//                }
-//                else{
-//                    Log.i("Error", "N");
-//                    throw new NullPointerException("null user received from file");
-//                }
-
             }
         }
 
         if (offlineQueueExists == 1){
-            Log.i("Error", "O");
             user = getSingleUserOffline(context);
-            Log.i("Error", "P");
             if (user != null){
-                Log.i("Error", "Q");
                 return user;
             }
             else{
-                Log.i("Error", "R");
                 throw new NullPointerException("null user received from file");
             }
         }
-        Log.i("Error", "S");
-        System.out.println("offlineQueueExists: " + offlineQueueExists);
         return null;
 
     }
@@ -108,28 +75,21 @@ public class HelperFunctions {
         ElasticSearchUserController.GetSingleUserTask getSingleUserTask
                 = new ElasticSearchUserController.GetSingleUserTask();
         getSingleUserTask.execute(jestID);
-        Log.i("Error", "1");
         try {
-            Log.i("Error", "2");
             User user = getSingleUserTask.get();
-            Log.i("Error", "3");
             if (user != null){
-                Log.i("Error", "4");
                 Log.i("Error", "user is: " + user);
                 return !user.getUsername().equals("fake name") ? user : null;
 //                return user;
             }
             else{
-                Log.i("Error", "5");
                 throw new NullPointerException("null return from elasticsearch controller");
             }
         }
         catch (Exception e) {
-            Log.i("Error", "6");
             Log.i("Error", "Failed to get single user from the async object");
             Log.i("Error", e.toString());
         }
-        Log.i("Error", "7");
         return null;
     }
 
@@ -156,7 +116,6 @@ public class HelperFunctions {
                 "    }" +
                 "}";
 
-
         users = getAllUsers(query);
         if (users != null){
             return users;
@@ -173,30 +132,23 @@ public class HelperFunctions {
     }
 
     public static ArrayList<User> getUsersObject() {
-        System.out.println("A");
         ElasticSearchUserController.GetUsersTask getUsersTask
                 = new ElasticSearchUserController.GetUsersTask();
         getUsersTask.execute();
 
         try {
-            System.out.println("B");
             ArrayList<User> users = getUsersTask.get();
-            System.out.println("C");
             if (users != null){
-                System.out.println("D");
                 return users;
             }
             else{
-                System.out.println("E");
                 throw new NullPointerException("null return from elasticsearch controller");
             }
         }
         catch (Exception e) {
-            System.out.println("F");
             Log.i("Error", "Failed to get user list from the async object");
             Log.i("Error", e.toString());
         }
-        System.out.println("G");
         return null;
     }
 
@@ -230,12 +182,8 @@ public class HelperFunctions {
     }
 
     public static ArrayList<User> syncCurrentToList(Context context, User user, ArrayList<User> users){
-        System.out.println("inside syncing");
         if (users != null){
             String jid = user.getId(); // username also works
-            for (int i = 0; i < users.size(); i++){
-                System.out.println(users.get(i).getUsername());
-            }
 
             for (int i = 0; i < users.size(); i++){
                 if (jid.equals(users.get(i).getId())){
@@ -255,9 +203,7 @@ public class HelperFunctions {
 
         int offlineQueueExists = getOfflineChangesQueued(context);
         if (offlineQueueExists == 1){
-            System.out.println("There are offline changes that need to be saved (update)");
             offlineQueueExists = tryToProcessOfflineQueue(context);
-            System.out.println("status after trying to process (update): " + offlineQueueExists);
         }
 
         if (offlineQueueExists == 0){
@@ -266,7 +212,6 @@ public class HelperFunctions {
             try{
                 int status = updateUserTask.get();
                 if (status < 0){
-                    System.out.println("triggering offline");
                     triggerOfflineChangesQueued(context);
                 }
             }
@@ -275,7 +220,6 @@ public class HelperFunctions {
             }
 
         }
-        System.out.println("saving the single user offline");
         saveCurrentUser(context, user);
     }
 
@@ -317,47 +261,18 @@ public class HelperFunctions {
         // sync
         // try to push to db
         // write to files
-
-
         User currentlylogged;
         ArrayList<User> cur = loadFromFile(context, "currentUserFile.txt");
         if (cur.size()>0){
             currentlylogged = cur.get(0);
             ArrayList<User> users = loadFromFile(context, "allUsers.txt");
-            System.out.println("syncing to all");
-//            System.out.println("it matches: " + cur.equals());
             users = syncCurrentToList(context, currentlylogged, users);
             if (users != null){
                 updateUsers(context, users);
             }
             saveCurrentUser(context, currentlylogged);
-
-
-//        }
-//            updateUsers(context, users);
-//        for (int i = 0; i < users.size(); i++){
-//            upda
-//        }
         }
-
         return getOfflineChangesQueued(context);
-
-
-
-//        // read arraylist in from file
-//        ArrayList<User> users = loadFromFile(context, "queuedChanges.txt");
-//        // for each user, try to call update
-//        for (int i = 0; i< users.size(); i++){
-//            updateSingleUser(context, users.get(i));
-//        }
-//        // if fail add to still failing list
-//        // write that to file
-//        // if size >0 return -1 to show still offline and can't talk to db yet
-//        return -1;
-    }
-
-    public static void addUserToOfflineQueue(Context context, User user){
-
     }
 
     private static final String FILENAME = "file.sav";
@@ -371,7 +286,7 @@ public class HelperFunctions {
             FileInputStream fis = context.openFileInput(filename);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 
-            // add dependency: File > Project Structure > app < Dependencies < + < dependency
+            // add dependency: File > Project Structure > app > Dependencies > + > dependency
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<User>>(){}.getType();
             data = gson.fromJson(in, listType);
@@ -385,14 +300,10 @@ public class HelperFunctions {
     }
 
     public static void saveCurrentUser(Context context, User user){
-        System.out.println("making list");
         ArrayList<User> userList = new ArrayList<User>();
         userList.add(user);
-        System.out.println("clearing file");
         clearFile(context, "currentUserFile.txt");
-        System.out.println("saving to file");
         saveInFile(userList, context, "currentUserFile.txt");
-        System.out.println("syncing files");
         String query = "{" +
                 "  \"query\": {" +
                 "    \"match_all\": {}" +

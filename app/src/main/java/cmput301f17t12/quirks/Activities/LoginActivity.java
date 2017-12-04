@@ -113,22 +113,14 @@ public class LoginActivity extends AppCompatActivity {
         System.out.println("Logging in as: " + user.getUsername());
         System.out.println("JestId: " + user.getId());
         editor.putString("jestID", user.getId());
-        System.out.println("reseting offline stuff");
         editor.putInt("offlineChanges", 0);
         editor.commit();
 
-        System.out.println("cleaning files");
-        // this might be a problem
-        System.out.println("1");
         HelperFunctions.saveCurrentUser(getApplicationContext(), user);
-        System.out.println("2");
         HelperFunctions.clearFile(getApplicationContext(), "allUsers.txt");
 
-        System.out.println("fetching all users");
         ArrayList<User> users = HelperFunctions.getUsersObject();
         HelperFunctions.saveInFile(users, getApplicationContext(), "allUsers.txt");
-        System.out.println("got all users");
-
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
