@@ -117,27 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
 
         HelperFunctions.saveCurrentUser(getApplicationContext(), user);
-        HelperFunctions.clearFile(getApplicationContext(), "allUsers.txt");
-
-
-        String query = "{" +
-                "  \"from\" :0, \"size\" : 5000," +
-                "  \"query\": {" +
-                "    \"match_all\": {}" +
-                "    }" +
-                "}";
-
-        ArrayList<User> users = HelperFunctions.getAllUsers(query);
-        if (users != null){
-            System.out.println(users.size());
-            for (int i = 0; i < users.size(); i ++){
-                System.out.println(users.get(i));
-            }
-        }
-        else{
-            System.out.println("users was null at login");
-        }
-        HelperFunctions.saveInFile(users, getApplicationContext(), "allUsers.txt");
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
