@@ -108,16 +108,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void loginUser(User user){
+    private void loginUser(final User user){
         // after elasticsearch, go to main as that user
         System.out.println("Logging in as: " + user.getUsername());
         System.out.println("JestId: " + user.getId());
         editor.putString("jestID", user.getId());
         editor.putInt("offlineChanges", 0);
         editor.commit();
-
-        HelperFunctions.saveCurrentUser(getApplicationContext(), user);
-
+        new Thread(new Runnable() {
+            public void run() {
+                HelperFunctions.saveCurrentUser(getApplicationContext(), user);
+            }
+        }).start();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
