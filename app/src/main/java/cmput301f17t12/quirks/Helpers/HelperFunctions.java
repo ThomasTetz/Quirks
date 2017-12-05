@@ -141,6 +141,7 @@ public class HelperFunctions {
         ArrayList<User> users;
 
         String query = "{" +
+                "  \"from\" :0, \"size\" : 5000," +
                 "  \"query\": {" +
                 "    \"match_all\": {}" +
                 "    }" +
@@ -286,6 +287,7 @@ public class HelperFunctions {
             }
 
         }
+//        syn
         saveCurrentUser(context, user);
     }
 
@@ -342,9 +344,23 @@ public class HelperFunctions {
         if (cur.size()>0){
             currentlylogged = cur.get(0);
             ArrayList<User> users = loadFromFile(context, "allUsers.txt");
-            users = syncCurrentToList(context, currentlylogged, users);
+
+            if (users == null){
+                System.out.println("No other users");
+            }
+
             if (users != null){
+//                for (int i = 0; i < users.size(); i++){
+//                    System.out.println(users.get(i).getUsername());
+//                }
+                users = syncCurrentToList(context, currentlylogged, users);
+                System.out.println("Trying to process offline:");
+                System.out.println("currentlylogged: ");
+                System.out.println(currentlylogged.getQuirks().size());
+                System.out.println("users: ");
+
                 updateUsers(context, users);
+//                updateSingleUser(context, currentlylogged);
             }
             saveCurrentUser(context, currentlylogged);
         }
@@ -386,6 +402,7 @@ public class HelperFunctions {
         clearFile(context, "currentUserFile.txt");
         saveInFile(userList, context, "currentUserFile.txt");
         String query = "{" +
+                "  \"from\" :0, \"size\" : 5000," +
                 "  \"query\": {" +
                 "    \"match_all\": {}" +
                 "    }" +

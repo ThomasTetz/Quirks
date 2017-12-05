@@ -157,6 +157,7 @@ public class AddQuirkActivity extends AppCompatActivity {
             currentlylogged.addQuirk(QuirkCreated);
 //            ElasticSearchUserController.UpdateUserTask updateUserTask = new ElasticSearchUserController.UpdateUserTask();
 //            updateUserTask.execute(currentlylogged);
+            HelperFunctions.saveCurrentUser(getApplicationContext(), currentlylogged);
             HelperFunctions.updateSingleUser(getApplicationContext(), currentlylogged);
 
             finish();
